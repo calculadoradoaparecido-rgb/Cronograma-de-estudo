@@ -1,4 +1,4 @@
-TRILHA PANDA — VERSÃO 5.10
+TRILHA PANDA — VERSÃO 5.11
 MASCOTE VETORIAL ANIMADO · PWA INSTALÁVEL
 
 O QUE MUDOU
@@ -11,6 +11,8 @@ O QUE MUDOU
 - Há movimento contínuo de respiração, cabeça, braços e piscadas.
 - Alimentar, brincar, fazer carinho e descansar acionam poses próprias.
 - As ações mantêm os indicadores, XP, mensagens, inventário e dados salvos.
+- O panda cresce em seis etapas de XP e ganha uma forma mais robusta e brilhos conforme estuda.
+- Acessórios desbloqueados surgem automaticamente no panda; itens escolhidos manualmente são preservados.
 - O service worker busca o HTML atualizado pela rede e mantém cópia offline como alternativa.
 
 PUBLICAÇÃO
