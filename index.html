@@ -6,7 +6,18 @@
 <style>
 :root{--bg:#f7f4ef;--card:#fff;--ink:#302b28;--muted:#756d66;--line:#e9dfd5;--green:#83b99a;--pink:#f2c7ce;--gold:#e9bd65}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px system-ui}header{background:linear-gradient(120deg,#f0e1d4,#e8eee4);padding:22px max(16px,calc((100vw - 1120px)/2))}h1{margin:0;font-size:27px}header p{margin:5px 0;color:var(--muted)}main{max-width:1120px;margin:20px auto;padding:0 14px 50px}
-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}button{border:0;border-radius:12px;padding:10px 14px;background:#342d29;color:white;font-weight:650;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.tab{background:white;color:#342d29;border:1px solid var(--line)}.tab.on{background:#342d29;color:white}.panel{display:none}.panel.on{display:block}.card{background:white;border:1px solid var(--line);border-radius:18px;padding:17px;margin-bottom:14px;box-shadow:0 8px 24px #4a322010}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.stats{display:flex;gap:8px}.stat{flex:1;background:#faf4ed;padding:11px;border-radius:12px}.stat b{display:block;font-size:21px}.muted,small{color:var(--muted)}.pandaRow{display:flex;align-items:center;gap:18px}.panda{font-size:112px;line-height:1;filter:drop-shadow(0 7px 4px #0001);transform:scale(var(--scale,1));transition:transform .35s,filter .35s;user-select:none}.panda.bounce{animation:bounce .55s ease}@keyframes bounce{0%,100%{transform:scale(var(--scale,1)) translateY(0)}45%{transform:scale(var(--scale,1)) translateY(-17px) rotate(-5deg)}}.meter{height:12px;background:#eee;border-radius:20px;overflow:hidden}.meter i{display:block;height:100%;background:var(--green);width:50%;transition:width .3s}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.soft{background:#f3ece5;color:#423a34}.green{background:#4d8b68}.pink{background:#bd7884}.gold{background:#a97927}label{display:block;margin:8px 0 3px;color:var(--muted);font-size:13px}input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;font:inherit;background:white}.row{display:flex;gap:10px}.row>div{flex:1;min-width:0}.day{border:1px solid var(--line);padding:12px;border-radius:13px;margin:9px 0}.task{padding:9px 0;border-bottom:1px solid var(--line)}.task:last-child{border:0}.topic{display:flex;gap:8px;align-items:flex-start}.topic input{width:auto;margin-top:4px}details{border-bottom:1px solid var(--line);padding:12px 0}summary{font-weight:700;cursor:pointer}.tag{display:inline-block;background:#f4eee7;border-radius:20px;padding:3px 9px;font-size:12px;margin:2px}.contest{border:1px solid var(--line);border-radius:14px;padding:13px;margin:9px 0}.contest.active{border:2px solid var(--green);background:#f7fbf7}.pill{display:inline-block;padding:4px 9px;border-radius:20px;background:#eaf3ec;font-size:12px}.bubble{background:#f8f1e9;border-radius:14px;padding:11px;margin-top:10px;min-height:45px}.progress{height:8px;background:#eee;border-radius:20px;overflow:hidden}.progress i{display:block;height:100%;background:var(--green)}.danger{background:#a94c4c}.empty{padding:18px;text-align:center;color:var(--muted)}@media(max-width:700px){.grid{grid-template-columns:1fr}.pandaRow{align-items:flex-start}.panda{font-size:88px}.stats{gap:5px}.stat{padding:8px}.row{gap:7px}}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}button{border:0;border-radius:12px;padding:10px 14px;background:#342d29;color:white;font-weight:650;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.tab{background:white;color:#342d29;border:1px solid var(--line)}.tab.on{background:#342d29;color:white}.panel{display:none}.panel.on{display:block}.card{background:white;border:1px solid var(--line);border-radius:18px;padding:17px;margin-bottom:14px;box-shadow:0 8px 24px #4a322010}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.stats{display:flex;gap:8px}.stat{flex:1;background:#faf4ed;padding:11px;border-radius:12px}.stat b{display:block;font-size:21px}.muted,small{color:var(--muted)}.pandaRow{display:flex;align-items:center;gap:18px}.panda{font-size:112px;line-height:1;filter:drop-shadow(0 7px 4px #0001);transform:scale(var(--scale,1));transition:transform .35s,filter .35s;user-select:none}.panda.bounce{animation:bounce .55s ease}@keyframes bounce{0%,100%{transform:scale(var(--scale,1)) translateY(0)}45%{transform:scale(var(--scale,1)) translateY(-17px) rotate(-5deg)}}.meter{height:12px;background:#eee;border-radius:20px;overflow:hidden}.meter i{display:block;height:100%;background:var(--green);width:50%;transition:width .3s}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.soft{background:#f3ece5;color:#423a34}.green{background:#4d8b68}.pink{background:#bd7884}.gold{background:#a97927}label{display:block;margin:8px 0 3px;color:var(--muted);font-size:13px}input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;font:inherit;background:white}.row{display:flex;gap:10px}.row>div{flex:1;min-width:0}.day{border:1px solid var(--line);padding:12px;border-radius:13px;margin:9px 0}.task{padding:9px 0;border-bottom:1px solid var(--line)}.task:last-child{border:0}.topic{display:flex;gap:8px;align-items:flex-start}.topic input{width:auto;margin-top:4px}details{border-bottom:1px solid var(--line);padding:12px 0}summary{font-weight:700;cursor:pointer}.tag{display:inline-block;background:#f4eee7;border-radius:20px;padding:3px 9px;font-size:12px;margin:2px}.contest{border:1px solid var(--line);border-radius:14px;padding:13px;margin:9px 0}.contest.active{border:2px solid var(--green);background:#f7fbf7}.pill{display:inline-block;padding:4px 9px;border-radius:20px;background:#eaf3ec;font-size:12px}.bubble{background:#f8f1e9;border-radius:14px;padding:11px;margin-top:10px;min-height:45px}.progress{height:8px;background:#eee;border-radius:20px;overflow:hidden}.progress i{display:block;height:100%;background:var(--green)}.danger{background:#a94c4c}.empty{padding:18px;text-align:center;color:var(--muted)}
+.pandaStage{position:relative;width:150px;height:150px;display:grid;place-items:center;flex:0 0 150px;background:radial-gradient(circle at 50% 45%,#fff8 0 42%,#d9c8b833 65%,transparent 70%);border-radius:50%;overflow:visible}
+.pandaStage .panda{font-size:104px;z-index:1;transform-origin:50% 85%}
+.pandaAccessory{position:absolute;z-index:2;font-size:34px;line-height:1;filter:drop-shadow(0 3px 2px #0003);pointer-events:none}
+.acc-head{top:0;left:54px}.acc-face{top:52px;left:57px;font-size:27px}.acc-neck{bottom:6px;left:58px;font-size:27px}
+.pandaStage.dance{animation:pandaDance .65s ease}.pandaStage.sleep .panda{filter:grayscale(.35);animation:sleepy 2s ease-in-out infinite}
+@keyframes pandaDance{0%,100%{transform:rotate(0) translateY(0)}25%{transform:rotate(-12deg) translateY(-9px)}75%{transform:rotate(12deg) translateY(-9px)}}
+@keyframes sleepy{50%{transform:translateY(5px) scale(.97)}}
+.inventoryGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:9px;margin-top:12px}
+.itemCard{border:1px solid var(--line);border-radius:13px;padding:12px;text-align:center;background:#fff}
+.itemCard .itemIcon{font-size:32px}.itemCard button{margin-top:8px;padding:7px 10px;font-size:12px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.pandaRow{align-items:flex-start}.panda{font-size:88px}.stats{gap:5px}.stat{padding:8px}.row{gap:7px}}
 </style></head>
 <body>
 <header><h1>🐼 Trilha de Estudos</h1><p id="subtitle">Seu espaço de preparação para concursos — com um panda que evolui junto com você.</p></header>
@@ -18,10 +29,11 @@ nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}button{border:0;borde
 <button class="tab" data-id="syllabus">📚 Edital</button>
 <button class="tab" data-id="log">✍️ Registrar estudo</button>
 <button class="tab" data-id="stats">📈 Desempenho</button>
+<button class="tab" data-id="inventory">🎁 Inventário</button>
 </nav>
 <section id="home" class="panel on">
 <div class="grid">
-<div class="card"><h2>Seu companheiro</h2><div class="pandaRow"><div id="panda" class="panda">🐼</div><div style="flex:1"><h3 id="mood">Panda animado!</h3><p id="message" class="muted">Vamos estudar juntos?</p><div class="meter"><i id="bar"></i></div><b><span id="weight">50</span>/100</b> <small>bem-estar</small><p><span class="pill" id="level">Nível 1 · Filhote</span></p></div></div><div class="bubble" id="pandaTalk">Oi! Escolha um concurso e vamos nessa! 🎋</div>
+<div class="card"><h2>Seu companheiro</h2><div class="pandaRow"><div id="pandaStage" class="pandaStage"><div id="panda" class="panda">🐼</div><span id="headAcc" class="pandaAccessory acc-head"></span><span id="faceAcc" class="pandaAccessory acc-face"></span><span id="neckAcc" class="pandaAccessory acc-neck"></span></div><div style="flex:1"><h3 id="mood">Panda animado!</h3><p id="message" class="muted">Vamos estudar juntos?</p><div class="meter"><i id="bar"></i></div><b><span id="weight">50</span>/100</b> <small>bem-estar</small><p><span class="pill" id="level">Nível 1 · Filhote</span></p></div></div><div class="bubble" id="pandaTalk">Oi! Escolha um concurso e vamos nessa! 🎋</div>
 <div class="actions"><button class="green" onclick="pandaAction('feed')">🎋 Dar bambu</button><button class="pink" onclick="pandaAction('play')">⚽ Brincar</button><button class="soft" onclick="pandaAction('pet')">💗 Fazer carinho</button><button class="gold" onclick="pandaAction('rest')">💤 Descansar</button></div>
 <small>As interações gastam ou recuperam energia. Estudar é a principal forma de evoluir!</small></div>
 <div class="card"><h2>Minha jornada</h2><p><b id="activeName">TJPB — Analista Judiciário</b></p><div class="stats"><div class="stat"><b id="hours">0h</b><small>horas</small></div><div class="stat"><b id="count">0</b><small>sessões</small></div><div class="stat"><b id="streak">0</b><small>dias seguidos</small></div></div><p id="countdown" class="muted"></p><p class="muted">Progresso do concurso ativo</p><div class="progress"><i id="contestProgress" style="width:0%"></i></div><small id="progressLabel">0% do edital marcado</small></div></div>
@@ -37,6 +49,7 @@ nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}button{border:0;borde
 <section id="log" class="panel"><div class="card"><h2>Registrar sessão de estudo</h2><p class="muted">Concurso ativo: <b id="logContest"></b></p><label>Disciplina</label><select id="subject"></select><div class="row"><div><label>Data</label><input id="date" type="date"></div><div><label>Minutos estudados</label><input id="minutes" type="number" min="1" value="50"></div></div><div class="row"><div><label>Questões feitas</label><input id="questions" type="number" min="0" value="20"></div><div><label>Acertos</label><input id="correct" type="number" min="0" value="14"></div></div><label>Observações</label><textarea id="notes" rows="2"></textarea><p><button class="green" onclick="saveSession()">Salvar e dar experiência ao panda 🎋</button></p><p id="saved" class="muted"></p></div><div class="card"><h2>Histórico do concurso ativo</h2><div id="history"></div></div></section>
 <section id="stats" class="panel"><div class="grid"><div class="card"><h2>Desempenho geral</h2><div class="stats"><div class="stat"><b id="allHours">0h</b><small>horas totais</small></div><div class="stat"><b id="allSessions">0</b><small>sessões</small></div><div class="stat"><b id="allAccuracy">0%</b><small>aproveitamento</small></div></div><p class="muted">Inclui todos os concursos cadastrados.</p></div><div class="card"><h2>Desempenho por concurso</h2><div id="byContest"></div></div></div></section>
 <p class="muted" style="text-align:center;font-size:12px">Seus dados ficam salvos neste navegador. Use a mesma opção de exportação/backup antes de limpar os dados do navegador. Este aplicativo não substitui a conferência dos editais e retificações oficiais.</p>
+<section id="inventory" class="panel"><div class="card"><h2>🎁 Inventário do panda</h2><p class="muted">Desbloqueie acessórios estudando e personalize seu companheiro. Os itens equipados aparecem no panda.</p><div class="stats"><div class="stat"><b id="xpTotal">0</b><small>XP acumulado</small></div><div class="stat"><b id="unlockedCount">0</b><small>itens desbloqueados</small></div></div><div id="inventoryItems" class="inventoryGrid"></div></div></section>
 </main>
 <script>
 const KEY='trilhaConcursosPanda_v2';
@@ -73,6 +86,7 @@ if(!data){
  localStorage.setItem(KEY,JSON.stringify(data));
 }
 if(!data.panda)data.panda={well:55,xp:0,lastStudy:'',talk:'Vamos estudar?',actions:{}};
+if(!data.panda.equipped)data.panda.equipped={head:'',face:'',neck:''};
 if(!data.contests?.length)data.contests=[];
 let active=()=>data.contests.find(c=>c.id===data.activeId)||data.contests[0];
 function persist(){localStorage.setItem(KEY,JSON.stringify(data));render()}
@@ -81,19 +95,37 @@ document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>tab(b.dataset.id));
 function totalSessions(){return data.contests.flatMap(c=>c.sessions||[])}
 function allMinutes(){return totalSessions().reduce((a,s)=>a+(+s.min||0),0)}
 function contestProgress(c){let ts=c.topics||[];return ts.length?Math.round(ts.filter(t=>t.done).length/ts.length*100):0}
+const accessories=[
+ {id:'headphones',slot:'head',icon:'🎧',name:'Fones de estudo',xp:0},
+ {id:'cap',slot:'head',icon:'🧢',name:'Boné do foco',xp:100},
+ {id:'crown',slot:'head',icon:'👑',name:'Coroa da constância',xp:500},
+ {id:'glasses',slot:'face',icon:'🤓',name:'Óculos inteligente',xp:150},
+ {id:'hearts',slot:'face',icon:'💖',name:'Bochechas brilhantes',xp:300},
+ {id:'scarf',slot:'neck',icon:'🧣',name:'Cachecol quentinho',xp:250},
+ {id:'bow',slot:'neck',icon:'🎀',name:'Laço especial',xp:400},
+ {id:'medal',slot:'neck',icon:'🏅',name:'Medalha de aprovado',xp:1000}
+];
 function renderPanda(){
  let p=data.panda,well=Math.max(0,Math.min(100,p.well||0)),xp=p.xp||0,level=Math.floor(xp/250)+1;
  let moods=well>=80?['Panda radiante!','Você está cuidando muito bem de mim! 🌟']:well>=55?['Panda feliz!','Estou bem e pronto para mais uma aventura! 🎋']:well>=30?['Panda tranquilo','Que tal uma pausa ou um pouco de estudo?']:['Panda sonolento…','Estou precisando de atenção. Vamos recomeçar devagar?'];
  document.getElementById('weight').textContent=well;document.getElementById('bar').style.width=well+'%';document.getElementById('panda').style.setProperty('--scale',.82+well/550);
  document.getElementById('mood').textContent=moods[0];document.getElementById('message').textContent=moods[1];document.getElementById('pandaTalk').textContent=p.talk||moods[1];document.getElementById('level').textContent=`Nível ${level} · ${level<3?'Filhote':level<6?'Aventureiro':level<10?'Estudioso':'Mestre do Bambu'}`;
+ let equipped=p.equipped||{};for(let slot of ['head','face','neck']){let item=accessories.find(a=>a.id===equipped[slot]);document.getElementById(slot==='head'?'headAcc':slot==='face'?'faceAcc':'neckAcc').textContent=item?item.icon:''}
+ document.getElementById('pandaStage').classList.toggle('sleep',well<25);
 }
+function renderInventory(){
+ let xp=data.panda.xp||0,unlocked=accessories.filter(a=>xp>=a.xp);
+ document.getElementById('xpTotal').textContent=xp;document.getElementById('unlockedCount').textContent=unlocked.length;
+ document.getElementById('inventoryItems').innerHTML=accessories.map(a=>{let ok=xp>=a.xp,eq=data.panda.equipped?.[a.slot]===a.id;return `<div class="itemCard"><div class="itemIcon">${ok?a.icon:'🔒'}</div><b>${a.name}</b><p><small>${ok?(eq?'Equipado': 'Desbloqueado'):`Desbloqueia com ${a.xp} XP`}</small></p><button class="${eq?'soft':'green'}" ${ok?'':'disabled'} onclick="equip('${a.slot}','${a.id}')">${eq?'Equipado':ok?'Equipar':'Bloqueado'}</button></div>`}).join('');
+}
+function equip(slot,id){data.panda.equipped[slot]=data.panda.equipped[slot]===id?'':id;data.panda.talk='Olha só meu visual novo! Gostou? 🐼';persist()}
 function pandaAction(a){
  let p=data.panda,now=Date.now(),last=p.actions[a]||0;
  if(now-last<12000){p.talk='Calma! Vamos esperar um pouquinho antes de repetir essa brincadeira. 😊';renderPanda();return}
  p.actions[a]=now;
  const msgs={feed:['NHAC! Bambu delicioso! 🎋',8,0],play:['Oba! Adoro brincar com você! ⚽',-5,5],pet:['Aaaah, carinho! Você é demais! 💗',5,3],rest:['Zzz… recarregando as energias. 💤',12,0]};
  let [msg,delta,xp]=msgs[a];p.well=Math.max(0,Math.min(100,(p.well||50)+delta));p.xp=(p.xp||0)+xp;p.talk=msg+' Obrigado por cuidar de mim!';
- document.getElementById('panda').classList.remove('bounce');void document.getElementById('panda').offsetWidth;document.getElementById('panda').classList.add('bounce');persist();
+ let stage=document.getElementById('pandaStage');stage.classList.remove('dance');void stage.offsetWidth;stage.classList.add('dance');persist();
 }
 function renderContests(){
  let el=document.getElementById('contestList');
@@ -128,7 +160,7 @@ function render(){
  weeklyGoal.value=c?.goal||12;studyDays.value=c?.days||6;
  let subs=c?.subjects?.length?c.subjects:['Geral'];subject.innerHTML=subs.map(s=>`<option>${esc(s)}</option>`).join('');
  history.innerHTML=sessions.slice().reverse().slice(0,15).map(s=>`<div class="task"><b>${esc(s.sub)}</b><br><small>${s.date} · ${s.min} min · ${s.q} questões · ${s.q?Math.round(s.c/s.q*100):0}% acertos</small>${s.notes?`<p>${esc(s.notes)}</p>`:''}</div>`).join('')||'<p class="muted">Ainda sem sessões neste concurso.</p>';
- renderPanda();renderContests();renderTopics();
+ renderPanda();renderInventory();renderContests();renderTopics();
  let all=totalSessions(),allQ=all.reduce((a,s)=>a+(+s.q||0),0),allC=all.reduce((a,s)=>a+(+s.c||0),0);allHours.textContent=(allMinutes()/60).toFixed(1)+'h';allSessions.textContent=all.length;allAccuracy.textContent=allQ?Math.round(allC/allQ*100)+'%':'0%';
  byContest.innerHTML=data.contests.map(x=>{let m=(x.sessions||[]).reduce((a,s)=>a+(+s.min||0),0);return `<div class="task"><b>${esc(x.name)}</b><br><small>${(m/60).toFixed(1)}h · ${(x.sessions||[]).length} sessões · ${contestProgress(x)}% do edital</small></div>`}).join('')||'<p class="muted">Cadastre concursos para acompanhar o desempenho.</p>';
 }
