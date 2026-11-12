@@ -1,8 +1,10 @@
-TRILHA PANDA — VERSÃO 5.5
+TRILHA PANDA — VERSÃO 5.7
 MASCOTE VETORIAL ANIMADO · PWA INSTALÁVEL
 
 O QUE MUDOU
 - O panda agora é formado por camadas vetoriais articuladas no próprio HTML.
+- A ilustração ganhou orelhas mais arredondadas, manchas dos olhos suaves, focinho integrado e patas mais leves.
+- Os fones ficaram menores e o rosto e o corpo ficaram mais equilibrados.
 - Há movimento contínuo de respiração, cabeça, braços e piscadas.
 - Alimentar, brincar, fazer carinho e descansar acionam poses próprias.
 - As ações mantêm os indicadores, XP, mensagens, inventário e dados salvos.
