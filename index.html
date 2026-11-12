@@ -1,252 +1,273 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Trilha de Estudos — Panda</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#100d20">
+<title>Trilha Panda — Central de Estudos</title>
 <style>
-:root{--bg:#f7f4ef;--card:#fff;--ink:#302b28;--muted:#756d66;--line:#e9dfd5;--green:#83b99a;--pink:#f2c7ce;--gold:#e9bd65}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px system-ui}header{background:linear-gradient(120deg,#f0e1d4,#e8eee4);padding:22px max(16px,calc((100vw - 1120px)/2))}h1{margin:0;font-size:27px}header p{margin:5px 0;color:var(--muted)}main{max-width:1120px;margin:20px auto;padding:0 14px 50px}
-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}button{border:0;border-radius:12px;padding:10px 14px;background:#342d29;color:white;font-weight:650;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.tab{background:white;color:#342d29;border:1px solid var(--line)}.tab.on{background:#342d29;color:white}.panel{display:none}.panel.on{display:block}.card{background:white;border:1px solid var(--line);border-radius:18px;padding:17px;margin-bottom:14px;box-shadow:0 8px 24px #4a322010}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.stats{display:flex;gap:8px}.stat{flex:1;background:#faf4ed;padding:11px;border-radius:12px}.stat b{display:block;font-size:21px}.muted,small{color:var(--muted)}.pandaRow{display:flex;align-items:center;gap:18px}.panda{font-size:112px;line-height:1;filter:drop-shadow(0 7px 4px #0001);transform:scale(var(--scale,1));transition:transform .35s,filter .35s;user-select:none}.panda.bounce{animation:bounce .55s ease}@keyframes bounce{0%,100%{transform:scale(var(--scale,1)) translateY(0)}45%{transform:scale(var(--scale,1)) translateY(-17px) rotate(-5deg)}}.meter{height:12px;background:#eee;border-radius:20px;overflow:hidden}.meter i{display:block;height:100%;background:var(--green);width:50%;transition:width .3s}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.soft{background:#f3ece5;color:#423a34}.green{background:#4d8b68}.pink{background:#bd7884}.gold{background:#a97927}label{display:block;margin:8px 0 3px;color:var(--muted);font-size:13px}input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;font:inherit;background:white}.row{display:flex;gap:10px}.row>div{flex:1;min-width:0}.day{border:1px solid var(--line);padding:12px;border-radius:13px;margin:9px 0}.task{padding:9px 0;border-bottom:1px solid var(--line)}.task:last-child{border:0}.topic{display:flex;gap:8px;align-items:flex-start}.topic input{width:auto;margin-top:4px}details{border-bottom:1px solid var(--line);padding:12px 0}summary{font-weight:700;cursor:pointer}.tag{display:inline-block;background:#f4eee7;border-radius:20px;padding:3px 9px;font-size:12px;margin:2px}.contest{border:1px solid var(--line);border-radius:14px;padding:13px;margin:9px 0}.contest.active{border:2px solid var(--green);background:#f7fbf7}.pill{display:inline-block;padding:4px 9px;border-radius:20px;background:#eaf3ec;font-size:12px}.bubble{background:#f8f1e9;border-radius:14px;padding:11px;margin-top:10px;min-height:45px}.progress{height:8px;background:#eee;border-radius:20px;overflow:hidden}.progress i{display:block;height:100%;background:var(--green)}.danger{background:#a94c4c}.empty{padding:18px;text-align:center;color:var(--muted)}
-.pandaStage{position:relative;width:250px;height:230px;display:grid;place-items:center;flex:0 0 250px;background:radial-gradient(circle at 50% 55%,#fff8 0 35%,#d9c8b833 65%,transparent 70%);border-radius:50%;overflow:visible}.panda3d{width:100%;height:100%;display:block;outline:none;cursor:grab}.panda3d:active{cursor:grabbing}.pandaFallback{display:none}
-.pandaStage .panda{font-size:104px;z-index:1;transform-origin:50% 85%}
-.pandaAccessory{position:absolute;z-index:2;font-size:34px;line-height:1;filter:drop-shadow(0 3px 2px #0003);pointer-events:none}
-.acc-head{top:22px;left:105px}.acc-face{top:93px;left:104px;font-size:27px}.acc-neck{bottom:25px;left:106px;font-size:27px}
-.pandaStage.dance{animation:pandaDance .65s ease}.pandaStage.sleep .panda{filter:grayscale(.35);animation:sleepy 2s ease-in-out infinite}
-@keyframes pandaDance{0%,100%{transform:rotate(0) translateY(0)}25%{transform:rotate(-12deg) translateY(-9px)}75%{transform:rotate(12deg) translateY(-9px)}}
-@keyframes sleepy{50%{transform:translateY(5px) scale(.97)}}
-.inventoryGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:9px;margin-top:12px}
-.itemCard{border:1px solid var(--line);border-radius:13px;padding:12px;text-align:center;background:#fff}
-.itemCard .itemIcon{font-size:32px}.itemCard button{margin-top:8px;padding:7px 10px;font-size:12px}
-@media(max-width:700px){.grid{grid-template-columns:1fr}.pandaRow{align-items:flex-start}.panda{font-size:88px}.stats{gap:5px}.stat{padding:8px}.row{gap:7px}}
-</style></head>
+:root{--bg:#100d20;--panel:#19152d;--panel2:#211b3b;--line:#352b55;--text:#f7f3ff;--muted:#b5accb;--purple:#9c5cff;--purple2:#713be0;--green:#43df8b;--yellow:#ffc94f;--pink:#ff6eae;--blue:#57b9ff;--shadow:0 15px 45px #05030b66}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% -10%,#332057 0,transparent 40%),var(--bg);color:var(--text);font:15px/1.45 Inter,system-ui,-apple-system,Segoe UI,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;color:var(--text);background:linear-gradient(135deg,var(--purple),var(--purple2));padding:10px 14px;border-radius:12px;font-weight:700;transition:.18s}button:hover{filter:brightness(1.12);transform:translateY(-1px)}button:disabled{opacity:.4;cursor:not-allowed;transform:none}.secondary{background:#292342;border:1px solid var(--line)}.green{background:linear-gradient(135deg,#27c979,#15965b)}.pink{background:linear-gradient(135deg,#ed66a6,#b43e7d)}.blue{background:linear-gradient(135deg,#48aaff,#356ed4)}.danger{background:#762e49}.small{padding:6px 9px;font-size:12px}.app{display:grid;grid-template-columns:235px minmax(0,1fr);min-height:100vh}.sidebar{background:#100d20ed;border-right:1px solid var(--line);padding:22px 14px;position:sticky;top:0;height:100vh;overflow:auto}.brand{display:flex;align-items:center;gap:10px;padding:0 8px 22px}.brand-mark{font-size:35px}.brand strong{display:block;font-size:19px;line-height:1.1}.brand small{color:var(--muted)}.nav{display:grid;gap:5px}.nav button{background:transparent;text-align:left;color:#d8d0e8;border:1px solid transparent;padding:11px 12px;font-weight:600}.nav button.active,.nav button:hover{background:#39265f;border-color:#7048ad;color:white}.sidebar-foot{position:absolute;bottom:18px;left:18px;right:18px;color:var(--muted);font-size:11px}.main{min-width:0;padding:22px clamp(14px,3vw,36px) 50px;max-width:1600px;width:100%;margin:auto}.topbar{display:flex;align-items:center;gap:12px;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap}.top-left{display:flex;align-items:center;gap:10px;min-width:200px}.top-left h1{font-size:22px;margin:0}.top-left p{margin:2px 0;color:var(--muted);font-size:12px}.top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.select-top{min-width:230px;max-width:340px}.field,select,textarea{background:#100d20;color:var(--text);border:1px solid var(--line);padding:10px 11px;border-radius:10px;width:100%;outline:none}.field:focus,select:focus,textarea:focus{border-color:var(--purple)}label{display:block;color:var(--muted);font-size:12px;margin:10px 0 5px}.content{display:none}.content.active{display:block}.grid{display:grid;gap:14px}.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}.card{background:linear-gradient(145deg,#201a38,#171329);border:1px solid var(--line);border-radius:19px;padding:17px;box-shadow:var(--shadow);min-width:0}.card h2,.card h3{margin:0 0 12px}.card h2{font-size:17px}.muted{color:var(--muted)}.tiny{font-size:11px;color:var(--muted)}.hero{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.9fr);gap:14px}.panda-card{min-height:390px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 48% 45%,#5b3784 0,#2a2045 40%,#171329 78%)}.panda-card:before{content:"";position:absolute;inset:auto 0 0;height:80px;background:linear-gradient(transparent,#120e20aa);pointer-events:none}.panda-scene{height:300px;position:relative;display:flex;justify-content:center;align-items:center}.panda-canvas{width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab}.speech{position:absolute;right:12px;top:12px;max-width:210px;padding:12px 14px;border:1px solid #b98aff;border-radius:18px;background:#211737eF;box-shadow:0 8px 25px #0005;font-weight:650;font-size:13px}.speech:after{content:"";position:absolute;bottom:-8px;left:30px;width:14px;height:14px;background:#211737;border-right:1px solid #b98aff;border-bottom:1px solid #b98aff;transform:rotate(45deg)}.panda-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}.panda-actions button{flex:1;min-width:90px}.statrow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#100d2077;border:1px solid #45345f;border-radius:13px;padding:11px}.stat b{display:block;font-size:22px}.stat small{color:var(--muted);font-size:11px}.bar{height:9px;border-radius:20px;background:#39324d;overflow:hidden}.bar i{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#33d982,#a1f17b)}.meter-row{display:grid;grid-template-columns:75px 1fr 38px;gap:8px;align-items:center;margin:12px 0;font-size:13px}.meter-row .bar i{background:linear-gradient(90deg,#9c5cff,#df85ff)}.pill{display:inline-block;padding:4px 9px;background:#39285b;color:#e5d4ff;border-radius:30px;font-size:11px;font-weight:700}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:2px 0 14px;flex-wrap:wrap}.section-head h2{margin:0;font-size:22px}.list{display:grid;gap:8px}.list-item{padding:11px 12px;background:#100d2077;border:1px solid #342b4e;border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}.list-item .left{min-width:0}.list-item strong{display:block}.progress-ring{width:116px;height:116px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--green) var(--pct,0%),#39324d 0);position:relative;flex-shrink:0}.progress-ring:before{content:"";position:absolute;inset:10px;border-radius:50%;background:#1b1630}.progress-ring b{position:relative;font-size:23px}.ringrow{display:flex;align-items:center;gap:17px}.checkline{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid #352b554d}.checkline:last-child{border:0}.checkline input{accent-color:var(--green);width:17px;height:17px;margin-top:2px}.checkline.done span{text-decoration:line-through;color:#9489aa}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}.formgrid .full{grid-column:1/-1}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.contest-card{border:1px solid var(--line);background:#171329;border-radius:14px;padding:14px}.contest-card.active{border-color:var(--green);box-shadow:0 0 0 1px #43df8b44}.subject-group{border-top:1px solid #403459;padding:12px 0}.subject-group:first-child{border:0}.topicrow{display:flex;align-items:flex-start;gap:8px;padding:7px 0}.topicrow input{accent-color:var(--green);margin-top:4px}.topicrow span{flex:1}.weekgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}.daybox{background:#100d2077;border:1px solid var(--line);border-radius:13px;padding:10px;min-height:130px}.daybox strong{display:block;margin-bottom:8px}.daybox small{color:var(--muted)}.session{border-bottom:1px solid #403459;padding:11px 0}.session:last-child{border:0}.badge{font-size:10px;padding:3px 7px;border-radius:20px;background:#253f36;color:#9df1bd}.empty{text-align:center;color:var(--muted);padding:22px}.item-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.item{background:#100d2077;border:1px solid var(--line);border-radius:14px;padding:13px;text-align:center}.item .emoji{font-size:34px}.item.locked{opacity:.55}.toast{position:fixed;right:20px;bottom:20px;z-index:20;background:#2a2045;border:1px solid #8e5be0;border-radius:13px;padding:12px 16px;box-shadow:var(--shadow);display:none;max-width:340px}.mobilebar{display:none}.footnote{font-size:11px;color:var(--muted);text-align:center;margin:22px 0 0}.hidden{display:none!important}
+@media(max-width:1050px){.app{grid-template-columns:190px minmax(0,1fr)}.hero{grid-template-columns:1fr}.grid.four{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.app{display:block}.sidebar{display:none}.main{padding:14px 12px 90px}.topbar{align-items:flex-start}.top-actions{width:100%}.select-top{max-width:none;flex:1}.grid.two,.grid.three{grid-template-columns:1fr}.grid.four{grid-template-columns:repeat(2,1fr)}.panda-scene{height:260px}.speech{max-width:160px;font-size:11px}.weekgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.mobilebar{display:flex;position:fixed;bottom:0;left:0;right:0;background:#100d20f2;border-top:1px solid var(--line);padding:7px 4px;justify-content:space-around;z-index:10;backdrop-filter:blur(15px)}.mobilebar button{background:transparent;padding:7px 4px;font-size:10px;display:grid;gap:2px;justify-items:center}.mobilebar button span{font-size:18px}.stat b{font-size:18px}}
+</style>
+</head>
 <body>
-<header><h1>🐼 Trilha de Estudos</h1><p id="subtitle">Seu espaço de preparação para concursos — com um panda que evolui junto com você.</p></header>
-<main>
-<nav>
-<button class="tab on" data-id="home">🐼 Meu panda</button>
-<button class="tab" data-id="contests">🏆 Concursos</button>
-<button class="tab" data-id="plan">📅 Cronograma</button>
-<button class="tab" data-id="syllabus">📚 Edital</button>
-<button class="tab" data-id="log">✍️ Registrar estudo</button>
-<button class="tab" data-id="stats">📈 Desempenho</button>
-<button class="tab" data-id="inventory">🎁 Inventário</button>
-</nav>
-<section id="home" class="panel on">
-<div class="grid">
-<div class="card"><h2>Seu companheiro</h2><div class="pandaRow"><div id="pandaStage" class="pandaStage"><canvas id="panda3d" class="panda3d" aria-label="Panda 3D interativo"></canvas><div id="panda" class="panda pandaFallback">🐼</div><span id="headAcc" class="pandaAccessory acc-head"></span><span id="faceAcc" class="pandaAccessory acc-face"></span><span id="neckAcc" class="pandaAccessory acc-neck"></span></div><div style="flex:1"><h3 id="mood">Panda animado!</h3><p id="message" class="muted">Vamos estudar juntos?</p><div class="meter"><i id="bar"></i></div><b><span id="weight">50</span>/100</b> <small>bem-estar</small><p><span class="pill" id="level">Nível 1 · Filhote</span></p></div></div><div class="bubble" id="pandaTalk">Oi! Escolha um concurso e vamos nessa! 🎋</div>
-<div class="actions"><button class="green" onclick="pandaAction('feed')">🎋 Dar bambu</button><button class="pink" onclick="pandaAction('play')">⚽ Brincar</button><button class="soft" onclick="pandaAction('pet')">💗 Fazer carinho</button><button class="gold" onclick="pandaAction('rest')">💤 Descansar</button></div>
-<small>As interações gastam ou recuperam energia. Estudar é a principal forma de evoluir!</small></div>
-<div class="card"><h2>Minha jornada</h2><p><b id="activeName">TJPB — Analista Judiciário</b></p><div class="stats"><div class="stat"><b id="hours">0h</b><small>horas</small></div><div class="stat"><b id="count">0</b><small>sessões</small></div><div class="stat"><b id="streak">0</b><small>dias seguidos</small></div></div><p id="countdown" class="muted"></p><p class="muted">Progresso do concurso ativo</p><div class="progress"><i id="contestProgress" style="width:0%"></i></div><small id="progressLabel">0% do edital marcado</small></div></div>
-<div class="card"><h2>Plano de hoje</h2><div id="today"></div><button onclick="tab('log')">Registrar estudo</button></div>
-<div class="card"><b>Como o panda funciona:</b> sessões de estudo aumentam o bem-estar e concedem pontos de experiência. Alimentar, brincar, fazer carinho e descansar geram reações. O panda evolui por níveis. O progresso do mascote é geral, somando seus estudos em todos os concursos; cronogramas, editais e registros permanecem separados por concurso.</div>
-</section>
-<section id="contests" class="panel">
-<div class="card"><h2>Meus concursos</h2><p class="muted">Cadastre diferentes objetivos e alterne entre eles. Cada concurso tem seus próprios registros, cronograma e edital.</p><div id="contestList"></div></div>
-<div class="card"><h2 id="formTitle">Adicionar concurso</h2><input type="hidden" id="editId"><div class="row"><div><label>Nome do concurso / órgão</label><input id="cName" placeholder="Ex.: Tribunal de Justiça da Paraíba"></div><div><label>Cargo</label><input id="cRole" placeholder="Ex.: Analista Judiciário — Área Judiciária"></div></div><div class="row"><div><label>Banca</label><input id="cBoard" placeholder="Ex.: FGV"></div><div><label>Data da prova</label><input id="cDate" type="date"></div></div><label>Disciplinas (separe por vírgula)</label><textarea id="cSubjects" rows="2" placeholder="Português, Direito Constitucional, Direito Administrativo..."></textarea><label>Observações / link do edital (opcional)</label><input id="cNotes" placeholder="Informações úteis sobre este concurso"><div class="actions"><button class="green" onclick="saveContest()">Salvar concurso</button><button class="soft" onclick="clearContestForm()">Limpar</button></div></div>
-</section>
-<section id="plan" class="panel"><div class="card"><h2>Cronograma do concurso ativo</h2><p class="muted">Plano-base adaptável. Você pode registrar a execução das tarefas no histórico.</p><div class="row"><div><label>Meta semanal (horas)</label><input id="weeklyGoal" type="number" min="1" max="80" value="12" onchange="updateGoal()"></div><div><label>Dias de estudo por semana</label><select id="studyDays" onchange="updateGoal()"><option value="5">5 dias</option><option value="6" selected>6 dias</option><option value="7">7 dias</option></select></div></div><div id="weeks"></div></div></section>
-<section id="syllabus" class="panel"><div class="card"><h2>Edital verticalizado</h2><p class="muted">Os tópicos abaixo são vinculados ao concurso ativo. Adicione ou remova tópicos conforme o edital oficial.</p><div class="row"><div><label>Disciplina</label><input id="topicSubject" placeholder="Ex.: Direito Constitucional"></div><div><label>Novo tópico</label><input id="topicText" placeholder="Digite um tópico do edital"></div></div><button class="green" onclick="addTopic()">Adicionar tópico</button><div id="topics"></div></div></section>
-<section id="log" class="panel"><div class="card"><h2>Registrar sessão de estudo</h2><p class="muted">Concurso ativo: <b id="logContest"></b></p><label>Disciplina</label><select id="subject"></select><div class="row"><div><label>Data</label><input id="date" type="date"></div><div><label>Minutos estudados</label><input id="minutes" type="number" min="1" value="50"></div></div><div class="row"><div><label>Questões feitas</label><input id="questions" type="number" min="0" value="20"></div><div><label>Acertos</label><input id="correct" type="number" min="0" value="14"></div></div><label>Observações</label><textarea id="notes" rows="2"></textarea><p><button class="green" onclick="saveSession()">Salvar e dar experiência ao panda 🎋</button></p><p id="saved" class="muted"></p></div><div class="card"><h2>Histórico do concurso ativo</h2><div id="history"></div></div></section>
-<section id="stats" class="panel"><div class="grid"><div class="card"><h2>Desempenho geral</h2><div class="stats"><div class="stat"><b id="allHours">0h</b><small>horas totais</small></div><div class="stat"><b id="allSessions">0</b><small>sessões</small></div><div class="stat"><b id="allAccuracy">0%</b><small>aproveitamento</small></div></div><p class="muted">Inclui todos os concursos cadastrados.</p></div><div class="card"><h2>Desempenho por concurso</h2><div id="byContest"></div></div></div></section>
-<p class="muted" style="text-align:center;font-size:12px">Seus dados ficam salvos neste navegador. Use a mesma opção de exportação/backup antes de limpar os dados do navegador. Este aplicativo não substitui a conferência dos editais e retificações oficiais.</p>
-<section id="inventory" class="panel"><div class="card"><h2>🎁 Inventário do panda</h2><p class="muted">Desbloqueie acessórios estudando e personalize seu companheiro. Os itens equipados aparecem no panda.</p><div class="stats"><div class="stat"><b id="xpTotal">0</b><small>XP acumulado</small></div><div class="stat"><b id="unlockedCount">0</b><small>itens desbloqueados</small></div></div><div id="inventoryItems" class="inventoryGrid"></div></div></section>
+<div class="app">
+<aside class="sidebar">
+ <div class="brand"><div class="brand-mark">🐼</div><div><strong>Trilha Panda</strong><small>Seu parceiro de aprovação</small></div></div>
+ <nav class="nav" id="sideNav">
+  <button class="active" data-page="home">🏠 &nbsp; Meu Panda</button>
+  <button data-page="contests">🏆 &nbsp; Concursos</button>
+  <button data-page="schedule">📅 &nbsp; Cronograma</button>
+  <button data-page="syllabus">📚 &nbsp; Edital verticalizado</button>
+  <button data-page="study">✍️ &nbsp; Registrar estudo</button>
+  <button data-page="performance">📊 &nbsp; Desempenho</button>
+  <button data-page="inventory">🎁 &nbsp; Inventário</button>
+  <button data-page="settings">⚙️ &nbsp; Dados e configurações</button>
+ </nav>
+ <div class="sidebar-foot">Versão 5.0 · seus estudos, sua jornada.</div>
+</aside>
+<main class="main">
+ <header class="topbar">
+  <div class="top-left"><div style="font-size:32px">🐼</div><div><h1 id="pageTitle">Meu Panda</h1><p id="pageSub">Um passo por dia aproxima você da aprovação.</p></div></div>
+  <div class="top-actions"><select id="activeSelect" class="field select-top" aria-label="Selecionar concurso"></select><button class="secondary" onclick="showPage('contests')">＋ Concurso</button></div>
+ </header>
+
+ <section class="content active" id="page-home">
+  <div class="hero">
+   <div class="card panda-card">
+    <div class="panda-scene"><canvas id="pandaCanvas" class="panda-canvas" aria-label="Panda 3D: arraste para girar e clique para interagir"></canvas><div class="speech" id="speech">Oi! Sou seu panda. Vamos conquistar seus objetivos? 🎋</div></div>
+    <div class="panda-actions">
+     <button class="green" onclick="pandaCare('feed')">🎋 Alimentar</button><button onclick="pandaCare('play')">🎮 Brincar</button><button class="pink" onclick="pandaCare('pet')">💗 Carinho</button><button class="blue" onclick="pandaCare('rest')">💤 Descansar</button>
+    </div>
+   </div>
+   <div class="grid">
+    <div class="card"><div class="section-head"><h2>🌟 Meu Panda</h2><span class="pill" id="levelPill">Nível 1 · Filhote</span></div>
+     <div class="statrow"><div class="stat"><b id="xpValue">0</b><small>XP total</small></div><div class="stat"><b id="streakValue">0</b><small>dias seguidos</small></div><div class="stat"><b id="studyDaysValue">0</b><small>dias estudados</small></div></div>
+     <p class="tiny" style="margin:12px 0 5px">Próximo nível</p><div class="bar"><i id="xpBar" style="width:0%"></i></div><p class="tiny" id="xpLabel">0 / 250 XP</p>
+     <div id="needs"></div>
+    </div>
+    <div class="card"><h2>🎯 Concurso ativo</h2><h3 id="homeContest">Nenhum concurso selecionado</h3><p class="muted" id="homeRole">Cadastre um concurso para começar.</p><div class="statrow"><div class="stat"><b id="homeHours">0h</b><small>horas estudadas</small></div><div class="stat"><b id="homeSessions">0</b><small>sessões</small></div><div class="stat"><b id="homeAccuracy">—</b><small>acertos</small></div></div><p class="tiny" id="examCountdown"></p><div class="ringrow"><div class="progress-ring" id="syllabusRing"><b id="syllabusPercent">0%</b></div><div><strong>Progresso do edital</strong><p class="tiny" id="syllabusCount">0 de 0 tópicos concluídos</p></div></div>
+    </div>
+   </div>
+  </div>
+  <div class="grid three" style="margin-top:14px">
+   <div class="card"><h2>📆 Plano de hoje</h2><div id="todayPlan" class="list"></div><button class="secondary" style="width:100%;margin-top:10px" onclick="showPage('schedule')">Ver cronograma</button></div>
+   <div class="card"><h2>🏅 Conquistas</h2><div id="recentAchievements" class="list"></div><button class="secondary" style="width:100%;margin-top:10px" onclick="showPage('inventory')">Ver recompensas</button></div>
+   <div class="card"><h2>💡 Dica do Panda</h2><p id="pandaTip">Constância vale mais do que sessões enormes e esporádicas. Faça o possível hoje.</p><div class="pill">Pequenos passos, grandes resultados</div></div>
+  </div>
+ </section>
+
+ <section class="content" id="page-contests">
+  <div class="section-head"><h2>🏆 Meus concursos</h2><button onclick="newContest()">＋ Cadastrar concurso</button></div>
+  <div id="contestCards" class="grid two"></div>
+  <div class="card" style="margin-top:14px"><h2 id="contestFormTitle">Novo concurso</h2><input id="contestEditId" type="hidden"><div class="formgrid">
+   <div><label>Concurso / órgão *</label><input id="contestName" class="field" placeholder="Ex.: Tribunal de Justiça da Paraíba"></div>
+   <div><label>Cargo</label><input id="contestRole" class="field" placeholder="Ex.: Analista Judiciário — Área Judiciária"></div>
+   <div><label>Banca</label><input id="contestBoard" class="field" placeholder="Ex.: FGV"></div>
+   <div><label>Data da prova</label><input id="contestDate" type="date" class="field"></div>
+   <div class="full"><label>Disciplinas (separe por vírgulas)</label><input id="contestSubjects" class="field" placeholder="Português, Direito Constitucional, Direito Administrativo"></div>
+   <div class="full"><label>Observações ou link do edital</label><textarea id="contestNotes" rows="2" placeholder="Anotações importantes, link oficial..."></textarea></div>
+  </div><div class="actions"><button onclick="saveContest()">Salvar concurso</button><button class="secondary" onclick="resetContestForm()">Limpar</button></div></div>
+ </section>
+
+ <section class="content" id="page-schedule">
+  <div class="section-head"><h2>📅 Cronograma de estudos</h2><span class="pill" id="scheduleContestLabel">Concurso ativo</span></div>
+  <div class="card"><div class="formgrid">
+   <div><label>Meta semanal (horas)</label><input id="weeklyGoal" class="field" type="number" min="1" max="100" value="20"></div>
+   <div><label>Dias de estudo por semana</label><select id="weeklyDays"><option value="5">5 dias</option><option value="6" selected>6 dias</option><option value="7">7 dias</option></select></div>
+  </div><div class="actions"><button onclick="saveScheduleSettings()">Salvar metas</button><button class="secondary" onclick="autoBuildSchedule()">Gerar distribuição sugerida</button></div></div>
+  <div class="card" style="margin-top:14px"><h2>Distribuição semanal</h2><p class="tiny">Edite as atividades de cada dia. As tarefas podem ser marcadas como concluídas e ficam salvas no concurso ativo.</p><div id="weekGrid" class="weekgrid"></div></div>
+  <div class="card" style="margin-top:14px"><h2>Adicionar tarefa ao cronograma</h2><div class="formgrid"><div><label>Dia</label><select id="taskDay"><option value="0">Segunda</option><option value="1">Terça</option><option value="2">Quarta</option><option value="3">Quinta</option><option value="4">Sexta</option><option value="5">Sábado</option><option value="6">Domingo</option></select></div><div><label>Disciplina / atividade</label><input id="taskTitle" class="field" placeholder="Ex.: Direito Constitucional — controle"></div><div><label>Duração (minutos)</label><input id="taskDuration" class="field" type="number" value="60" min="5"></div></div><button style="margin-top:12px" onclick="addTask()">Adicionar tarefa</button></div>
+ </section>
+
+ <section class="content" id="page-syllabus">
+  <div class="section-head"><h2>📚 Edital verticalizado</h2><span class="pill" id="syllabusContestLabel"></span></div>
+  <div class="card"><div class="formgrid"><div><label>Disciplina</label><input id="topicSubject" class="field" placeholder="Ex.: Direito Processual Civil"></div><div><label>Tópico do edital</label><input id="topicText" class="field" placeholder="Ex.: Recursos"></div></div><button style="margin-top:10px" onclick="addTopic()">＋ Adicionar tópico</button><div id="topicGroups" style="margin-top:15px"></div></div>
+ </section>
+
+ <section class="content" id="page-study">
+  <div class="grid two">
+   <div class="card"><h2>✍️ Registrar sessão</h2><p class="tiny" id="studyContestName"></p>
+    <label>Disciplina</label><select id="studySubject"></select>
+    <div class="formgrid"><div><label>Data</label><input id="studyDate" type="date" class="field"></div><div><label>Tempo estudado (minutos)</label><input id="studyMinutes" type="number" min="1" value="50" class="field"></div><div><label>Questões feitas</label><input id="studyQuestions" type="number" min="0" value="20" class="field"></div><div><label>Acertos</label><input id="studyCorrect" type="number" min="0" value="14" class="field"></div></div>
+    <label>Tipo de atividade</label><select id="studyType"><option>Teoria</option><option>Questões</option><option>Revisão</option><option>Lei seca</option><option>Simulado</option><option>Discursiva</option></select>
+    <label>Observações</label><textarea id="studyNotes" rows="3" placeholder="O que estudou, dificuldades, pontos para revisar..."></textarea>
+    <button class="green" style="width:100%;margin-top:14px" onclick="saveStudy()">Salvar sessão e ganhar XP 🐼</button>
+   </div>
+   <div class="card"><h2>📜 Histórico recente</h2><div id="studyHistory"></div></div>
+  </div>
+ </section>
+
+ <section class="content" id="page-performance">
+  <div class="section-head"><h2>📊 Desempenho</h2><span class="pill">Visão geral e por concurso</span></div>
+  <div class="grid four" id="globalStats"></div>
+  <div class="grid two" style="margin-top:14px"><div class="card"><h2>Desempenho por concurso</h2><div id="contestPerformance"></div></div><div class="card"><h2>Disciplinas — concurso ativo</h2><div id="subjectPerformance"></div></div></div>
+  <div class="card" style="margin-top:14px"><h2>Últimos 14 dias</h2><div id="dailyBars" style="display:flex;align-items:end;gap:6px;height:150px;padding-top:12px"></div></div>
+ </section>
+
+ <section class="content" id="page-inventory">
+  <div class="section-head"><h2>🎁 Inventário do Panda</h2><span class="pill">Recompensas por XP</span></div>
+  <div class="card"><p class="muted">Seu mascote conquista acessórios com a sua dedicação. Equipe os itens desbloqueados e personalize o panda.</p><div id="inventoryItems" class="item-grid"></div></div>
+ </section>
+
+ <section class="content" id="page-settings">
+  <div class="section-head"><h2>⚙️ Dados e configurações</h2></div>
+  <div class="grid two">
+   <div class="card"><h2>💾 Backup dos seus estudos</h2><p class="muted">Exporte um arquivo JSON para guardar seus concursos, sessões, cronogramas, edital e evolução do panda. Importe esse arquivo em outro navegador para restaurar.</p><div class="actions"><button onclick="exportBackup()">⬇ Exportar backup</button><button class="secondary" onclick="document.getElementById('importFile').click()">⬆ Importar backup</button><input id="importFile" type="file" accept=".json,application/json" class="hidden" onchange="importBackup(event)"></div></div>
+   <div class="card"><h2>🧹 Gerenciar dados</h2><p class="muted">Os dados ficam neste navegador. Não há sincronização automática entre aparelhos; use o backup para transferir seus dados.</p><button class="danger" onclick="resetPanda()">Reiniciar apenas o panda</button><button class="danger" style="margin-top:8px" onclick="wipeAll()">Apagar todos os dados</button></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h2>Sobre o aplicativo</h2><p class="muted">Trilha Panda é um organizador pessoal de estudos. O conteúdo programático inicial é editável e deve ser conferido com o edital oficial e suas retificações. O aplicativo não substitui orientação jurídica ou informações oficiais de concursos.</p><p class="tiny">Panda 3D procedural com Three.js. O motor 3D é carregado pela internet; o restante do app funciona localmente depois de aberto.</p></div>
+ </section>
+ <p class="footnote">Trilha Panda · Estude com constância, cuide do seu mascote e acompanhe sua evolução. Seus dados são armazenados localmente neste navegador.</p>
 </main>
+</div>
+<nav class="mobilebar" id="mobileNav"><button data-page="home"><span>🐼</span>Início</button><button data-page="contests"><span>🏆</span>Concursos</button><button data-page="schedule"><span>📅</span>Plano</button><button data-page="study"><span>✍️</span>Estudar</button><button data-page="performance"><span>📊</span>Dados</button></nav>
+<div class="toast" id="toast"></div>
+
 <script>
-const KEY='trilhaConcursosPanda_v2';
-const old=JSON.parse(localStorage.getItem('pandaState')||'null');
-const defaultTopics=[
-['Língua Portuguesa',['Interpretação e compreensão; tipos e gêneros textuais','Ortografia, coesão e coerência','Classes de palavras; coordenação e subordinação','Pontuação, concordância, regência, crase e colocação pronominal','Reescrita, significação e redação oficial']],
-['Ética e Gestão no Serviço Público',['Princípios constitucionais, moralidade e interesse público','Probidade, integridade e conflito de interesses','Deveres, vedações e responsabilidade do servidor','Gestão de pessoas, liderança, equipes e conflitos']],
-['Informática e Proteção de Dados',['Hardware, software, sistemas e aplicativos','Redes e internet','Segurança da informação','LGPD: conceitos, princípios, direitos e bases legais']],
-['Direito Constitucional',['Princípios fundamentais e direitos e garantias','Organização do Estado e competências','Poderes Legislativo, Executivo e Judiciário','Funções essenciais à Justiça e controle de constitucionalidade']],
-['Direito Administrativo',['Princípios e organização administrativa','Atos e poderes administrativos','Agentes públicos e processo disciplinar','Licitações, contratos e serviços públicos','Responsabilidade civil do Estado e controle da Administração']],
-['Direito Civil e do Consumidor',['LINDB, pessoas e bens','Fatos e negócios jurídicos','Obrigações e contratos','Responsabilidade civil e direitos reais','Família e sucessões','Código de Defesa do Consumidor']],
-['Direito Processual Civil',['Normas fundamentais, jurisdição e competência','Partes, procuradores e intervenção de terceiros','Procedimento comum, provas e tutelas provisórias','Sentença, coisa julgada e cumprimento','Execução, recursos e processos nos tribunais']],
-['Direito Penal',['Princípios, aplicação da lei penal e teoria do crime','Concurso de pessoas e penas','Crimes contra a pessoa e patrimônio','Crimes contra a Administração Pública']],
-['Direito Processual Penal',['Inquérito e ação penal','Competência e procedimentos','Provas e cadeia de custódia','Prisões, cautelares e liberdade','Recursos e execução penal']],
-['Direitos Humanos e Tutela Coletiva',['Teoria geral e sistemas internacionais','Tratados e controle de convencionalidade','Igualdade e proteção de grupos vulneráveis','Ação civil pública e tutela coletiva']]
+'use strict';
+const STORAGE_KEY='trilhaPandaUltimate_v5';
+const DAY_NAMES=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+const PAGE_META={home:['Meu Panda','Um passo por dia aproxima você da aprovação.'],contests:['Concursos','Organize diferentes objetivos sem misturar seus resultados.'],schedule:['Cronograma','Monte uma rotina realista e acompanhe sua execução.'],syllabus:['Edital verticalizado','Transforme o edital em tópicos acompanháveis.'],study:['Registrar estudo','Cada sessão conta para sua evolução.'],performance:['Desempenho','Veja seu ritmo, aproveitamento e consistência.'],inventory:['Inventário','Personalize o panda com recompensas conquistadas.'],settings:['Dados e configurações','Faça backup e mantenha seus dados protegidos.']};
+const initialTopics=[
+['Língua Portuguesa',['Interpretação e compreensão de textos','Tipologia e gêneros textuais','Ortografia oficial e acentuação','Coesão, coerência e mecanismos de referenciação','Classes de palavras e emprego','Coordenação e subordinação','Pontuação','Concordância verbal e nominal','Regência verbal e nominal; crase','Colocação pronominal e reescrita']],
+['Ética e Administração Pública',['Princípios da Administração Pública','Ética, moralidade e interesse público','Deveres e responsabilidades do servidor','Gestão de pessoas, liderança e trabalho em equipe','Integridade, transparência e conflito de interesses']],
+['Informática e LGPD',['Sistemas operacionais e ferramentas de escritório','Internet, intranet, navegadores e correio eletrônico','Segurança da informação','Proteção de dados pessoais e LGPD']],
+['Direito Constitucional',['Princípios fundamentais','Direitos e garantias fundamentais','Organização do Estado','Organização dos Poderes','Funções essenciais à Justiça','Controle de constitucionalidade']],
+['Direito Administrativo',['Princípios e organização administrativa','Atos administrativos','Poderes administrativos','Agentes públicos','Licitações e contratos administrativos','Serviços públicos e responsabilidade civil do Estado']],
+['Direito Civil e Consumidor',['LINDB, pessoas e bens','Fatos e negócios jurídicos','Obrigações e contratos','Responsabilidade civil','Direitos reais, família e sucessões','Código de Defesa do Consumidor']],
+['Direito Processual Civil',['Normas fundamentais, jurisdição e competência','Partes, procuradores e intervenção de terceiros','Atos processuais e tutelas provisórias','Procedimento comum e provas','Sentença, coisa julgada e cumprimento','Execução e recursos']],
+['Direito Penal',['Princípios e aplicação da lei penal','Teoria do crime e concurso de pessoas','Penas e extinção da punibilidade','Crimes contra a pessoa e patrimônio','Crimes contra a Administração Pública']],
+['Direito Processual Penal',['Inquérito e ação penal','Competência e procedimentos','Provas','Prisões e medidas cautelares','Recursos e execução penal']],
+['Direitos Humanos e Tutela Coletiva',['Teoria geral dos direitos humanos','Tratados internacionais','Proteção de grupos vulneráveis','Ação civil pública e tutela coletiva']]
 ];
-const weekly=[
-['Português + Constitucional','Processo Civil + Administrativo','Processo Penal + Penal','Civil/Consumidor + Ética','Processo Civil + Português + Informática','Revisão + simulado + discursiva'],
-['Português + Constitucional','Processo Civil + Administrativo','Processo Penal + Penal','Civil/Consumidor + Ética','Processo Civil + Português + Informática','Revisão + questões + discursiva'],
-['Português + Constitucional','Processo Civil + Administrativo','Processo Penal + Penal','Civil/Consumidor + Direitos Humanos','Penal + CPP + Ética','Revisão + simulado + discursiva'],
-['Português + Constitucional','Processo Civil + Administrativo','Processo Penal + Penal','Civil/Consumidor + Ética','CPC + Direitos Humanos + Informática','Revisão + questões + discursiva'],
-['Português + Constitucional','Processo Civil + Administrativo','Processo Penal + Penal','Civil/Consumidor + Direitos Humanos','CPC + Português + Informática','Revisão + simulado + discursiva'],
-['Português + Constitucional','Processo Civil + Administrativo','Processo Penal + Penal','Civil/Consumidor + Ética','CPC + CPP + Direitos Humanos','Revisão + simulado + discursiva'],
-['Português + Constitucional','Processo Civil + Administrativo','Processo Penal + Penal','Civil/Consumidor + Direitos Humanos','CPC + Penal + Ética','Revisão + simulado + discursiva'],
-['Português + Constitucional','Processo Civil + Administrativo','Processo Penal + Penal','Civil/Consumidor + Ética','CPC + CPP + Informática','Revisão + simulado + discursiva'],
-['Revisão Português + Constitucional','Revisão CPC + Administrativo','Revisão CPP + Penal','Revisão Civil + Direitos Humanos','Questões da banca: pontos fracos','Simulado + discursiva'],
-['Revisão geral','Lei seca e jurisprudência','Questões erradas','Revisão de pontos fracos','Revisão leve','Descanso e preparação']
+const defaultWeek=[
+[['Português',60],['Constitucional',60],['Questões',30]],
+[['Processo Civil',60],['Administrativo',60],['Revisão',30]],
+[['Processo Penal',60],['Penal',60],['Questões',30]],
+[['Civil / Consumidor',60],['Ética',45],['Português',30]],
+[['Processo Civil',60],['Informática / LGPD',45],['Discursiva',30]],
+[['Revisão semanal',60],['Simulado',90],['Correção de erros',30]],
+[['Descanso ou leitura leve',30]]
 ];
-const days=['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'];
-let data=JSON.parse(localStorage.getItem(KEY)||'null');
-if(!data){
- const legacy=old?.sessions||[];
- data={contests:[{id:'tjp b'.replace(' ',''),name:'Tribunal de Justiça da Paraíba (TJPB)',role:'Analista Judiciário — Área Judiciária (Direito)',board:'FGV',date:'2027-01-24',subjects:defaultTopics.map(x=>x[0]),notes:'Cadastro inicial. Confira o edital e eventuais retificações.',topics:defaultTopics.flatMap(([s,arr])=>arr.map(t=>({subject:s,text:t,done:false}))),goal:12,days:6,sessions:legacy.map(s=>({...s,contestId:'tjp b'.replace(' ','')}))}],activeId:'tjpb',panda:{well:55,xp:0,lastStudy:'',talk:'Olá! Eu sou seu panda. Vamos conquistar seus objetivos juntos! 🐼',actions:{}}};
- localStorage.setItem(KEY,JSON.stringify(data));
-}
-if(!data.panda)data.panda={well:55,xp:0,lastStudy:'',talk:'Vamos estudar?',actions:{}};
-if(!data.panda.equipped)data.panda.equipped={head:'',face:'',neck:''};
-if(!data.contests?.length)data.contests=[];
-let active=()=>data.contests.find(c=>c.id===data.activeId)||data.contests[0];
-function persist(){localStorage.setItem(KEY,JSON.stringify(data));render()}
-function tab(id){document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('on',x.id===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.id===id))}
-document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>tab(b.dataset.id));
-function totalSessions(){return data.contests.flatMap(c=>c.sessions||[])}
-function allMinutes(){return totalSessions().reduce((a,s)=>a+(+s.min||0),0)}
-function contestProgress(c){let ts=c.topics||[];return ts.length?Math.round(ts.filter(t=>t.done).length/ts.length*100):0}
-
-// Mascote 3D procedural: geometria criada no navegador com Three.js.
-let panda3d = {ready:false, scene:null, camera:null, renderer:null, root:null, parts:{}, action:'idle', targetRotation:0, pointerDown:false, lastX:0};
-function initPanda3D(){
- const canvas=document.getElementById('panda3d');
- if(!canvas || panda3d.ready) return;
- const boot=()=>{
-  if(!window.THREE) return;
-  const T=window.THREE;
-  const scene=new T.Scene(); scene.background=null;
-  const camera=new T.PerspectiveCamera(32,1,0.1,100); camera.position.set(0,1.45,6.9); camera.lookAt(0,1.15,0);
-  const renderer=new T.WebGLRenderer({canvas,alpha:true,antialias:true});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
-  renderer.shadowMap.enabled=true; renderer.shadowMap.type=T.PCFSoftShadowMap;
-  renderer.outputColorSpace=T.SRGBColorSpace;
-  renderer.toneMapping=T.ACESFilmicToneMapping; renderer.toneMappingExposure=1.25;
-  scene.add(new T.HemisphereLight(0xffffff,0x66506c,2.0));
-  const key=new T.DirectionalLight(0xfff0df,3.1);key.position.set(-3,5,5);key.castShadow=true;scene.add(key);
-  const rim=new T.PointLight(0xb56cff,35,10);rim.position.set(3,2,2);scene.add(rim);
-  const root=new T.Group();scene.add(root);panda3d.root=root;
-  const mat=(color,rough=.72,metal=0)=>new T.MeshStandardMaterial({color,roughness:rough,metalness:metal});
-  const black=mat(0x24202b), white=mat(0xfff5e9), blush=mat(0xf18b9f), pink=mat(0xe94f85), noseMat=mat(0x17131b), iris=mat(0x17131b,.25), purple=mat(0x8b42e8,.35,.1), purpleDark=mat(0x4b2678), bamboo=mat(0x6aaf55);
-  function sphere(name,scale,pos,material,parent=root){const m=new T.Mesh(new T.SphereGeometry(1,32,24),material);m.name=name;m.scale.set(...scale);m.position.set(...pos);m.castShadow=true;m.receiveShadow=true;parent.add(m);panda3d.parts[name]=m;return m}
-  function capsule(name,r,len,pos,material,parent=root){const m=new T.Mesh(new T.CapsuleGeometry(r,len,6,16),material);m.name=name;m.position.set(...pos);m.castShadow=true;parent.add(m);panda3d.parts[name]=m;return m}
-  // Body and belly
-  sphere('body',[.72,.88,.53],[0,.88,0],black);
-  sphere('belly',[.53,.66,.12],[0,.88,.47],white);
-  sphere('head',[.91,.82,.72],[0,2.05,.02],white);
-  // ears
-  sphere('earL',[.25,.31,.19],[-.69,2.67,0],black);sphere('earR',[.25,.31,.19],[.69,2.67,0],black);
-  sphere('earInL',[.13,.18,.06],[-.69,2.67,.16],pink);sphere('earInR',[.13,.18,.06],[.69,2.67,.16],pink);
-  // eye patches, eyes and cheeks
-  const patchL=sphere('patchL',[.27,.36,.10],[-.39,2.12,.64],black);patchL.rotation.z=.35;
-  const patchR=sphere('patchR',[.27,.36,.10],[.39,2.12,.64],black);patchR.rotation.z=-.35;
-  sphere('eyeL',[.075,.105,.045],[-.39,2.14,.735],white);sphere('eyeR',[.075,.105,.045],[.39,2.14,.735],white);
-  sphere('pupilL',[.045,.07,.03],[-.38,2.13,.77],iris);sphere('pupilR',[.045,.07,.03],[.40,2.13,.77],iris);
-  sphere('cheekL',[.16,.09,.035],[-.58,1.88,.68],blush);sphere('cheekR',[.16,.09,.035],[.58,1.88,.68],blush);
-  sphere('muzzle',[.23,.16,.12],[0,1.91,.68],white);sphere('nose',[.09,.065,.06],[0,2.03,.80],noseMat);
-  // smile curve
-  const smilePts=[new T.Vector3(-.11,1.86,.79),new T.Vector3(0,1.81,.82),new T.Vector3(.11,1.86,.79)];
-  const smile=new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(smilePts),16,.018,8,false),noseMat);root.add(smile);
-  // Arms pivot for animation
-  const armL=new T.Group();armL.position.set(-.62,1.42,0);root.add(armL);panda3d.parts.armL=armL;
-  capsule('armLeft',.19,.56,[-.10,-.12,.13],black,armL).rotation.z=.55;
-  sphere('pawLeft',[.2,.16,.18],[-.18,-.40,.23],black,armL);
-  const armR=new T.Group();armR.position.set(.62,1.42,0);root.add(armR);panda3d.parts.armR=armR;
-  capsule('armRight',.19,.56,[.10,-.12,.13],black,armR).rotation.z=-.55;
-  sphere('pawRight',[.2,.16,.18],[.18,-.40,.23],black,armR);
-  // legs and paw pads
-  sphere('legL',[.32,.28,.38],[-.43,.22,.15],black);sphere('legR',[.32,.28,.38],[.43,.22,.15],black);
-  sphere('padL',[.19,.15,.045],[-.43,.20,.50],pink);sphere('padR',[.19,.15,.045],[.43,.20,.50],pink);
-  // headphones: band and ear cups
-  const band=new T.Mesh(new T.TorusGeometry(.72,.075,12,48,Math.PI),purple);band.position.set(0,2.29,.0);band.rotation.z=Math.PI;root.add(band);panda3d.parts.headband=band;
-  sphere('cupL',[.16,.28,.14],[-.86,2.25,.10],purpleDark);sphere('cupR',[.16,.28,.14],[.86,2.25,.10],purpleDark);
-  sphere('cupGlowL',[.11,.19,.06],[-.88,2.25,.22],purple);sphere('cupGlowR',[.11,.19,.06],[.88,2.25,.22],purple);
-  // bamboo prop at side
-  const bambooGroup=new T.Group();bambooGroup.position.set(1.15,.25,-.15);root.add(bambooGroup);panda3d.parts.bamboo=bambooGroup;
-  for(let i=0;i<3;i++){const stalk=new T.Mesh(new T.CylinderGeometry(.045,.055,.95,12),bamboo);stalk.position.set(i*.13,.48,0);bambooGroup.add(stalk);for(let j=0;j<3;j++){const node=new T.Mesh(new T.TorusGeometry(.052,.012,6,12),white);node.rotation.x=Math.PI/2;node.position.set(i*.13,.2+j*.28,.0);bambooGroup.add(node)}}
-  // floating ground shadow
-  const shadow=new T.Mesh(new T.CircleGeometry(1.05,48),new T.MeshBasicMaterial({color:0x352442,transparent:true,opacity:.13}));shadow.rotation.x=-Math.PI/2;shadow.position.y=-.02;shadow.scale.set(1.3,.65,1);root.add(shadow);
-  panda3d.scene=scene;panda3d.camera=camera;panda3d.renderer=renderer;panda3d.ready=true;
-  const resize=()=>{const w=canvas.clientWidth||250,h=canvas.clientHeight||230;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()};new ResizeObserver(resize).observe(canvas);resize();
-  canvas.addEventListener('pointerdown',e=>{panda3d.pointerDown=true;panda3d.lastX=e.clientX;canvas.setPointerCapture(e.pointerId)});
-  canvas.addEventListener('pointermove',e=>{if(panda3d.pointerDown){panda3d.targetRotation+=(e.clientX-panda3d.lastX)*.012;panda3d.lastX=e.clientX}});
-  canvas.addEventListener('pointerup',()=>{panda3d.pointerDown=false});
-  canvas.addEventListener('click',()=>{pandaAction('pet')});
-  const clock=new T.Clock();
-  function animate(){requestAnimationFrame(animate);const t=clock.getElapsedTime(),parts=panda3d.parts,root=panda3d.root;
-   root.rotation.y+=(panda3d.targetRotation-root.rotation.y)*.08;
-   root.position.y=.045*Math.sin(t*2.2);
-   parts.armL.rotation.z=.08*Math.sin(t*2);parts.armR.rotation.z=-.08*Math.sin(t*2);
-   if(panda3d.action==='dance'){parts.armL.rotation.z=-1.05;parts.armR.rotation.z=1.05;root.rotation.z=.08*Math.sin(t*12)}
-   if(panda3d.action==='sleep'){root.position.y=-.04+Math.sin(t*1.2)*.018}
-   if(panda3d.action==='eat'){parts.armR.rotation.z=1.0;parts.bamboo.rotation.z=.12*Math.sin(t*8)}
-   renderer.render(scene,camera);
-  }animate();
- };
- if(window.THREE){boot();return}
- const script=document.createElement('script');script.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js';script.onload=boot;script.onerror=()=>{canvas.outerHTML='<div class="empty">Não foi possível carregar o motor 3D. Verifique a conexão com a internet.</div>'};document.head.appendChild(script);
-}
-
-const accessories=[
- {id:'headphones',slot:'head',icon:'🎧',name:'Fones de estudo',xp:0},
- {id:'cap',slot:'head',icon:'🧢',name:'Boné do foco',xp:100},
- {id:'crown',slot:'head',icon:'👑',name:'Coroa da constância',xp:500},
- {id:'glasses',slot:'face',icon:'🤓',name:'Óculos inteligente',xp:150},
- {id:'hearts',slot:'face',icon:'💖',name:'Bochechas brilhantes',xp:300},
- {id:'scarf',slot:'neck',icon:'🧣',name:'Cachecol quentinho',xp:250},
- {id:'bow',slot:'neck',icon:'🎀',name:'Laço especial',xp:400},
- {id:'medal',slot:'neck',icon:'🏅',name:'Medalha de aprovado',xp:1000}
+const catalog=[
+{id:'headphones',slot:'head',emoji:'🎧',name:'Fones roxos',xp:0},{id:'cap',slot:'head',emoji:'🧢',name:'Boné do foco',xp:120},
+{id:'crown',slot:'head',emoji:'👑',name:'Coroa da constância',xp:500},{id:'glasses',slot:'face',emoji:'🤓',name:'Óculos inteligente',xp:180},
+{id:'star',slot:'face',emoji:'⭐',name:'Brilho de estrela',xp:350},{id:'scarf',slot:'neck',emoji:'🧣',name:'Cachecol quentinho',xp:250},
+{id:'bow',slot:'neck',emoji:'🎀',name:'Laço especial',xp:420},{id:'medal',slot:'neck',emoji:'🏅',name:'Medalha de aprovado',xp:1200},
+{id:'bamboo',slot:'hand',emoji:'🎋',name:'Bambu dourado',xp:700}
 ];
-function renderPanda(){
- let p=data.panda,well=Math.max(0,Math.min(100,p.well||0)),xp=p.xp||0,level=Math.floor(xp/250)+1;
- let moods=well>=80?['Panda radiante!','Você está cuidando muito bem de mim! 🌟']:well>=55?['Panda feliz!','Estou bem e pronto para mais uma aventura! 🎋']:well>=30?['Panda tranquilo','Que tal uma pausa ou um pouco de estudo?']:['Panda sonolento…','Estou precisando de atenção. Vamos recomeçar devagar?'];
- document.getElementById('weight').textContent=well;document.getElementById('bar').style.width=well+'%';document.getElementById('panda').style.setProperty('--scale',.82+well/550);
- document.getElementById('mood').textContent=moods[0];document.getElementById('message').textContent=moods[1];document.getElementById('pandaTalk').textContent=p.talk||moods[1];document.getElementById('level').textContent=`Nível ${level} · ${level<3?'Filhote':level<6?'Aventureiro':level<10?'Estudioso':'Mestre do Bambu'}`;
- let equipped=p.equipped||{};for(let slot of ['head','face','neck']){let item=accessories.find(a=>a.id===equipped[slot]);document.getElementById(slot==='head'?'headAcc':slot==='face'?'faceAcc':'neckAcc').textContent=item?item.icon:''}
- document.getElementById('pandaStage').classList.toggle('sleep',well<25);
+function uid(){return 'id'+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function todayISO(){let d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function escapeHTML(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function freshData(){let c={id:'tjp b'.replace(' ',''),name:'Tribunal de Justiça da Paraíba (TJPB)',role:'Analista Judiciário — Área Judiciária (Direito)',board:'FGV',date:'2027-01-24',subjects:initialTopics.map(x=>x[0]),notes:'Cadastro inicial ilustrativo. Confira o edital oficial e suas retificações.',topics:initialTopics.flatMap(([s,ts])=>ts.map(t=>({id:uid(),subject:s,text:t,done:false}))),sessions:[],goal:20,days:6,week:defaultWeek.map(day=>day.map(([title,min])=>({id:uid(),title,min,done:false})))};
+return {version:5,contests:[c],activeId:c.id,panda:{xp:0,happiness:78,hunger:72,energy:88,health:100,lastCare:todayISO(),lastStudy:'',equipped:{head:'headphones',face:'',neck:'',hand:''},actions:{}},settings:{tips:true}}}
+function loadData(){try{let raw=localStorage.getItem(STORAGE_KEY);if(raw){let d=JSON.parse(raw);if(d&&Array.isArray(d.contests)&&d.panda)return normalizeData(d)}}catch(e){console.warn(e)}return freshData()}
+function normalizeData(d){d.version=5;d.contests.forEach(c=>{c.subjects??=[];c.topics??=[];c.sessions??=[];c.goal??=20;c.days??=6;c.week??=defaultWeek.map(day=>day.map(([title,min])=>({id:uid(),title,min,done:false})));c.topics=c.topics.map(t=>({...t,id:t.id||uid()}));c.sessions=c.sessions.map(s=>({...s,id:s.id||uid()}))});d.panda={xp:0,happiness:78,hunger:72,energy:88,health:100,equipped:{head:'headphones',face:'',neck:'',hand:''},actions:{},...d.panda};d.panda.equipped={head:'headphones',face:'',neck:'',hand:'',...(d.panda.equipped||{})};d.settings??={};if(!d.activeId||!d.contests.some(c=>c.id===d.activeId))d.activeId=d.contests[0]?.id||'';return d}
+let data=loadData();
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(data));renderAll()}
+function activeContest(){return data.contests.find(c=>c.id===data.activeId)||null}
+function allSessions(){return data.contests.flatMap(c=>(c.sessions||[]).map(s=>({...s,contestName:c.name,contestId:c.id})))}
+function sum(arr,key){return arr.reduce((n,x)=>n+(Number(x[key])||0),0)}
+function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.style.display='none',2800)}
+function showPage(page){document.querySelectorAll('.content').forEach(x=>x.classList.toggle('active',x.id==='page-'+page));document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===page));document.getElementById('pageTitle').textContent=PAGE_META[page][0];document.getElementById('pageSub').textContent=PAGE_META[page][1];if(page==='study')renderStudy();if(page==='performance')renderPerformance();if(page==='inventory')renderInventory();window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+document.getElementById('activeSelect').addEventListener('change',e=>{data.activeId=e.target.value;save()});
+function setActive(id){data.activeId=id;save();showPage('home')}
+function contestPct(c){return c?.topics?.length?Math.round(c.topics.filter(t=>t.done).length/c.topics.length*100):0}
+function currentStreak(){let days=[...new Set(allSessions().map(s=>s.date))].sort().reverse(),d=new Date(todayISO()+'T12:00:00');if(!days.includes(todayISO()))d.setDate(d.getDate()-1);let n=0;while(days.includes(d.toISOString().slice(0,10))){n++;d.setDate(d.getDate()-1)}return n}
+function studiedDays(){return new Set(allSessions().map(s=>s.date)).size}
+function levelInfo(){let xp=data.panda.xp||0,level=Math.floor(xp/250)+1;return {xp,level,into:xp%250,progress:(xp%250)/250*100,title:level<3?'Filhote':level<6?'Aventureiro':level<10?'Estudioso':level<15?'Mestre do Bambu':'Lenda dos Estudos'}}
+function renderHeader(){let sel=document.getElementById('activeSelect');sel.innerHTML=data.contests.map(c=>`<option value="${c.id}" ${c.id===data.activeId?'selected':''}>${escapeHTML(c.name)}</option>`).join('')||'<option value="">Nenhum concurso cadastrado</option>';sel.disabled=!data.contests.length}
+function renderHome(){
+ let c=activeContest(),sessions=c?.sessions||[],mins=sum(sessions,'minutes'),q=sum(sessions,'questions'),correct=sum(sessions,'correct'),pct=q?Math.round(correct/q*100):0,topics=c?.topics||[],done=topics.filter(t=>t.done).length,sp=contestPct(c),lv=levelInfo(),p=data.panda;
+ document.getElementById('xpValue').textContent=lv.xp;document.getElementById('levelPill').textContent=`Nível ${lv.level} · ${lv.title}`;document.getElementById('xpBar').style.width=lv.progress+'%';document.getElementById('xpLabel').textContent=`${lv.into} / 250 XP para o próximo nível`;document.getElementById('streakValue').textContent=currentStreak();document.getElementById('studyDaysValue').textContent=studiedDays();
+ const needs=[['Felicidade',p.happiness,'💗'],['Fome',p.hunger,'🎋'],['Energia',p.energy,'⚡'],['Saúde',p.health,'💚']];document.getElementById('needs').innerHTML=needs.map(([n,v,e])=>`<div class="meter-row"><span>${e} ${n}</span><div class="bar"><i style="width:${v}%;background:${v<30?'#ff6eae':v<60?'#ffc94f':'#43df8b'}"></i></div><b>${v}%</b></div>`).join('');
+ document.getElementById('homeContest').textContent=c?.name||'Nenhum concurso selecionado';document.getElementById('homeRole').textContent=c?.role||'Cadastre um concurso para começar.';document.getElementById('homeHours').textContent=(mins/60).toFixed(1)+'h';document.getElementById('homeSessions').textContent=sessions.length;document.getElementById('homeAccuracy').textContent=q?pct+'%':'—';
+ let countdown='';if(c?.date){let days=Math.ceil((new Date(c.date+'T12:00:00')-new Date(todayISO()+'T12:00:00'))/86400000);countdown=days>=0?`📅 Faltam ${days} dias para a prova (${formatDate(c.date)}).`:`Data da prova informada: ${formatDate(c.date)}.`}document.getElementById('examCountdown').textContent=countdown;
+ document.getElementById('syllabusRing').style.setProperty('--pct',sp+'%');document.getElementById('syllabusPercent').textContent=sp+'%';document.getElementById('syllabusCount').textContent=`${done} de ${topics.length} tópicos concluídos`;
+ let day=(new Date().getDay()+6)%7,plan=c?.week?.[day]||[];document.getElementById('todayPlan').innerHTML=plan.length?plan.map(t=>`<label class="checkline ${t.done?'done':''}"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask('${t.id}',this.checked)"><span>${escapeHTML(t.title)} <small>· ${t.min} min</small></span></label>`).join(''):'<div class="empty">Adicione tarefas ao cronograma.</div>';
+ let ach=[];if(currentStreak()>=3)ach.push('🔥 3 dias de sequência');if(lv.xp>=250)ach.push('⭐ Primeiro nível conquistado');if(sum(allSessions(),'minutes')>=600)ach.push('📚 10 horas de estudo');if(q>=100)ach.push('🎯 100 questões resolvidas');if(!ach.length)ach.push('🌱 Sua primeira conquista está próxima!');document.getElementById('recentAchievements').innerHTML=ach.slice(0,3).map(a=>`<div class="list-item">${a}</div>`).join('');
+ document.getElementById('pandaTip').textContent=['Faça revisões espaçadas: retome o conteúdo depois de 24 horas, 7 dias e 30 dias.','Resolver questões revela lacunas que a leitura passiva pode esconder.','Estude em blocos com pausas curtas para manter a atenção.','Anote seus erros e transforme cada um em um tópico de revisão.'][new Date().getDate()%4];
+ document.getElementById('speech').textContent=p.hunger<25?'Estou com fome… tem bambuzinho? 🎋':p.energy<25?'Preciso descansar um pouquinho. 💤':p.happiness<30?'Senti sua falta! Vamos interagir? 💗':p.lastStudy===todayISO()?'Você estudou hoje! Estou muito orgulhoso! 🐼':'Oi! Sou seu panda. Vamos conquistar seus objetivos? 🎋';
 }
-function renderInventory(){
- let xp=data.panda.xp||0,unlocked=accessories.filter(a=>xp>=a.xp);
- document.getElementById('xpTotal').textContent=xp;document.getElementById('unlockedCount').textContent=unlocked.length;
- document.getElementById('inventoryItems').innerHTML=accessories.map(a=>{let ok=xp>=a.xp,eq=data.panda.equipped?.[a.slot]===a.id;return `<div class="itemCard"><div class="itemIcon">${ok?a.icon:'🔒'}</div><b>${a.name}</b><p><small>${ok?(eq?'Equipado': 'Desbloqueado'):`Desbloqueia com ${a.xp} XP`}</small></p><button class="${eq?'soft':'green'}" ${ok?'':'disabled'} onclick="equip('${a.slot}','${a.id}')">${eq?'Equipado':ok?'Equipar':'Bloqueado'}</button></div>`}).join('');
-}
-function equip(slot,id){data.panda.equipped[slot]=data.panda.equipped[slot]===id?'':id;data.panda.talk='Olha só meu visual novo! Gostou? 🐼';persist()}
-function pandaAction(a){
- let p=data.panda,now=Date.now(),last=p.actions[a]||0;
- if(now-last<12000){p.talk='Calma! Vamos esperar um pouquinho antes de repetir essa brincadeira. 😊';renderPanda();return}
- p.actions[a]=now;
- panda3d.action=a==='play'?'dance':a==='rest'?'sleep':a==='feed'?'eat':'idle';
- const msgs={feed:['NHAC! Bambu delicioso! 🎋',8,0],play:['Oba! Adoro brincar com você! ⚽',-5,5],pet:['Aaaah, carinho! Você é demais! 💗',5,3],rest:['Zzz… recarregando as energias. 💤',12,0]};
- let [msg,delta,xp]=msgs[a];p.well=Math.max(0,Math.min(100,(p.well||50)+delta));p.xp=(p.xp||0)+xp;p.talk=msg+' Obrigado por cuidar de mim!';
- let stage=document.getElementById('pandaStage');stage.classList.remove('dance');void stage.offsetWidth;stage.classList.add('dance');persist();
-}
-function renderContests(){
- let el=document.getElementById('contestList');
- el.innerHTML=data.contests.map(c=>`<div class="contest ${c.id===data.activeId?'active':''}"><div class="row"><div><b>${esc(c.name)}</b> ${c.id===data.activeId?'<span class="pill">Ativo</span>':''}<div class="muted">${esc(c.role||'Cargo não informado')} · ${esc(c.board||'Banca não informada')}</div><small>Prova: ${c.date||'não informada'} · ${contestProgress(c)}% do edital</small></div><div style="flex:0 0 auto;display:flex;gap:6px;align-items:center"><button class="green" onclick="activate('${c.id}')">${c.id===data.activeId?'Selecionado':'Ativar'}</button><button class="soft" onclick="editContest('${c.id}')">Editar</button><button class="danger" onclick="deleteContest('${c.id}')">Excluir</button></div></div></div>`).join('')||'<div class="empty">Nenhum concurso cadastrado. Adicione seu primeiro concurso abaixo.</div>';
-}
-function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function clearContestForm(){['editId','cName','cRole','cBoard','cDate','cSubjects','cNotes'].forEach(id=>document.getElementById(id).value='');document.getElementById('formTitle').textContent='Adicionar concurso'}
-function saveContest(){
- let id=document.getElementById('editId').value,name=document.getElementById('cName').value.trim();if(!name){alert('Informe o nome do concurso.');return}
- let c=id?data.contests.find(x=>x.id===id):null;
- if(!c){c={id:'c'+Date.now(),sessions:[],topics:[],goal:12,days:6};data.contests.push(c);if(!data.activeId)data.activeId=c.id}
- Object.assign(c,{name,role:cRole.value.trim(),board:cBoard.value.trim(),date:cDate.value,subjects:cSubjects.value.split(',').map(x=>x.trim()).filter(Boolean),notes:cNotes.value.trim()});
- if(!c.topics?.length&&c.subjects.length)c.topics=c.subjects.map(s=>({subject:s,text:'Adicionar tópicos do edital desta disciplina',done:false}));
- data.activeId=c.id;clearContestForm();persist();tab('contests');
-}
-function editContest(id){let c=data.contests.find(x=>x.id===id);if(!c)return;editId.value=c.id;cName.value=c.name;cRole.value=c.role||'';cBoard.value=c.board||'';cDate.value=c.date||'';cSubjects.value=(c.subjects||[]).join(', ');cNotes.value=c.notes||'';formTitle.textContent='Editar concurso';window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})}
-function activate(id){data.activeId=id;persist()}
-function deleteContest(id){let c=data.contests.find(x=>x.id===id);if(!c)return;if(!confirm(`Excluir "${c.name}" e seus registros? Esta ação não pode ser desfeita.`))return;data.contests=data.contests.filter(x=>x.id!==id);if(data.activeId===id)data.activeId=data.contests[0]?.id||'';persist()}
-function renderTopics(){let c=active();if(!c){topics.innerHTML='<p class="empty">Cadastre ou selecione um concurso.</p>';return}let groups={};(c.topics||[]).forEach((t,i)=>(groups[t.subject]??=[]).push({...t,i}));topics.innerHTML=Object.entries(groups).map(([s,arr])=>`<details open><summary>${esc(s)} · ${arr.filter(t=>t.done).length}/${arr.length}</summary>${arr.map(t=>`<label class="topic"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTopic(${t.i},this.checked)"><span>${esc(t.text)}</span><button class="soft" style="margin-left:auto;padding:4px 8px" onclick="removeTopic(${t.i})">×</button></label>`).join('')}</details>`).join('')||'<p class="empty">Ainda não há tópicos. Adicione os conteúdos do edital acima.</p>'}
-function toggleTopic(i,v){let c=active();c.topics[i].done=v;persist()}
-function addTopic(){let c=active();if(!c){alert('Cadastre um concurso primeiro.');return}let s=topicSubject.value.trim(),t=topicText.value.trim();if(!s||!t){alert('Preencha disciplina e tópico.');return}c.topics.push({subject:s,text:t,done:false});if(!c.subjects.includes(s))c.subjects.push(s);topicSubject.value='';topicText.value='';persist()}
-function removeTopic(i){let c=active();c.topics.splice(i,1);persist()}
-function updateGoal(){let c=active();if(!c)return;c.goal=Math.max(1,+weeklyGoal.value||12);c.days=+studyDays.value||6;persist()}
-function render(){
- let c=active(),sessions=c?.sessions||[],mins=sessions.reduce((a,s)=>a+(+s.min||0),0),dates=[...new Set(sessions.map(s=>s.date))].sort().reverse();
- document.getElementById('activeName').textContent=c?c.name:'Nenhum concurso selecionado';document.getElementById('logContest').textContent=c?c.name:'Cadastre um concurso';document.getElementById('hours').textContent=(mins/60).toFixed(1)+'h';document.getElementById('count').textContent=sessions.length;
- let streak=0,d=new Date();while(dates.includes(d.toISOString().slice(0,10))){streak++;d.setDate(d.getDate()-1)}document.getElementById('streak').textContent=streak;
- let pct=c?contestProgress(c):0;document.getElementById('contestProgress').style.width=pct+'%';document.getElementById('progressLabel').textContent=pct+'% do edital marcado';
- let left=c?.date?Math.ceil((new Date(c.date+'T12:00:00')-new Date(new Date().toISOString().slice(0,10)+'T12:00:00'))/86400000):null;document.getElementById('countdown').textContent=left===null?'Cadastre a data da prova para ver a contagem regressiva.':left>=0?`Faltam ${left} dias para a prova.`:`Prova prevista para ${c.date} (data já passada).`;
- let di=(new Date().getDay()+6)%7,wi=Math.min(9,Math.max(0,Math.floor((Date.now()-new Date('2026-11-12'))/604800000)));document.getElementById('today').innerHTML=c?`<b>${days[di]}</b><p>${weekly[wi][Math.min(5,di)]}</p><span class="tag">Meta: ${c.goal||12}h/semana</span><span class="tag">${c.name}</span>`:'Cadastre um concurso para montar sua rotina.';
- document.getElementById('weeks').innerHTML=c?weekly.map((a,i)=>`<div class="day"><b>Semana ${i+1}</b>${a.slice(0,c.days||6).map((x,j)=>`<div class="task"><b>${days[j]}:</b> ${x}</div>`).join('')}<small>Meta: ${c.goal||12} horas na semana; adapte à sua rotina.</small></div>`).join(''):'<p class="empty">Selecione um concurso.</p>';
- weeklyGoal.value=c?.goal||12;studyDays.value=c?.days||6;
- let subs=c?.subjects?.length?c.subjects:['Geral'];subject.innerHTML=subs.map(s=>`<option>${esc(s)}</option>`).join('');
- history.innerHTML=sessions.slice().reverse().slice(0,15).map(s=>`<div class="task"><b>${esc(s.sub)}</b><br><small>${s.date} · ${s.min} min · ${s.q} questões · ${s.q?Math.round(s.c/s.q*100):0}% acertos</small>${s.notes?`<p>${esc(s.notes)}</p>`:''}</div>`).join('')||'<p class="muted">Ainda sem sessões neste concurso.</p>';
- renderPanda();renderInventory();renderContests();renderTopics();
- let all=totalSessions(),allQ=all.reduce((a,s)=>a+(+s.q||0),0),allC=all.reduce((a,s)=>a+(+s.c||0),0);allHours.textContent=(allMinutes()/60).toFixed(1)+'h';allSessions.textContent=all.length;allAccuracy.textContent=allQ?Math.round(allC/allQ*100)+'%':'0%';
- byContest.innerHTML=data.contests.map(x=>{let m=(x.sessions||[]).reduce((a,s)=>a+(+s.min||0),0);return `<div class="task"><b>${esc(x.name)}</b><br><small>${(m/60).toFixed(1)}h · ${(x.sessions||[]).length} sessões · ${contestProgress(x)}% do edital</small></div>`}).join('')||'<p class="muted">Cadastre concursos para acompanhar o desempenho.</p>';
-}
-function saveSession(){let c=active();if(!c){alert('Cadastre e selecione um concurso primeiro.');tab('contests');return}let min=+minutes.value,q=+questions.value,cor=+correct.value;if(min<1||q<0||cor<0||cor>q){alert('Confira os valores.');return}let date=document.getElementById('date').value||new Date().toISOString().slice(0,10);c.sessions.push({sub:subject.value,date,min,q,c:cor,notes:notes.value});let xp=Math.max(5,Math.floor(min/10)+Math.floor(cor/5));data.panda.xp=(data.panda.xp||0)+xp;data.panda.well=Math.min(100,(data.panda.well||50)+Math.min(18,Math.max(3,Math.floor(min/20))));data.panda.lastStudy=date;data.panda.talk=`Você estudou ${min} minutos e fez ${q} questões! Ganhei ${xp} pontos de experiência. Estou orgulhoso de você! 🐼🎋`;localStorage.setItem(KEY,JSON.stringify(data));saved.textContent='Sessão salva! O panda ganhou experiência e ficou mais feliz!';notes.value='';render()}
-date.value=new Date().toISOString().slice(0,10);
-render();initPanda3D();
-</script></body></html>
+function formatDate(s){if(!s)return '—';let [y,m,d]=s.split('-');return `${d}/${m}/${y}`}
+function renderContests(){let el=document.getElementById('contestCards');el.innerHTML=data.contests.map(c=>`<div class="contest-card ${c.id===data.activeId?'active':''}"><div class="section-head"><div><strong>${escapeHTML(c.name)}</strong><div class="tiny">${escapeHTML(c.role||'Cargo não informado')} · ${escapeHTML(c.board||'Banca não informada')}</div></div>${c.id===data.activeId?'<span class="pill">Ativo</span>':''}</div><p class="tiny">Prova: ${formatDate(c.date)} · ${c.sessions.length} sessões · ${contestPct(c)}% do edital</p><div class="bar"><i style="width:${contestPct(c)}%"></i></div><div class="actions"><button class="small green" onclick="setActive('${c.id}')">${c.id===data.activeId?'Selecionado':'Ativar concurso'}</button><button class="small secondary" onclick="editContest('${c.id}')">Editar</button><button class="small danger" onclick="deleteContest('${c.id}')">Excluir</button></div></div>`).join('')||'<div class="card empty">Você ainda não cadastrou concursos.</div>'}
+function newContest(){resetContestForm();document.getElementById('contestName').focus()}
+function resetContestForm(){['contestEditId','contestName','contestRole','contestBoard','contestDate','contestSubjects','contestNotes'].forEach(id=>document.getElementById(id).value='');document.getElementById('contestFormTitle').textContent='Novo concurso'}
+function editContest(id){let c=data.contests.find(x=>x.id===id);if(!c)return;document.getElementById('contestEditId').value=id;document.getElementById('contestName').value=c.name;document.getElementById('contestRole').value=c.role||'';document.getElementById('contestBoard').value=c.board||'';document.getElementById('contestDate').value=c.date||'';document.getElementById('contestSubjects').value=(c.subjects||[]).join(', ');document.getElementById('contestNotes').value=c.notes||'';document.getElementById('contestFormTitle').textContent='Editar concurso';document.getElementById('contestName').focus()}
+function saveContest(){let id=document.getElementById('contestEditId').value,name=document.getElementById('contestName').value.trim();if(!name){toast('Informe o nome do concurso.');return}let c=id?data.contests.find(x=>x.id===id):null;if(!c){c={id:uid(),subjects:[],topics:[],sessions:[],goal:20,days:6,week:defaultWeek.map(day=>day.map(([title,min])=>({id:uid(),title,min,done:false})))};data.contests.push(c)}let subjects=document.getElementById('contestSubjects').value.split(',').map(x=>x.trim()).filter(Boolean);Object.assign(c,{name,role:document.getElementById('contestRole').value.trim(),board:document.getElementById('contestBoard').value.trim(),date:document.getElementById('contestDate').value,notes:document.getElementById('contestNotes').value.trim(),subjects});if(!c.topics.length)c.topics=subjects.map(s=>({id:uid(),subject:s,text:'Adicionar tópicos do edital desta disciplina',done:false}));data.activeId=c.id;resetContestForm();save();showPage('contests');toast('Concurso salvo!')}
+function deleteContest(id){let c=data.contests.find(x=>x.id===id);if(!c||!confirm(`Excluir ${c.name}, incluindo cronograma, edital e histórico?`))return;data.contests=data.contests.filter(x=>x.id!==id);if(data.activeId===id)data.activeId=data.contests[0]?.id||'';save();toast('Concurso excluído.')}
+function renderSchedule(){let c=activeContest();document.getElementById('scheduleContestLabel').textContent=c?.name||'Nenhum concurso ativo';if(!c){document.getElementById('weekGrid').innerHTML='<div class="empty">Cadastre um concurso para criar o cronograma.</div>';return}document.getElementById('weeklyGoal').value=c.goal;document.getElementById('weeklyDays').value=c.days;document.getElementById('weekGrid').innerHTML=c.week.map((tasks,i)=>`<div class="daybox"><strong>${DAY_NAMES[i]}</strong>${tasks.map(t=>`<div style="padding:5px 0;border-top:1px solid #ffffff12"><label class="checkline ${t.done?'done':''}" style="padding:3px 0"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask('${t.id}',this.checked)"><span>${escapeHTML(t.title)}<small style="display:block">${t.min} min</small></span></label><button class="small danger" onclick="removeTask(${i},'${t.id}')">Remover</button></div>`).join('')||'<small>Sem tarefas</small>'}</div>`).join('')}
+function saveScheduleSettings(){let c=activeContest();if(!c)return toast('Cadastre um concurso primeiro.');c.goal=Math.max(1,Math.min(100,+document.getElementById('weeklyGoal').value||20));c.days=Math.max(1,Math.min(7,+document.getElementById('weeklyDays').value||6));save();toast('Metas semanais atualizadas.')}
+function autoBuildSchedule(){let c=activeContest();if(!c)return toast('Cadastre um concurso primeiro.');let subs=c.subjects.length?c.subjects:['Teoria','Questões','Revisão'];c.week=Array.from({length:7},(_,d)=>d===6?[{id:uid(),title:'Descanso ou revisão leve',min:30,done:false}]:Array.from({length:d===5?3:2},(_,j)=>({id:uid(),title:subs[(d*2+j)%subs.length],min:60,done:false})));save();toast('Distribuição sugerida criada. Ajuste conforme sua rotina.')}
+function addTask(){let c=activeContest();if(!c)return toast('Cadastre um concurso primeiro.');let day=+document.getElementById('taskDay').value,title=document.getElementById('taskTitle').value.trim(),min=+document.getElementById('taskDuration').value;if(!title||min<5)return toast('Informe atividade e duração válida.');c.week[day].push({id:uid(),title,min,done:false});document.getElementById('taskTitle').value='';save();toast('Tarefa adicionada.')}
+function toggleTask(id,done){let c=activeContest();if(!c)return;for(let day of c.week){let t=day.find(x=>x.id===id);if(t){t.done=done;break}}save()}
+function removeTask(day,id){let c=activeContest();c.week[day]=c.week[day].filter(t=>t.id!==id);save()}
+function renderSyllabus(){let c=activeContest();document.getElementById('syllabusContestLabel').textContent=c?.name||'';if(!c){document.getElementById('topicGroups').innerHTML='<div class="empty">Cadastre um concurso primeiro.</div>';return}let groups={};c.topics.forEach(t=>(groups[t.subject]??=[]).push(t));document.getElementById('topicGroups').innerHTML=Object.entries(groups).map(([s,ts])=>`<div class="subject-group"><div class="section-head"><strong>${escapeHTML(s)}</strong><span class="pill">${ts.filter(t=>t.done).length}/${ts.length}</span></div>${ts.map(t=>`<label class="topicrow"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTopic('${t.id}',this.checked)"><span style="${t.done?'text-decoration:line-through;color:#958aa8':''}">${escapeHTML(t.text)}</span><button class="small danger" onclick="deleteTopic('${t.id}')">×</button></label>`).join('')}</div>`).join('')||'<div class="empty">Adicione os tópicos do edital.</div>'}
+function addTopic(){let c=activeContest(),s=document.getElementById('topicSubject').value.trim(),t=document.getElementById('topicText').value.trim();if(!c)return toast('Cadastre um concurso primeiro.');if(!s||!t)return toast('Preencha disciplina e tópico.');c.topics.push({id:uid(),subject:s,text:t,done:false});if(!c.subjects.includes(s))c.subjects.push(s);document.getElementById('topicText').value='';save();toast('Tópico adicionado.')}
+function toggleTopic(id,done){let c=activeContest(),t=c?.topics.find(x=>x.id===id);if(t)t.done=done;save()}
+function deleteTopic(id){let c=activeContest();c.topics=c.topics.filter(t=>t.id!==id);save()}
+function renderStudy(){let c=activeContest();document.getElementById('studyContestName').textContent=c?`Concurso ativo: ${c.name}`:'Cadastre um concurso para registrar estudos.';document.getElementById('studySubject').innerHTML=(c?.subjects.length?c.subjects:['Geral']).map(s=>`<option>${escapeHTML(s)}</option>`).join('');document.getElementById('studyDate').value=todayISO();document.getElementById('studyHistory').innerHTML=c?.sessions.slice().reverse().slice(0,20).map(s=>`<div class="session"><strong>${escapeHTML(s.subject)}</strong><div class="tiny">${formatDate(s.date)} · ${s.minutes} min · ${escapeHTML(s.type||'Estudo')} · ${s.questions} questões · ${s.questions?Math.round(s.correct/s.questions*100):0}%</div>${s.notes?`<div class="tiny">${escapeHTML(s.notes)}</div>`:''}</div>`).join('')||'<div class="empty">Nenhuma sessão registrada neste concurso.</div>'}
+function saveStudy(){let c=activeContest();if(!c)return toast('Cadastre e selecione um concurso primeiro.');let minutes=+document.getElementById('studyMinutes').value,questions=+document.getElementById('studyQuestions').value,correct=+document.getElementById('studyCorrect').value;if(minutes<1||questions<0||correct<0||correct>questions)return toast('Confira tempo, questões e acertos.');let date=document.getElementById('studyDate').value||todayISO();let s={id:uid(),subject:document.getElementById('studySubject').value,date,minutes,questions,correct,type:document.getElementById('studyType').value,notes:document.getElementById('studyNotes').value.trim()};c.sessions.push(s);let xp=Math.max(5,Math.round(minutes/10)+Math.round(correct/5));data.panda.xp+=xp;data.panda.happiness=Math.min(100,data.panda.happiness+Math.min(15,Math.ceil(minutes/30)));data.panda.energy=Math.max(5,data.panda.energy-Math.min(18,Math.ceil(minutes/35)));data.panda.lastStudy=date;data.panda.health=Math.min(100,data.panda.health+2);data.panda.actions.lastStudy=Date.now();data.panda.equipped=data.panda.equipped||{};data.panda.speech=`Você estudou ${minutes} minutos! Ganhei ${xp} XP. Estou muito orgulhoso! 🐼`;document.getElementById('studyNotes').value='';save();showPage('study');toast(`Sessão salva! +${xp} XP para o panda.`)}
+function renderPerformance(){let sessions=allSessions(),minutes=sum(sessions,'minutes'),questions=sum(sessions,'questions'),correct=sum(sessions,'correct'),stats=[['Horas estudadas',(minutes/60).toFixed(1)+'h'],['Sessões',sessions.length],['Questões',questions],['Aproveitamento',questions?Math.round(correct/questions*100)+'%':'—']];document.getElementById('globalStats').innerHTML=stats.map(([a,b])=>`<div class="card stat"><b>${b}</b><small>${a}</small></div>`).join('');document.getElementById('contestPerformance').innerHTML=data.contests.map(c=>{let m=sum(c.sessions,'minutes'),q=sum(c.sessions,'questions'),a=sum(c.sessions,'correct');return `<div class="session"><strong>${escapeHTML(c.name)}</strong><div class="tiny">${(m/60).toFixed(1)}h · ${c.sessions.length} sessões · ${q?Math.round(a/q*100)+'% de acertos':'sem questões registradas'}</div></div>`}).join('')||'<div class="empty">Cadastre concursos para acompanhar.</div>';let c=activeContest(),by={};(c?.sessions||[]).forEach(s=>{let x=by[s.subject]??={m:0,q:0,a:0};x.m+=s.minutes;x.q+=s.questions;x.a+=s.correct});document.getElementById('subjectPerformance').innerHTML=Object.entries(by).sort((a,b)=>b[1].m-a[1].m).map(([s,x])=>`<div class="session"><strong>${escapeHTML(s)}</strong><div class="tiny">${(x.m/60).toFixed(1)}h · ${x.q} questões · ${x.q?Math.round(x.a/x.q*100)+'% acertos':'sem questões'}</div></div>`).join('')||'<div class="empty">Registre sessões para ver o desempenho.</div>';
+ let bars=[];for(let i=13;i>=0;i--){let d=new Date();d.setDate(d.getDate()-i);let key=d.toISOString().slice(0,10),m=sum(sessions.filter(s=>s.date===key),'minutes');bars.push({key,m})}let max=Math.max(60,...bars.map(x=>x.m));document.getElementById('dailyBars').innerHTML=bars.map(x=>`<div title="${formatDate(x.key)}: ${x.m} min" style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:5px"><div style="width:100%;height:${Math.max(3,x.m/max*100)}%;background:linear-gradient(#b47aff,#713be0);border-radius:5px 5px 0 0"></div><small style="font-size:9px">${x.key.slice(8)}</small></div>`).join('')}
+function renderInventory(){let xp=data.panda.xp||0;document.getElementById('inventoryItems').innerHTML=catalog.map(it=>{let unlocked=xp>=it.xp,equipped=data.panda.equipped[it.slot]===it.id;return `<div class="item ${unlocked?'':'locked'}"><div class="emoji">${unlocked?it.emoji:'🔒'}</div><strong>${it.name}</strong><p class="tiny">${unlocked?(equipped?'Em uso':'Desbloqueado'):`Desbloqueia com ${it.xp} XP`}</p><button class="small ${equipped?'secondary':''}" ${unlocked?'':'disabled'} onclick="equipItem('${it.slot}','${it.id}')">${equipped?'Equipado':unlocked?'Equipar':'Bloqueado'}</button></div>`}).join('')}
+function equipItem(slot,id){data.panda.equipped[slot]=data.panda.equipped[slot]===id?'':id;data.panda.speech='Olha meu visual novo! Ficou incrível? 🐼';save();toast('Visual do panda atualizado.')}
+function pandaCare(action){let p=data.panda,now=Date.now(),last=p.actions[action]||0;if(now-last<8000)return toast('Vamos esperar alguns segundos antes de repetir essa ação.');p.actions[action]=now;let msgs={feed:['NHAC! Bambu fresquinho! 🎋',8,12,0,0],play:['Oba! Essa brincadeira foi demais! 🎮',12,-4,-10,3],pet:['Que carinho gostoso! Gosto de estudar com você. 💗',15,0,2,2],rest:['Zzz… recarregando as energias. 💤',3,0,25,1]};let [msg,hun,hap,en,xp]=msgs[action];p.happiness=Math.max(0,Math.min(100,p.happiness+hap));p.hunger=Math.max(0,Math.min(100,p.hunger+hun));p.energy=Math.max(0,Math.min(100,p.energy+en));p.xp+=xp;p.speech=msg;save();if(window.panda3D)window.panda3D.action=action==='play'?'dance':action==='rest'?'sleep':action==='feed'?'eat':'happy';}
+function renderAll(){renderHeader();renderHome();renderContests();renderSchedule();renderSyllabus();renderStudy();renderPerformance();renderInventory()}
+function exportBackup(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='trilha-panda-backup-'+todayISO()+'.json';a.click();URL.revokeObjectURL(url);toast('Backup exportado. Guarde o arquivo em local seguro.')}
+function importBackup(event){let file=event.target.files?.[0];if(!file)return;let reader=new FileReader();reader.onload=()=>{try{let d=JSON.parse(reader.result);if(!Array.isArray(d.contests)||!d.panda)throw new Error('Formato inválido');if(!confirm('Importar backup e substituir os dados atuais deste navegador?'))return;data=normalizeData(d);save();toast('Backup restaurado com sucesso.')}catch(e){toast('Não foi possível importar: arquivo inválido.')}event.target.value=''};reader.readAsText(file)}
+function resetPanda(){if(!confirm('Reiniciar XP, necessidades e acessórios do panda? Seus estudos serão preservados.'))return;data.panda=freshData().panda;save();toast('Panda reiniciado.')}
+function wipeAll(){if(!confirm('ATENÇÃO: apagar todos os concursos, sessões, cronogramas e dados do panda deste navegador? Exporte um backup antes, se necessário.'))return;data=freshData();save();toast('Dados reiniciados.')}
+renderAll();showPage('home');document.getElementById('studyDate').value=todayISO();
+</script>
+<script>
+// Three.js panda: personagem procedural, sem arquivo de modelo externo.
+(function(){
+ const canvas=document.getElementById('pandaCanvas');
+ const state={ready:false,action:'idle',root:null,parts:{},targetY:0};
+ window.panda3D=state;
+ function start(){
+  if(!window.THREE)return;
+  const T=window.THREE,scene=new T.Scene(),camera=new T.PerspectiveCamera(34,1,.1,100);camera.position.set(0,1.55,7.4);camera.lookAt(0,1.25,0);
+  const renderer=new T.WebGLRenderer({canvas,alpha:true,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.shadowMap.enabled=true;renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.2;
+  scene.add(new T.HemisphereLight(0xffffff,0x57416e,2.0));let key=new T.DirectionalLight(0xffe8d1,3.2);key.position.set(-3,5,5);key.castShadow=true;scene.add(key);let rim=new T.PointLight(0xa76aff,32,9);rim.position.set(3,2,2);scene.add(rim);
+  let root=new T.Group();scene.add(root);state.root=root;
+  const material=(color,rough=.75,metal=0)=>new T.MeshStandardMaterial({color,roughness:rough,metalness:metal});
+  let black=material(0x25212d),white=material(0xfff4e9),pink=material(0xf18ba6),dark=material(0x17131d),purple=material(0x914cff,.35,.08),purple2=material(0x4b2876);
+  function sph(name,scale,pos,mat,parent=root){let o=new T.Mesh(new T.SphereGeometry(1,32,24),mat);o.name=name;o.scale.set(...scale);o.position.set(...pos);o.castShadow=true;o.receiveShadow=true;parent.add(o);state.parts[name]=o;return o}
+  function cyl(name,r1,r2,h,pos,mat,parent=root){let o=new T.Mesh(new T.CylinderGeometry(r1,r2,h,18),mat);o.name=name;o.position.set(...pos);o.castShadow=true;parent.add(o);state.parts[name]=o;return o}
+  // torso
+  sph('body',[.72,.9,.55],[0,.9,0],black);sph('belly',[.52,.67,.13],[0,.91,.49],white);
+  // head and ears
+  sph('head',[.92,.83,.73],[0,2.12,0],white);sph('earL',[.26,.31,.2],[-.7,2.76,0],black);sph('earR',[.26,.31,.2],[.7,2.76,0],black);sph('earInL',[.13,.17,.06],[-.7,2.76,.16],pink);sph('earInR',[.13,.17,.06],[.7,2.76,.16],pink);
+  let pl=sph('patchL',[.27,.36,.1],[-.39,2.16,.65],black);pl.rotation.z=.34;let pr=sph('patchR',[.27,.36,.1],[.39,2.16,.65],black);pr.rotation.z=-.34;
+  sph('eyeL',[.07,.1,.04],[-.39,2.16,.74],white);sph('eyeR',[.07,.1,.04],[.39,2.16,.74],white);sph('pupilL',[.04,.065,.025],[-.38,2.15,.775],dark);sph('pupilR',[.04,.065,.025],[.4,2.15,.775],dark);
+  sph('cheekL',[.15,.09,.04],[-.59,1.9,.69],pink);sph('cheekR',[.15,.09,.04],[.59,1.9,.69],pink);sph('muzzle',[.22,.15,.12],[0,1.94,.7],white);sph('nose',[.09,.06,.055],[0,2.06,.81],dark);
+  const smile=new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3([new T.Vector3(-.1,1.88,.81),new T.Vector3(0,1.83,.84),new T.Vector3(.1,1.88,.81)]),16,.018,8,false),dark);root.add(smile);
+  // arms pivot groups and legs
+  let left=new T.Group();left.position.set(-.62,1.43,0);root.add(left);state.parts.leftArm=left;sph('leftArmUpper',[.2,.38,.22],[-.09,-.15,.1],black,left).rotation.z=.45;sph('leftPaw',[.2,.17,.18],[-.18,-.42,.22],black,left);
+  let right=new T.Group();right.position.set(.62,1.43,0);root.add(right);state.parts.rightArm=right;sph('rightArmUpper',[.2,.38,.22],[.09,-.15,.1],black,right).rotation.z=-.45;sph('rightPaw',[.2,.17,.18],[.18,-.42,.22],black,right);
+  sph('legL',[.32,.28,.38],[-.43,.22,.15],black);sph('legR',[.32,.28,.38],[.43,.22,.15],black);sph('padL',[.18,.14,.04],[-.43,.2,.5],pink);sph('padR',[.18,.14,.04],[.43,.2,.5],pink);
+  // headset
+  let band=new T.Mesh(new T.TorusGeometry(.72,.075,12,48,Math.PI),purple);band.position.set(0,2.38,0);band.rotation.z=Math.PI;root.add(band);sph('cupL',[.16,.27,.15],[-.87,2.3,.1],purple2);sph('cupR',[.16,.27,.15],[.87,2.3,.1],purple2);sph('cupGlowL',[.11,.18,.06],[-.89,2.3,.23],purple);sph('cupGlowR',[.11,.18,.06],[.89,2.3,.23],purple);
+  // small bamboo prop
+  let bamboo=new T.Group();bamboo.position.set(1.18,.3,-.12);root.add(bamboo);state.parts.bamboo=bamboo;for(let i=0;i<3;i++){cyl('bamboo'+i,.045,.055,.9,[i*.12,.45,0],material(0x6daf50),bamboo);for(let j=0;j<2;j++)sph('leaf'+i+'_'+j,[.18,.07,.045],[i*.12+(j?-.12:.12),.65+j*.18,0],material(0x7ac65b),bamboo)}
+  let floor=new T.Mesh(new T.CircleGeometry(1.2,48),new T.MeshBasicMaterial({color:0x100a20,transparent:true,opacity:.18}));floor.rotation.x=-Math.PI/2;floor.position.y=-.04;floor.scale.set(1.35,.65,1);root.add(floor);
+  state.scene=scene;state.camera=camera;state.renderer=renderer;state.ready=true;
+  const resize=()=>{let w=canvas.clientWidth||400,h=canvas.clientHeight||300;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()};new ResizeObserver(resize).observe(canvas);resize();
+  let dragging=false,lastX=0;canvas.addEventListener('pointerdown',e=>{dragging=true;lastX=e.clientX;canvas.setPointerCapture(e.pointerId)});canvas.addEventListener('pointermove',e=>{if(dragging){root.rotation.y+=(e.clientX-lastX)*.012;lastX=e.clientX}});canvas.addEventListener('pointerup',()=>dragging=false);canvas.addEventListener('pointercancel',()=>dragging=false);canvas.addEventListener('click',()=>{if(typeof pandaCare==='function')pandaCare('pet')});
+  let clock=new T.Clock();function loop(){requestAnimationFrame(loop);let t=clock.getElapsedTime();root.position.y=.045*Math.sin(t*2);state.parts.leftArm.rotation.z=.08*Math.sin(t*2);state.parts.rightArm.rotation.z=-.08*Math.sin(t*2);root.rotation.z=0;
+   if(state.action==='dance'){state.parts.leftArm.rotation.z=-1.05;state.parts.rightArm.rotation.z=1.05;root.rotation.z=.07*Math.sin(t*12)}
+   if(state.action==='sleep'){root.position.y=-.04+Math.sin(t*1.2)*.02;state.parts.leftArm.rotation.z=.2;state.parts.rightArm.rotation.z=-.2}
+   if(state.action==='eat'){state.parts.rightArm.rotation.z=1.0;state.parts.bamboo.rotation.z=.12*Math.sin(t*8)}
+   if(state.action==='happy'){state.parts.leftArm.rotation.z=-.65;state.parts.rightArm.rotation.z=.65}
+   renderer.render(scene,camera)}loop();
+ }
+ function load(){if(window.THREE){start();return}let sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js';sc.onload=start;sc.onerror=()=>{document.getElementById('speech').textContent='Não consegui carregar o 3D. Verifique a conexão e atualize a página.'};document.head.appendChild(sc)}
+ load();
+})();
+</script>
+</body></html>
