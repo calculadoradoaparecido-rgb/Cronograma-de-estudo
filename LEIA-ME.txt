@@ -1,10 +1,11 @@
-TRILHA PANDA — VERSÃO 5.9
+TRILHA PANDA — VERSÃO 5.10
 MASCOTE VETORIAL ANIMADO · PWA INSTALÁVEL
 
 O QUE MUDOU
 - O panda agora é formado por camadas vetoriais articuladas no próprio HTML.
-- O rosto ganhou manchas oculares inclinadas, focinho arredondado e sorriso mais marcado.
-- Ao descansar, os olhos se fecham antes de aparecerem os sinais de sono.
+- O rosto foi aproximado da referência, com manchas oculares diagonais, olhos maiores, focinho arredondado e sorriso definido.
+- Os braços agora se encontram à frente do corpo para segurar o bambu.
+- Ao alimentar, o bambu sobe até a boca; ao descansar, o panda fecha os olhos antes de aparecerem os sinais de sono.
 - O panda segue sentado, com pelo preto e creme, patinhas rosadas e bambu nos braços.
 - O desenho aproxima o mascote do estilo clássico de panda fofo da referência.
 - Há movimento contínuo de respiração, cabeça, braços e piscadas.
