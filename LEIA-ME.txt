@@ -1,7 +1,7 @@
-TRILHA TJPB — PANDA DOS ESTUDOS
-
-Abra index.html para usar localmente. Para Cloudflare Pages, publique o conteúdo desta pasta no novo repositório. Build command vazio; diretório de saída raiz (/ ou .).
-
-O app salva sessões e tópicos marcados no localStorage deste navegador. Os dados não sincronizam entre dispositivos.
-
-Baseado no Edital TJPB nº 01/2026, retificado, Anexo I. Página oficial: https://conhecimento.fgv.br/concursos/tjpb26. Confira retificações oficiais. Cronograma semanal é uma proposta de organização, não previsão oficial.
+TRILHA DE ESTUDOS — PANDA
+1. Publique o arquivo index.html na raiz do seu novo repositório GitHub.
+2. No Cloudflare Pages, use o repositório, deixe o comando de build vazio e defina a pasta de saída como / (raiz) ou .
+3. Abra o endereço publicado. O aplicativo funciona sem instalação e salva os dados no armazenamento local do navegador.
+4. Cadastre concursos na aba Concursos. O TJPB vem como exemplo inicial.
+5. Os registros, tópicos e cronogramas são separados por concurso. A experiência do panda é compartilhada entre todos os concursos.
+ATENÇÃO: os dados ficam neste navegador/aparelho; não há sincronização automática entre dispositivos nem backup em nuvem.
