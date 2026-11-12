@@ -1,36 +1,19 @@
-# Ritmo — Cronograma de estudos para Android
+# Trilha Panda 5.5
 
-Aplicativo web instalável (PWA), adaptado para celular Android. Não é um APK nativo: é instalado pelo Chrome depois de publicado em um endereço HTTPS.
+Organizador pessoal de estudos em formato PWA, com cadastro de concursos, cronograma semanal, edital verticalizado, registro de sessões, desempenho, inventário e backup local.
 
-## Recursos
-- Cadastro, edição e exclusão de matérias, com cores e metas semanais.
-- Cronograma semanal por dia, horário e duração.
-- Cronômetro de foco de 15, 25 ou 50 minutos.
-- Registro manual de sessões concluídas.
-- Painel com horas do dia, horas da semana, sequência de dias e gráfico semanal.
-- Histórico de estudos e exportação/importação de backup JSON.
-- Armazenamento local no aparelho e suporte offline após a primeira abertura.
+## Mascote animado
 
-## Como instalar no Android
-1. Publique todos os arquivos desta pasta em um serviço de hospedagem estática com HTTPS (por exemplo, Cloudflare Pages ou GitHub Pages).
-2. Abra o endereço publicado no Google Chrome do Android.
-3. Toque em **Instalar aplicativo** (quando aparecer) ou no menu ⋮ e escolha **Instalar app** / **Adicionar à tela inicial**.
-4. Abra pelo ícone Ritmo. Depois da primeira carga, o app pode funcionar sem internet; os dados ficam no armazenamento local do navegador/aplicativo.
+O panda é um desenho vetorial em camadas, integrado ao HTML e sem dependência de CDN. Ele respira, pisca e movimenta os braços continuamente. Alimentar, brincar, fazer carinho e descansar acionam poses e mensagens específicas. O movimento respeita a preferência de movimento reduzido do dispositivo.
 
-## Publicar gratuitamente no Cloudflare Pages
-1. Extraia o ZIP e envie os arquivos da pasta `cronograma-estudos-android` para um repositório GitHub.
-2. No Cloudflare, acesse **Workers & Pages → Create → Pages → Connect to Git**.
-3. Selecione o repositório. Como é um site estático simples, deixe o comando de build vazio e informe `.` como diretório de saída. Isso indica a raiz do repositório.
-4. Conclua a implantação e abra o endereço `*.pages.dev` no Chrome do Android.
+## Instalar e publicar
 
-## Privacidade e backup
-Os registros são guardados no `localStorage` do aparelho e não são enviados a um servidor. Limpar os dados do navegador ou desinstalar/remover os dados do app pode apagar os registros. Use **Histórico → Exportar dados** para guardar uma cópia JSON e **Dados e ajustes → Importar backup** para restaurar.
+Publique os arquivos da raiz deste repositório em uma hospedagem HTTPS, como Cloudflare Pages. O projeto não precisa de etapa de build. Depois, abra o endereço no navegador e use a opção de instalar o aplicativo.
 
-## Desenvolvimento local
-Sirva a pasta por HTTP em vez de abrir `index.html` diretamente, por exemplo:
+## Dados e privacidade
 
-```bash
-python -m http.server 8080
-```
+Concursos, cronogramas e registros ficam no armazenamento local do navegador. Use **Dados e configurações → Exportar backup** para guardar uma cópia e **Importar backup** para restaurá-la em outro navegador.
 
-Depois abra `http://localhost:8080` no navegador do computador. A instalação PWA em celular exige HTTPS (exceto localhost para testes).
+## Desenvolvimento
+
+Sirva esta pasta por HTTP para testar o PWA e o service worker. Abrir o `index.html` diretamente também permite conferir a interface, mas não ativa o service worker.

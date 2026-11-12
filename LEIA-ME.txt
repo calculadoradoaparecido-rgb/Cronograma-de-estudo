@@ -1,31 +1,22 @@
-TRILHA PANDA — VERSÃO 5.4
-PANDA 3D ARTICULADO E ANIMADO + PWA INSTALÁVEL
+TRILHA PANDA — VERSÃO 5.5
+MASCOTE VETORIAL ANIMADO · PWA INSTALÁVEL
 
 O QUE MUDOU
-- A imagem estática foi removida da área principal.
-- O panda agora é criado em tempo real no Three.js, com uma hierarquia articulada de ossos/pivôs.
-- Cabeça, ombros, braços, antebraços, patas, quadris e joelhos têm articulação própria.
-- Clipes de animação: idle (respiração/balanço suave), happy, dance, eat, sleep e pet.
-- O personagem tem rosto detalhado, olhos em camadas, focinho, bochechas, orelhas, moletom roxo, fones e bambu.
-- Arraste o mouse ou o dedo sobre o panda para girá-lo.
-- Clique no panda para fazer carinho.
-- Os botões alimentar, brincar, carinho e descansar acionam animações correspondentes.
+- O panda agora é formado por camadas vetoriais articuladas no próprio HTML.
+- Há movimento contínuo de respiração, cabeça, braços e piscadas.
+- Alimentar, brincar, fazer carinho e descansar acionam poses próprias.
+- As ações mantêm os indicadores, XP, mensagens, inventário e dados salvos.
+- O service worker busca o HTML atualizado pela rede e mantém cópia offline como alternativa.
 
 PUBLICAÇÃO
-Envie TODOS estes arquivos para a raiz do repositório conectado ao Cloudflare Pages:
-- index.html
-- manifest.webmanifest
-- sw.js
-- panda-icon.svg
-- LEIA-ME.txt
+Envie os arquivos da raiz deste repositório para a raiz do projeto conectado ao Cloudflare Pages. Não há etapa de build; publique por HTTPS.
 
-Instalação:
+INSTALAÇÃO
 - Android/Chrome: menu ⋮ > Instalar app / Adicionar à tela inicial.
 - iPhone/Safari: Compartilhar > Adicionar à Tela de Início.
-- Desktop: ícone Instalar no Chrome/Edge, quando disponível.
+- Desktop: use a opção Instalar do Chrome ou Edge, quando disponível.
 
 IMPORTANTE
-- O motor Three.js é carregado da CDN na primeira visita; é necessária internet para carregar o personagem 3D.
-- O modelo é uma criação procedural articulada em tempo real com hierarquia de ossos e animações por clipes. Não é uma imagem estática, mas também não é um arquivo GLB de estúdio com rig de captura de movimento.
-- Os dados do usuário continuam salvos localmente no navegador. Use Exportar backup para transferi-los entre dispositivos.
-- O conteúdo do TJPB é inicial/editável e deve ser conferido no edital oficial e retificações.
+- O mascote é uma ilustração vetorial 2D animada, não um modelo 3D ou arquivo GLB.
+- Os dados de estudo permanecem no armazenamento local do navegador. Exporte um backup antes de trocar ou limpar o navegador.
+- O conteúdo inicial do TJPB é editável e deve ser conferido com o edital oficial e suas retificações.
