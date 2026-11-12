@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
+  <meta name="description" content="Organize suas matérias, monte seu cronograma e acompanhe sua evolução nos estudos.">
+  <title>Ritmo — Cronograma de estudos</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navegação principal">
+      <a class="brand" href="#inicio" aria-label="Ritmo, início">
+        <span class="brand-mark">r</span><span>ritmo<span class="brand-dot">.</span></span>
+      </a>
+      <div class="side-label">MENU</div>
+      <nav class="nav-list">
+        <button class="nav-item active" data-view="inicio"><span class="nav-icon">⌂</span>Visão geral</button>
+        <button class="nav-item" data-view="cronograma"><span class="nav-icon">▦</span>Cronograma</button>
+        <button class="nav-item" data-view="materias"><span class="nav-icon">▤</span>Matérias</button>
+        <button class="nav-item" data-view="historico"><span class="nav-icon">◷</span>Histórico</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="mini-card">
+          <div class="mini-icon">✦</div>
+          <strong>Um pouco todo dia.</strong>
+          <p>Consistência vale mais que intensidade ocasional.</p>
+        </div>
+        <button class="nav-item" data-action="settings"><span class="nav-icon">⚙</span>Dados e ajustes</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-mark">r</span><strong>ritmo<span class="brand-dot">.</span></strong></div>
+        <div class="topbar-date" id="top-date"></div>
+        <div class="topbar-actions">
+          <button class="icon-button" id="install-button" hidden title="Instalar aplicativo" aria-label="Instalar aplicativo">↓</button>
+          <button class="avatar" title="Perfil">E</button>
+        </div>
+      </header>
+
+      <div class="view active" id="view-inicio">
+        <section class="welcome-row">
+          <div><div class="eyebrow">SEU ESPAÇO DE APRENDIZADO</div><h1 id="greeting">Vamos estudar?</h1><p class="muted">Pequenos avanços, todos os dias. Organize seu ritmo.</p></div>
+          <button class="primary-button" id="quick-add"><span>＋</span> Planejar estudo</button>
+        </section>
+
+        <section class="stats-grid" aria-label="Resumo de desempenho">
+          <article class="stat-card"><div class="stat-head"><span>Estudado hoje</span><span class="stat-symbol purple">◷</span></div><strong id="today-hours">0h 00</strong><small id="today-sessions">Nenhuma sessão concluída</small></article>
+          <article class="stat-card"><div class="stat-head"><span>Esta semana</span><span class="stat-symbol teal">▥</span></div><strong id="week-hours">0h 00</strong><small id="week-goal-label">Meta semanal: 10h</small></article>
+          <article class="stat-card"><div class="stat-head"><span>Sequência atual</span><span class="stat-symbol orange">✦</span></div><strong id="streak-count">0 dias</strong><small>Continue no seu ritmo</small></article>
+        </section>
+
+        <div class="dashboard-grid">
+          <section class="panel today-panel">
+            <div class="panel-heading"><div><div class="eyebrow">PLANO DO DIA</div><h2>Seu dia de hoje</h2></div><button class="text-button" data-go="cronograma">Ver cronograma ↗</button></div>
+            <div id="today-plan" class="plan-list"></div>
+          </section>
+          <section class="panel focus-panel">
+            <div class="panel-heading"><div><div class="eyebrow">MOMENTO DE FOCO</div><h2>Cronômetro</h2></div><span class="live-dot">● Ao vivo</span></div>
+            <p class="muted focus-intro">Escolha uma matéria e comece uma sessão.</p>
+            <label class="field-label" for="timer-subject">Matéria</label>
+            <select id="timer-subject" class="field-control"><option value="">Selecione uma matéria</option></select>
+            <div class="timer-display" id="timer-display">25:00</div>
+            <div class="timer-subline" id="timer-subline">Ciclo de foco · 25 minutos</div>
+            <div class="timer-controls"><button class="primary-button timer-main" id="timer-toggle">▶ Iniciar foco</button><button class="secondary-button square-button" id="timer-reset" title="Reiniciar">↺</button></div>
+            <div class="timer-presets"><button class="preset active" data-minutes="25">25 min</button><button class="preset" data-minutes="50">50 min</button><button class="preset" data-minutes="15">15 min</button></div>
+          </section>
+        </div>
+
+        <section class="panel week-panel">
+          <div class="panel-heading"><div><div class="eyebrow">VISÃO DA SEMANA</div><h2>Seu progresso</h2></div><div class="week-total" id="week-progress-text">0h de 10h</div></div>
+          <div class="week-chart" id="week-chart"></div>
+        </section>
+      </div>
+
+      <div class="view" id="view-cronograma">
+        <section class="page-heading"><div><div class="eyebrow">PLANEJAMENTO</div><h1>Cronograma</h1><p class="muted">Distribua seus estudos ao longo da semana.</p></div><button class="primary-button" id="add-schedule">＋ Adicionar estudo</button></section>
+        <section class="panel schedule-panel"><div class="week-switch"><button class="secondary-button" id="prev-week">‹</button><strong id="week-range">Esta semana</strong><button class="secondary-button" id="next-week">›</button><button class="text-button" id="current-week">Hoje</button></div><div id="schedule-grid" class="schedule-grid"></div></section>
+      </div>
+
+      <div class="view" id="view-materias">
+        <section class="page-heading"><div><div class="eyebrow">ORGANIZAÇÃO</div><h1>Matérias</h1><p class="muted">Cadastre as disciplinas e acompanhe o tempo dedicado.</p></div><button class="primary-button" id="add-subject">＋ Nova matéria</button></section>
+        <section class="subject-summary" id="subject-summary"></section>
+        <section class="subject-grid" id="subject-grid"></section>
+      </div>
+
+      <div class="view" id="view-historico">
+        <section class="page-heading"><div><div class="eyebrow">SUA EVOLUÇÃO</div><h1>Histórico</h1><p class="muted">Tudo o que você já estudou, reunido em um só lugar.</p></div><div class="heading-actions"><button class="secondary-button" id="register-study">＋ Registrar estudo</button><button class="secondary-button" id="export-history">↓ Exportar dados</button></div></section>
+        <section class="panel history-panel"><div class="panel-heading"><h2>Sessões concluídas</h2><span class="muted" id="history-count">0 registros</span></div><div id="history-list" class="history-list"></div></section>
+      </div>
+
+      <footer class="app-footer"><span>ritmo<span class="brand-dot">.</span> · Seu estudo, no seu tempo.</span><span>Seus dados ficam salvos neste aparelho.</span></footer>
+    </main>
+  </div>
+
+  <nav class="bottom-nav" aria-label="Navegação móvel">
+    <button class="bottom-item active" data-view="inicio"><span>⌂</span>Início</button>
+    <button class="bottom-item" data-view="cronograma"><span>▦</span>Plano</button>
+    <button class="bottom-item" data-view="materias"><span>▤</span>Matérias</button>
+    <button class="bottom-item" data-view="historico"><span>◷</span>Histórico</button>
+  </nav>
+
+  <div class="modal-backdrop" id="modal-backdrop" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-head"><div><div class="eyebrow" id="modal-eyebrow">ORGANIZAÇÃO</div><h2 id="modal-title">Adicionar estudo</h2></div><button class="close-button" id="modal-close" aria-label="Fechar">×</button></div>
+      <form id="modal-form"><div id="modal-fields"></div><div class="modal-actions"><button type="button" class="secondary-button" id="modal-cancel">Cancelar</button><button type="submit" class="primary-button" id="modal-submit">Salvar</button></div></form>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
