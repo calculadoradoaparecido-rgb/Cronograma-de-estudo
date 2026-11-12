@@ -1,0 +1,7 @@
+TRILHA TJPB — PANDA DOS ESTUDOS
+
+Abra index.html para usar localmente. Para Cloudflare Pages, publique o conteúdo desta pasta no novo repositório. Build command vazio; diretório de saída raiz (/ ou .).
+
+O app salva sessões e tópicos marcados no localStorage deste navegador. Os dados não sincronizam entre dispositivos.
+
+Baseado no Edital TJPB nº 01/2026, retificado, Anexo I. Página oficial: https://conhecimento.fgv.br/concursos/tjpb26. Confira retificações oficiais. Cronograma semanal é uma proposta de organização, não previsão oficial.

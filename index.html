@@ -1,118 +1,49 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#111827">
-  <meta name="description" content="Organize suas matérias, monte seu cronograma e acompanhe sua evolução nos estudos.">
-  <title>Ritmo — Cronograma de estudos</title>
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="icons/icon-192.png" type="image/png">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div class="app-shell">
-    <aside class="sidebar" aria-label="Navegação principal">
-      <a class="brand" href="#inicio" aria-label="Ritmo, início">
-        <span class="brand-mark">r</span><span>ritmo<span class="brand-dot">.</span></span>
-      </a>
-      <div class="side-label">MENU</div>
-      <nav class="nav-list">
-        <button class="nav-item active" data-view="inicio"><span class="nav-icon">⌂</span>Visão geral</button>
-        <button class="nav-item" data-view="cronograma"><span class="nav-icon">▦</span>Cronograma</button>
-        <button class="nav-item" data-view="materias"><span class="nav-icon">▤</span>Matérias</button>
-        <button class="nav-item" data-view="historico"><span class="nav-icon">◷</span>Histórico</button>
-      </nav>
-      <div class="sidebar-bottom">
-        <div class="mini-card">
-          <div class="mini-icon">✦</div>
-          <strong>Um pouco todo dia.</strong>
-          <p>Consistência vale mais que intensidade ocasional.</p>
-        </div>
-        <button class="nav-item" data-action="settings"><span class="nav-icon">⚙</span>Dados e ajustes</button>
-      </div>
-    </aside>
-
-    <main class="main-content">
-      <header class="topbar">
-        <div class="mobile-brand"><span class="brand-mark">r</span><strong>ritmo<span class="brand-dot">.</span></strong></div>
-        <div class="topbar-date" id="top-date"></div>
-        <div class="topbar-actions">
-          <button class="icon-button" id="install-button" hidden title="Instalar aplicativo" aria-label="Instalar aplicativo">↓</button>
-          <button class="avatar" title="Perfil">E</button>
-        </div>
-      </header>
-
-      <div class="view active" id="view-inicio">
-        <section class="welcome-row">
-          <div><div class="eyebrow">SEU ESPAÇO DE APRENDIZADO</div><h1 id="greeting">Vamos estudar?</h1><p class="muted">Pequenos avanços, todos os dias. Organize seu ritmo.</p></div>
-          <button class="primary-button" id="quick-add"><span>＋</span> Planejar estudo</button>
-        </section>
-
-        <section class="stats-grid" aria-label="Resumo de desempenho">
-          <article class="stat-card"><div class="stat-head"><span>Estudado hoje</span><span class="stat-symbol purple">◷</span></div><strong id="today-hours">0h 00</strong><small id="today-sessions">Nenhuma sessão concluída</small></article>
-          <article class="stat-card"><div class="stat-head"><span>Esta semana</span><span class="stat-symbol teal">▥</span></div><strong id="week-hours">0h 00</strong><small id="week-goal-label">Meta semanal: 10h</small></article>
-          <article class="stat-card"><div class="stat-head"><span>Sequência atual</span><span class="stat-symbol orange">✦</span></div><strong id="streak-count">0 dias</strong><small>Continue no seu ritmo</small></article>
-        </section>
-
-        <div class="dashboard-grid">
-          <section class="panel today-panel">
-            <div class="panel-heading"><div><div class="eyebrow">PLANO DO DIA</div><h2>Seu dia de hoje</h2></div><button class="text-button" data-go="cronograma">Ver cronograma ↗</button></div>
-            <div id="today-plan" class="plan-list"></div>
-          </section>
-          <section class="panel focus-panel">
-            <div class="panel-heading"><div><div class="eyebrow">MOMENTO DE FOCO</div><h2>Cronômetro</h2></div><span class="live-dot">● Ao vivo</span></div>
-            <p class="muted focus-intro">Escolha uma matéria e comece uma sessão.</p>
-            <label class="field-label" for="timer-subject">Matéria</label>
-            <select id="timer-subject" class="field-control"><option value="">Selecione uma matéria</option></select>
-            <div class="timer-display" id="timer-display">25:00</div>
-            <div class="timer-subline" id="timer-subline">Ciclo de foco · 25 minutos</div>
-            <div class="timer-controls"><button class="primary-button timer-main" id="timer-toggle">▶ Iniciar foco</button><button class="secondary-button square-button" id="timer-reset" title="Reiniciar">↺</button></div>
-            <div class="timer-presets"><button class="preset active" data-minutes="25">25 min</button><button class="preset" data-minutes="50">50 min</button><button class="preset" data-minutes="15">15 min</button></div>
-          </section>
-        </div>
-
-        <section class="panel week-panel">
-          <div class="panel-heading"><div><div class="eyebrow">VISÃO DA SEMANA</div><h2>Seu progresso</h2></div><div class="week-total" id="week-progress-text">0h de 10h</div></div>
-          <div class="week-chart" id="week-chart"></div>
-        </section>
-      </div>
-
-      <div class="view" id="view-cronograma">
-        <section class="page-heading"><div><div class="eyebrow">PLANEJAMENTO</div><h1>Cronograma</h1><p class="muted">Distribua seus estudos ao longo da semana.</p></div><button class="primary-button" id="add-schedule">＋ Adicionar estudo</button></section>
-        <section class="panel schedule-panel"><div class="week-switch"><button class="secondary-button" id="prev-week">‹</button><strong id="week-range">Esta semana</strong><button class="secondary-button" id="next-week">›</button><button class="text-button" id="current-week">Hoje</button></div><div id="schedule-grid" class="schedule-grid"></div></section>
-      </div>
-
-      <div class="view" id="view-materias">
-        <section class="page-heading"><div><div class="eyebrow">ORGANIZAÇÃO</div><h1>Matérias</h1><p class="muted">Cadastre as disciplinas e acompanhe o tempo dedicado.</p></div><button class="primary-button" id="add-subject">＋ Nova matéria</button></section>
-        <section class="subject-summary" id="subject-summary"></section>
-        <section class="subject-grid" id="subject-grid"></section>
-      </div>
-
-      <div class="view" id="view-historico">
-        <section class="page-heading"><div><div class="eyebrow">SUA EVOLUÇÃO</div><h1>Histórico</h1><p class="muted">Tudo o que você já estudou, reunido em um só lugar.</p></div><div class="heading-actions"><button class="secondary-button" id="register-study">＋ Registrar estudo</button><button class="secondary-button" id="export-history">↓ Exportar dados</button></div></section>
-        <section class="panel history-panel"><div class="panel-heading"><h2>Sessões concluídas</h2><span class="muted" id="history-count">0 registros</span></div><div id="history-list" class="history-list"></div></section>
-      </div>
-
-      <footer class="app-footer"><span>ritmo<span class="brand-dot">.</span> · Seu estudo, no seu tempo.</span><span>Seus dados ficam salvos neste aparelho.</span></footer>
-    </main>
-  </div>
-
-  <nav class="bottom-nav" aria-label="Navegação móvel">
-    <button class="bottom-item active" data-view="inicio"><span>⌂</span>Início</button>
-    <button class="bottom-item" data-view="cronograma"><span>▦</span>Plano</button>
-    <button class="bottom-item" data-view="materias"><span>▤</span>Matérias</button>
-    <button class="bottom-item" data-view="historico"><span>◷</span>Histórico</button>
-  </nav>
-
-  <div class="modal-backdrop" id="modal-backdrop" hidden>
-    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <div class="modal-head"><div><div class="eyebrow" id="modal-eyebrow">ORGANIZAÇÃO</div><h2 id="modal-title">Adicionar estudo</h2></div><button class="close-button" id="modal-close" aria-label="Fechar">×</button></div>
-      <form id="modal-form"><div id="modal-fields"></div><div class="modal-actions"><button type="button" class="secondary-button" id="modal-cancel">Cancelar</button><button type="submit" class="primary-button" id="modal-submit">Salvar</button></div></form>
-    </section>
-  </div>
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <script src="app.js"></script>
-</body>
-</html>
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Trilha TJPB — Panda dos Estudos</title>
+<style>
+:root{--bg:#fbf7f1;--card:#fff;--ink:#342d29;--muted:#796f68;--line:#eee2d8;--green:#8fba9a;--pink:#f2c4c9}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px system-ui}header{background:#f1e5d9;padding:22px max(16px,calc((100vw - 1050px)/2))}h1{margin:0;font-size:28px}header p{margin:5px 0;color:var(--muted)}main{max-width:1050px;margin:20px auto;padding:0 14px 50px}nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}button{border:0;border-radius:12px;padding:11px 15px;background:#342d29;color:#fff;font-weight:650;cursor:pointer}.tab{background:white;color:#342d29;border:1px solid var(--line)}.tab.on{background:#342d29;color:white}.panel{display:none}.panel.on{display:block}.card{background:white;border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 8px 24px #4a322010}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.stats{display:flex;gap:9px}.stat{flex:1;background:#faf4ed;padding:12px;border-radius:12px}.stat b{display:block;font-size:22px}.muted,small{color:var(--muted)}.pandaRow{display:flex;align-items:center;gap:18px}.panda{font-size:105px;filter:drop-shadow(0 6px 3px #0001);transform:scale(var(--scale,1));transition:.3s}.meter{height:12px;background:#eee;border-radius:20px;overflow:hidden}.meter i{display:block;height:100%;background:var(--green);width:50%}label{display:block;margin:8px 0 3px;color:var(--muted);font-size:13px}input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;font:inherit}.row{display:flex;gap:10px}.row>div{flex:1}.day{border:1px solid var(--line);padding:12px;border-radius:13px;margin:9px 0}.task{padding:9px 0;border-bottom:1px solid var(--line)}.task:last-child{border:0}.topic{display:flex;gap:8px;align-items:flex-start}.topic input{width:auto;margin-top:4px}details{border-bottom:1px solid var(--line);padding:12px 0}summary{font-weight:700;cursor:pointer}.tag{display:inline-block;background:#f4eee7;border-radius:20px;padding:3px 9px;font-size:12px;margin:2px}@media(max-width:700px){.grid{grid-template-columns:1fr}.pandaRow{align-items:flex-start}.stats{gap:5px}.stat{padding:8px}}
+</style>
+<header><h1>🐼 Trilha TJPB — Panda dos Estudos</h1><p>Analista Judiciário · Área Judiciária (Direito) · FGV · Prova: 24/01/2027</p></header>
+<main><nav><button class="tab on" data-id="home">Meu panda</button><button class="tab" data-id="plan">Cronograma</button><button class="tab" data-id="syllabus">Edital verticalizado</button><button class="tab" data-id="log">Registrar estudo</button></nav>
+<section id="home" class="panel on"><div class="grid"><div class="card"><h2>Cuide do Bambu 🐼</h2><div class="pandaRow"><div id="panda" class="panda">🐼</div><div style="flex:1"><h3 id="mood">Panda animado!</h3><p id="message" class="muted">Cada sessão rende bambu.</p><div class="meter"><i id="bar"></i></div><b><span id="weight">50</span>/100</b> <small>nutrição</small></div></div></div>
+<div class="card"><h2>Seu progresso</h2><div class="stats"><div class="stat"><b id="hours">0h</b><small>estudadas</small></div><div class="stat"><b id="count">0</b><small>sessões</small></div><div class="stat"><b id="streak">0</b><small>dias seguidos</small></div></div><p id="countdown" class="muted"></p></div></div><div class="card"><h2>Plano de hoje</h2><div id="today"></div><button onclick="tab('log')">Registrar estudo</button></div><div class="card"><b>Regras do panda:</b> cada 30 minutos registrados valem uma porção de bambu (até 3 por dia). Dias sem estudo reduzem um pouco a nutrição; retomar o estudo recupera o panda. Sem punição exagerada: consistência vale mais que perfeição.</div></section>
+<section id="plan" class="panel"><div class="card"><h2>Cronograma até a prova</h2><p class="muted">Plano-base de 10 semanas, 6 dias por semana, sugerindo 2 blocos de 50 minutos por dia. A prova tem 60 questões: Português 10, Ética 5, Informática/LGPD 5 e específicos 40; há estudo de caso discursivo de até 30 linhas.</p><div id="weeks"></div></div></section>
+<section id="syllabus" class="panel"><div class="card"><h2>Conteúdo do edital</h2><p class="muted">Marque cada tópico concluído. O progresso fica salvo neste navegador.</p><div id="topics"></div></div></section>
+<section id="log" class="panel"><div class="card"><h2>Registrar sessão</h2><label>Disciplina</label><select id="subject"></select><div class="row"><div><label>Data</label><input id="date" type="date"></div><div><label>Minutos</label><input id="minutes" type="number" min="1" value="50"></div></div><div class="row"><div><label>Questões feitas</label><input id="questions" type="number" min="0" value="20"></div><div><label>Acertos</label><input id="correct" type="number" min="0" value="14"></div></div><label>Observações (opcional)</label><textarea id="notes" rows="2"></textarea><p><button onclick="save()">Salvar e alimentar o panda 🎋</button></p><p id="saved" class="muted"></p></div><div class="card"><h2>Histórico recente</h2><div id="history"></div></div></section>
+<p class="muted" style="text-align:center;font-size:12px">Dados salvos localmente neste navegador. Para trocar de aparelho, será necessário exportar ou recriar os registros. Aplicativo independente; confira retificações no site oficial da FGV.</p></main>
+<script>
+const subjects=[
+['Língua Portuguesa',['Interpretação e compreensão; tipos e gêneros textuais','Ortografia oficial e coesão textual','Referenciação, conectores, tempos e modos verbais','Classes de palavras; coordenação e subordinação','Pontuação, concordância, regência, crase e colocação pronominal','Reescrita, significação e substituição de palavras','Redação oficial']],
+['Ética e Gestão no Serviço Público',['Princípios constitucionais, moralidade e interesse público','Probidade, integridade e conflito de interesses','Deveres, vedações e responsabilidade do servidor','Processo administrativo disciplinar e sanções','Improbidade e responsabilização de pessoas jurídicas','Gestão de pessoas, liderança, equipes e conflitos','Integridade no Judiciário e Código de Ética do TJPB','Lei 8.429/1992; Lei 12.846/2013; Resoluções TJPB 20/2025 e 21/2025; CNJ 230/2021, 351/2020 e 400/2021']],
+['Informática e Proteção de Dados',['Hardware, software, sistemas e aplicativos','Redes e internet','Segurança da informação: princípios, ameaças e boas práticas','LGPD: conceitos, princípios, direitos e bases legais','Agentes de tratamento e responsabilidades','Proteção de dados no Judiciário: políticas, governança e segurança']],
+['Direito Constitucional',['Constituição: conceito, classificações e princípios fundamentais','Direitos e garantias individuais, coletivos e sociais','Nacionalidade e direitos políticos','Organização do Estado, federação e competências','Poder Legislativo: processo legislativo e fiscalização','Poder Executivo: atribuições e responsabilidades','Poder Judiciário, CNJ e garantias da magistratura','MP, Advocacia Pública e Defensoria']],
+['Direito Administrativo',['Administração Pública, princípios, organização, direta e indireta','Regime jurídico, paraestatais e terceiro setor','Atos administrativos: requisitos, atributos e invalidação','Poderes administrativos, polícia e regulamentar','Discricionariedade e controle','Agentes públicos, direitos, deveres e processo disciplinar','Licitações, contratos, concessões, permissões e parcerias','Serviços públicos, regulação e intervenção na propriedade','Controle interno, externo, judicial e social','Processo administrativo, informação e controle judicial','Responsabilidade do Estado, improbidade e pessoas jurídicas','Bens públicos e políticas urbanas','Leis 8.429/1992, 9.784/1999 e 14.133/2021']],
+['Direito Civil e do Consumidor',['LINDB: vigência, aplicação, interpretação e conflitos','Pessoas naturais e jurídicas; bens e desconsideração','Fatos e negócios jurídicos; validade e invalidade','Obrigações, transmissão, extinção e inadimplemento','Contratos: princípios, formação, efeitos e extinção','Responsabilidade civil subjetiva e objetiva','Direitos reais, posse, propriedade, usucapião e bem de família','Família: casamento, união, regime de bens, alimentos e curatela','Sucessões: legítima, testamentária e vocação hereditária','Dados, contratos eletrônicos e regularização fundiária','CDC: direitos, fato/vício, práticas, cláusulas e superendividamento','LINDB, CDC, Inquilinato, Bem de Família, Marco Civil e LGPD']],
+['Direito Processual Civil',['CPC: princípios, aplicação e cooperação judiciária','Jurisdição, ação e competência','Petição inicial, resposta do réu e estabilização','Saneamento, audiências, mediação e conciliação','Provas, ônus, prova ilícita/tecnológica e poderes do juiz','Tutelas provisórias: urgência, evidência e cautelar','Sentença, coisa julgada, remessa necessária e preclusão','Cumprimento de sentença e execução; Fazenda e alimentos','Medidas executivas típicas e atípicas','Recursos, processos nos tribunais e ação rescisória','Precedentes, IRDR, IAC e repetitivos','Processo coletivo, ações coletivas e mandado de segurança','Partes, litisconsórcio, intervenção de terceiros e amicus curiae','Procedimentos especiais, família, juizados e arbitragem','Leis 7.347/1985, 8.078/1990 e 4.717/1965']],
+['Direito Penal',['Princípios penais; lei no tempo e espaço','Teoria do crime, dolo, culpa e erro','Iter criminis e concurso de pessoas','Penas, dosimetria, regimes e medidas de segurança','Suspensão condicional, livramento e extinção da punibilidade','Crimes contra pessoa, patrimônio, dignidade sexual e fé pública','Crimes contra Administração, incolumidade, paz pública e família','Legislação especial: CP, LEP, Drogas, Maria da Penha, ECA, Idoso, PCD, Hediondos, Tortura, Abuso de Autoridade, ORCRIM, Lavagem, Interceptação, Desarmamento e demais leis do edital']],
+['Direito Processual Penal',['Fundamentos, fontes, princípios e lei processual no tempo/espaço','Sistemas processuais, garantismo e sujeitos','Inquérito, TCO, investigação do MP e direitos do investigado','ANPP e limites constitucionais da investigação','Ação penal, denúncia, queixa, absolvição sumária, emendatio e mutatio','Jurisdição, competência, conexão, continência e foro','Procedimentos comum/especiais, Júri e instrução','Atos processuais, citação, intimação e meios eletrônicos','Provas, cadeia de custódia, prova digital e interceptação','Prisões, cautelares, liberdade e audiência de custódia','Nulidades, recursos, habeas corpus e revisão criminal','Execução penal: regimes, progressão, remição e benefícios','Justiça restaurativa, vítimas, violência doméstica e vulneráveis','Legislação processual penal especial indicada no edital']],
+['Direitos Humanos e Tutela Coletiva',['Teoria geral, fontes, princípios, dimensões e obrigações estatais','Interpretação e conflitos entre direitos','Sistemas ONU/OEA, responsabilidade internacional e reparação','Tratados, hierarquia e controle de convencionalidade','Garantias, acesso à justiça, vítimas e testemunhas','Igualdade, não discriminação, racismo e grupos vulneráveis','Sistema prisional, segurança pública e controle judicial','Direitos socioambientais, povos tradicionais e violência de gênero','Ação civil pública, políticas públicas e violações estruturais']]
+];
+const weekly=[
+['Português + Constitucional','Processo Civil + Administrativo','Processo Penal + Penal','Civil/Consumidor + Ética','Processo Civil + Português + Informática','Revisão + simulado + estudo de caso'],
+['Português + Constitucional','Processo Civil + Administrativo','Processo Penal + Penal','Civil/Consumidor + Ética','Processo Civil + Português + Informática','Revisão + questões FGV + estudo de caso'],
+['Português + Constitucional','Processo Civil + Administrativo','Processo Penal + Penal','Civil/Consumidor + Direitos Humanos','Penal + CPP + Ética','Revisão + simulado + estudo de caso'],
+['Português + Constitucional','Processo Civil + Administrativo','Processo Penal + Penal','Civil/Consumidor + Ética','CPC + Direitos Humanos + Informática','Revisão + questões FGV + estudo de caso'],
+['Português + Constitucional','Processo Civil + Administrativo','Processo Penal + Penal','Civil/Consumidor + Direitos Humanos','CPC + Português + Informática','Revisão + simulado + estudo de caso'],
+['Português + Constitucional','Processo Civil + Administrativo','Processo Penal + Penal','Civil/Consumidor + Ética','CPC + CPP + Direitos Humanos','Revisão + simulado + estudo de caso'],
+['Português + Constitucional','Processo Civil + Administrativo','Processo Penal + Penal','Civil/Consumidor + Direitos Humanos','CPC + Penal + Ética','Revisão + simulado + estudo de caso'],
+['Português + Constitucional','Processo Civil + Administrativo','Processo Penal + Penal','Civil/Consumidor + Ética','CPC + CPP + Informática','Revisão + simulado + estudo de caso'],
+['Revisão Português + Constitucional','Revisão CPC + Administrativo','Revisão CPP + Penal','Revisão Civil + Direitos Humanos','Questões FGV: pontos fracos','Simulado + discursiva'],
+['Revisão leve de Português + Ética','Revisão CPC + Constitucional','Revisão CPP + Penal','Revisão Civil + Administrativo','Revisão de erros + lei seca','Revisão curta e descanso']];
+const days=['Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];let state=JSON.parse(localStorage.getItem('pandaState')||'{"sessions":[],"weight":50,"lastDay":""}');let marks=JSON.parse(localStorage.getItem('pandaMarks')||'{}');
+function tab(id){document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('on',x.id===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.id===id))}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>tab(b.dataset.id));
+function saveState(){localStorage.setItem('pandaState',JSON.stringify(state));render()}
+function render(){let mins=state.sessions.reduce((a,s)=>a+s.min,0),dates=[...new Set(state.sessions.map(s=>s.date))];document.getElementById('hours').textContent=(mins/60).toFixed(1)+'h';document.getElementById('count').textContent=state.sessions.length;let streak=0,d=new Date();while(dates.includes(d.toISOString().slice(0,10))){streak++;d.setDate(d.getDate()-1)}document.getElementById('streak').textContent=streak;
+let w=Math.max(8,Math.min(100,state.weight));document.getElementById('weight').textContent=w;document.getElementById('bar').style.width=w+'%';document.getElementById('panda').style.setProperty('--scale',.82+w/500);document.getElementById('mood').textContent=w>80?'Panda barrigudinho e feliz!':w>50?'Panda bem alimentado!':'Panda esperando bambu…';document.getElementById('message').textContent=w>65?'Mandou bem! Continue com constância.':'Uma sessão curta já ajuda a recuperar o ritmo.';
+let left=Math.ceil((new Date('2027-01-24T12:00:00')-new Date(new Date().toISOString().slice(0,10)+'T12:00:00'))/86400000);document.getElementById('countdown').textContent=`Faltam ${left} dias para a prova.`;let di=(new Date().getDay()+6)%7,wi=Math.max(0,Math.min(9,Math.floor((new Date()-new Date('2026-11-12'))/604800000)));document.getElementById('today').innerHTML=`<b>${days[Math.min(5,di)]}</b><p>${weekly[wi][Math.min(5,di)]}</p><span class="tag">2 blocos de 50 min</span><span class="tag">questões FGV</span>`;
+document.getElementById('weeks').innerHTML=weekly.map((a,i)=>`<div class="day"><b>Semana ${i+1}${i===9?' · reta final':''}</b>${a.map((x,j)=>`<div class="task"><b>${days[j]}:</b> ${x}</div>`).join('')}<small>Meta sugerida: 10–12 horas na semana; incluir pausas e adaptar à rotina.</small></div>`).join('');
+document.getElementById('history').innerHTML=state.sessions.slice().reverse().slice(0,10).map(s=>`<div class="task"><b>${s.sub}</b><br><small>${s.date} · ${s.min} min · ${s.q} questões · ${s.q?Math.round(s.c/s.q*100):0}% acertos</small></div>`).join('')||'<p class="muted">Ainda sem sessões.</p>'}
+function renderTopics(){document.getElementById('topics').innerHTML=subjects.map(([s,arr],i)=>`<details><summary>${s} · ${arr.length} tópicos</summary>${arr.map((t,j)=>{let k=i+'-'+j;return `<label class="topic"><input type="checkbox" ${marks[k]?'checked':''} onchange="marks['${k}']=this.checked;localStorage.setItem('pandaMarks',JSON.stringify(marks))"><span>${t}</span></label>`}).join('')}</details>`).join('')}
+function save(){let min=+minutes.value,q=+questions.value,c=+correct.value;if(min<1||q<0||c<0||c>q){alert('Confira os valores.');return}let date=document.getElementById('date').value||new Date().toISOString().slice(0,10);state.sessions.push({sub:subject.value,date,min,q,c,notes:notes.value});state.weight=Math.min(100,state.weight+Math.max(1,Math.min(3,Math.floor(min/30)))*4);state.lastDay=date;localStorage.setItem('pandaState',JSON.stringify(state));saved.textContent='Sessão salva! Bambu entregue ao panda 🎋';notes.value='';render()}
+document.getElementById('subject').innerHTML=subjects.map(s=>`<option>${s[0]}</option>`).join('');document.getElementById('date').value=new Date().toISOString().slice(0,10);renderTopics();render();
+</script></html>
