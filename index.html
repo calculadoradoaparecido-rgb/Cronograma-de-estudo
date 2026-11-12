@@ -7,10 +7,10 @@
 :root{--bg:#f7f4ef;--card:#fff;--ink:#302b28;--muted:#756d66;--line:#e9dfd5;--green:#83b99a;--pink:#f2c7ce;--gold:#e9bd65}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px system-ui}header{background:linear-gradient(120deg,#f0e1d4,#e8eee4);padding:22px max(16px,calc((100vw - 1120px)/2))}h1{margin:0;font-size:27px}header p{margin:5px 0;color:var(--muted)}main{max-width:1120px;margin:20px auto;padding:0 14px 50px}
 nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}button{border:0;border-radius:12px;padding:10px 14px;background:#342d29;color:white;font-weight:650;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.tab{background:white;color:#342d29;border:1px solid var(--line)}.tab.on{background:#342d29;color:white}.panel{display:none}.panel.on{display:block}.card{background:white;border:1px solid var(--line);border-radius:18px;padding:17px;margin-bottom:14px;box-shadow:0 8px 24px #4a322010}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.stats{display:flex;gap:8px}.stat{flex:1;background:#faf4ed;padding:11px;border-radius:12px}.stat b{display:block;font-size:21px}.muted,small{color:var(--muted)}.pandaRow{display:flex;align-items:center;gap:18px}.panda{font-size:112px;line-height:1;filter:drop-shadow(0 7px 4px #0001);transform:scale(var(--scale,1));transition:transform .35s,filter .35s;user-select:none}.panda.bounce{animation:bounce .55s ease}@keyframes bounce{0%,100%{transform:scale(var(--scale,1)) translateY(0)}45%{transform:scale(var(--scale,1)) translateY(-17px) rotate(-5deg)}}.meter{height:12px;background:#eee;border-radius:20px;overflow:hidden}.meter i{display:block;height:100%;background:var(--green);width:50%;transition:width .3s}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.soft{background:#f3ece5;color:#423a34}.green{background:#4d8b68}.pink{background:#bd7884}.gold{background:#a97927}label{display:block;margin:8px 0 3px;color:var(--muted);font-size:13px}input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;font:inherit;background:white}.row{display:flex;gap:10px}.row>div{flex:1;min-width:0}.day{border:1px solid var(--line);padding:12px;border-radius:13px;margin:9px 0}.task{padding:9px 0;border-bottom:1px solid var(--line)}.task:last-child{border:0}.topic{display:flex;gap:8px;align-items:flex-start}.topic input{width:auto;margin-top:4px}details{border-bottom:1px solid var(--line);padding:12px 0}summary{font-weight:700;cursor:pointer}.tag{display:inline-block;background:#f4eee7;border-radius:20px;padding:3px 9px;font-size:12px;margin:2px}.contest{border:1px solid var(--line);border-radius:14px;padding:13px;margin:9px 0}.contest.active{border:2px solid var(--green);background:#f7fbf7}.pill{display:inline-block;padding:4px 9px;border-radius:20px;background:#eaf3ec;font-size:12px}.bubble{background:#f8f1e9;border-radius:14px;padding:11px;margin-top:10px;min-height:45px}.progress{height:8px;background:#eee;border-radius:20px;overflow:hidden}.progress i{display:block;height:100%;background:var(--green)}.danger{background:#a94c4c}.empty{padding:18px;text-align:center;color:var(--muted)}
-.pandaStage{position:relative;width:150px;height:150px;display:grid;place-items:center;flex:0 0 150px;background:radial-gradient(circle at 50% 45%,#fff8 0 42%,#d9c8b833 65%,transparent 70%);border-radius:50%;overflow:visible}
+.pandaStage{position:relative;width:250px;height:230px;display:grid;place-items:center;flex:0 0 250px;background:radial-gradient(circle at 50% 55%,#fff8 0 35%,#d9c8b833 65%,transparent 70%);border-radius:50%;overflow:visible}.panda3d{width:100%;height:100%;display:block;outline:none;cursor:grab}.panda3d:active{cursor:grabbing}.pandaFallback{display:none}
 .pandaStage .panda{font-size:104px;z-index:1;transform-origin:50% 85%}
 .pandaAccessory{position:absolute;z-index:2;font-size:34px;line-height:1;filter:drop-shadow(0 3px 2px #0003);pointer-events:none}
-.acc-head{top:0;left:54px}.acc-face{top:52px;left:57px;font-size:27px}.acc-neck{bottom:6px;left:58px;font-size:27px}
+.acc-head{top:22px;left:105px}.acc-face{top:93px;left:104px;font-size:27px}.acc-neck{bottom:25px;left:106px;font-size:27px}
 .pandaStage.dance{animation:pandaDance .65s ease}.pandaStage.sleep .panda{filter:grayscale(.35);animation:sleepy 2s ease-in-out infinite}
 @keyframes pandaDance{0%,100%{transform:rotate(0) translateY(0)}25%{transform:rotate(-12deg) translateY(-9px)}75%{transform:rotate(12deg) translateY(-9px)}}
 @keyframes sleepy{50%{transform:translateY(5px) scale(.97)}}
@@ -33,7 +33,7 @@ nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}button{border:0;borde
 </nav>
 <section id="home" class="panel on">
 <div class="grid">
-<div class="card"><h2>Seu companheiro</h2><div class="pandaRow"><div id="pandaStage" class="pandaStage"><div id="panda" class="panda">🐼</div><span id="headAcc" class="pandaAccessory acc-head"></span><span id="faceAcc" class="pandaAccessory acc-face"></span><span id="neckAcc" class="pandaAccessory acc-neck"></span></div><div style="flex:1"><h3 id="mood">Panda animado!</h3><p id="message" class="muted">Vamos estudar juntos?</p><div class="meter"><i id="bar"></i></div><b><span id="weight">50</span>/100</b> <small>bem-estar</small><p><span class="pill" id="level">Nível 1 · Filhote</span></p></div></div><div class="bubble" id="pandaTalk">Oi! Escolha um concurso e vamos nessa! 🎋</div>
+<div class="card"><h2>Seu companheiro</h2><div class="pandaRow"><div id="pandaStage" class="pandaStage"><canvas id="panda3d" class="panda3d" aria-label="Panda 3D interativo"></canvas><div id="panda" class="panda pandaFallback">🐼</div><span id="headAcc" class="pandaAccessory acc-head"></span><span id="faceAcc" class="pandaAccessory acc-face"></span><span id="neckAcc" class="pandaAccessory acc-neck"></span></div><div style="flex:1"><h3 id="mood">Panda animado!</h3><p id="message" class="muted">Vamos estudar juntos?</p><div class="meter"><i id="bar"></i></div><b><span id="weight">50</span>/100</b> <small>bem-estar</small><p><span class="pill" id="level">Nível 1 · Filhote</span></p></div></div><div class="bubble" id="pandaTalk">Oi! Escolha um concurso e vamos nessa! 🎋</div>
 <div class="actions"><button class="green" onclick="pandaAction('feed')">🎋 Dar bambu</button><button class="pink" onclick="pandaAction('play')">⚽ Brincar</button><button class="soft" onclick="pandaAction('pet')">💗 Fazer carinho</button><button class="gold" onclick="pandaAction('rest')">💤 Descansar</button></div>
 <small>As interações gastam ou recuperam energia. Estudar é a principal forma de evoluir!</small></div>
 <div class="card"><h2>Minha jornada</h2><p><b id="activeName">TJPB — Analista Judiciário</b></p><div class="stats"><div class="stat"><b id="hours">0h</b><small>horas</small></div><div class="stat"><b id="count">0</b><small>sessões</small></div><div class="stat"><b id="streak">0</b><small>dias seguidos</small></div></div><p id="countdown" class="muted"></p><p class="muted">Progresso do concurso ativo</p><div class="progress"><i id="contestProgress" style="width:0%"></i></div><small id="progressLabel">0% do edital marcado</small></div></div>
@@ -95,6 +95,87 @@ document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>tab(b.dataset.id));
 function totalSessions(){return data.contests.flatMap(c=>c.sessions||[])}
 function allMinutes(){return totalSessions().reduce((a,s)=>a+(+s.min||0),0)}
 function contestProgress(c){let ts=c.topics||[];return ts.length?Math.round(ts.filter(t=>t.done).length/ts.length*100):0}
+
+// Mascote 3D procedural: geometria criada no navegador com Three.js.
+let panda3d = {ready:false, scene:null, camera:null, renderer:null, root:null, parts:{}, action:'idle', targetRotation:0, pointerDown:false, lastX:0};
+function initPanda3D(){
+ const canvas=document.getElementById('panda3d');
+ if(!canvas || panda3d.ready) return;
+ const boot=()=>{
+  if(!window.THREE) return;
+  const T=window.THREE;
+  const scene=new T.Scene(); scene.background=null;
+  const camera=new T.PerspectiveCamera(32,1,0.1,100); camera.position.set(0,1.45,6.9); camera.lookAt(0,1.15,0);
+  const renderer=new T.WebGLRenderer({canvas,alpha:true,antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  renderer.shadowMap.enabled=true; renderer.shadowMap.type=T.PCFSoftShadowMap;
+  renderer.outputColorSpace=T.SRGBColorSpace;
+  renderer.toneMapping=T.ACESFilmicToneMapping; renderer.toneMappingExposure=1.25;
+  scene.add(new T.HemisphereLight(0xffffff,0x66506c,2.0));
+  const key=new T.DirectionalLight(0xfff0df,3.1);key.position.set(-3,5,5);key.castShadow=true;scene.add(key);
+  const rim=new T.PointLight(0xb56cff,35,10);rim.position.set(3,2,2);scene.add(rim);
+  const root=new T.Group();scene.add(root);panda3d.root=root;
+  const mat=(color,rough=.72,metal=0)=>new T.MeshStandardMaterial({color,roughness:rough,metalness:metal});
+  const black=mat(0x24202b), white=mat(0xfff5e9), blush=mat(0xf18b9f), pink=mat(0xe94f85), noseMat=mat(0x17131b), iris=mat(0x17131b,.25), purple=mat(0x8b42e8,.35,.1), purpleDark=mat(0x4b2678), bamboo=mat(0x6aaf55);
+  function sphere(name,scale,pos,material,parent=root){const m=new T.Mesh(new T.SphereGeometry(1,32,24),material);m.name=name;m.scale.set(...scale);m.position.set(...pos);m.castShadow=true;m.receiveShadow=true;parent.add(m);panda3d.parts[name]=m;return m}
+  function capsule(name,r,len,pos,material,parent=root){const m=new T.Mesh(new T.CapsuleGeometry(r,len,6,16),material);m.name=name;m.position.set(...pos);m.castShadow=true;parent.add(m);panda3d.parts[name]=m;return m}
+  // Body and belly
+  sphere('body',[.72,.88,.53],[0,.88,0],black);
+  sphere('belly',[.53,.66,.12],[0,.88,.47],white);
+  sphere('head',[.91,.82,.72],[0,2.05,.02],white);
+  // ears
+  sphere('earL',[.25,.31,.19],[-.69,2.67,0],black);sphere('earR',[.25,.31,.19],[.69,2.67,0],black);
+  sphere('earInL',[.13,.18,.06],[-.69,2.67,.16],pink);sphere('earInR',[.13,.18,.06],[.69,2.67,.16],pink);
+  // eye patches, eyes and cheeks
+  const patchL=sphere('patchL',[.27,.36,.10],[-.39,2.12,.64],black);patchL.rotation.z=.35;
+  const patchR=sphere('patchR',[.27,.36,.10],[.39,2.12,.64],black);patchR.rotation.z=-.35;
+  sphere('eyeL',[.075,.105,.045],[-.39,2.14,.735],white);sphere('eyeR',[.075,.105,.045],[.39,2.14,.735],white);
+  sphere('pupilL',[.045,.07,.03],[-.38,2.13,.77],iris);sphere('pupilR',[.045,.07,.03],[.40,2.13,.77],iris);
+  sphere('cheekL',[.16,.09,.035],[-.58,1.88,.68],blush);sphere('cheekR',[.16,.09,.035],[.58,1.88,.68],blush);
+  sphere('muzzle',[.23,.16,.12],[0,1.91,.68],white);sphere('nose',[.09,.065,.06],[0,2.03,.80],noseMat);
+  // smile curve
+  const smilePts=[new T.Vector3(-.11,1.86,.79),new T.Vector3(0,1.81,.82),new T.Vector3(.11,1.86,.79)];
+  const smile=new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(smilePts),16,.018,8,false),noseMat);root.add(smile);
+  // Arms pivot for animation
+  const armL=new T.Group();armL.position.set(-.62,1.42,0);root.add(armL);panda3d.parts.armL=armL;
+  capsule('armLeft',.19,.56,[-.10,-.12,.13],black,armL).rotation.z=.55;
+  sphere('pawLeft',[.2,.16,.18],[-.18,-.40,.23],black,armL);
+  const armR=new T.Group();armR.position.set(.62,1.42,0);root.add(armR);panda3d.parts.armR=armR;
+  capsule('armRight',.19,.56,[.10,-.12,.13],black,armR).rotation.z=-.55;
+  sphere('pawRight',[.2,.16,.18],[.18,-.40,.23],black,armR);
+  // legs and paw pads
+  sphere('legL',[.32,.28,.38],[-.43,.22,.15],black);sphere('legR',[.32,.28,.38],[.43,.22,.15],black);
+  sphere('padL',[.19,.15,.045],[-.43,.20,.50],pink);sphere('padR',[.19,.15,.045],[.43,.20,.50],pink);
+  // headphones: band and ear cups
+  const band=new T.Mesh(new T.TorusGeometry(.72,.075,12,48,Math.PI),purple);band.position.set(0,2.29,.0);band.rotation.z=Math.PI;root.add(band);panda3d.parts.headband=band;
+  sphere('cupL',[.16,.28,.14],[-.86,2.25,.10],purpleDark);sphere('cupR',[.16,.28,.14],[.86,2.25,.10],purpleDark);
+  sphere('cupGlowL',[.11,.19,.06],[-.88,2.25,.22],purple);sphere('cupGlowR',[.11,.19,.06],[.88,2.25,.22],purple);
+  // bamboo prop at side
+  const bambooGroup=new T.Group();bambooGroup.position.set(1.15,.25,-.15);root.add(bambooGroup);panda3d.parts.bamboo=bambooGroup;
+  for(let i=0;i<3;i++){const stalk=new T.Mesh(new T.CylinderGeometry(.045,.055,.95,12),bamboo);stalk.position.set(i*.13,.48,0);bambooGroup.add(stalk);for(let j=0;j<3;j++){const node=new T.Mesh(new T.TorusGeometry(.052,.012,6,12),white);node.rotation.x=Math.PI/2;node.position.set(i*.13,.2+j*.28,.0);bambooGroup.add(node)}}
+  // floating ground shadow
+  const shadow=new T.Mesh(new T.CircleGeometry(1.05,48),new T.MeshBasicMaterial({color:0x352442,transparent:true,opacity:.13}));shadow.rotation.x=-Math.PI/2;shadow.position.y=-.02;shadow.scale.set(1.3,.65,1);root.add(shadow);
+  panda3d.scene=scene;panda3d.camera=camera;panda3d.renderer=renderer;panda3d.ready=true;
+  const resize=()=>{const w=canvas.clientWidth||250,h=canvas.clientHeight||230;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()};new ResizeObserver(resize).observe(canvas);resize();
+  canvas.addEventListener('pointerdown',e=>{panda3d.pointerDown=true;panda3d.lastX=e.clientX;canvas.setPointerCapture(e.pointerId)});
+  canvas.addEventListener('pointermove',e=>{if(panda3d.pointerDown){panda3d.targetRotation+=(e.clientX-panda3d.lastX)*.012;panda3d.lastX=e.clientX}});
+  canvas.addEventListener('pointerup',()=>{panda3d.pointerDown=false});
+  canvas.addEventListener('click',()=>{pandaAction('pet')});
+  const clock=new T.Clock();
+  function animate(){requestAnimationFrame(animate);const t=clock.getElapsedTime(),parts=panda3d.parts,root=panda3d.root;
+   root.rotation.y+=(panda3d.targetRotation-root.rotation.y)*.08;
+   root.position.y=.045*Math.sin(t*2.2);
+   parts.armL.rotation.z=.08*Math.sin(t*2);parts.armR.rotation.z=-.08*Math.sin(t*2);
+   if(panda3d.action==='dance'){parts.armL.rotation.z=-1.05;parts.armR.rotation.z=1.05;root.rotation.z=.08*Math.sin(t*12)}
+   if(panda3d.action==='sleep'){root.position.y=-.04+Math.sin(t*1.2)*.018}
+   if(panda3d.action==='eat'){parts.armR.rotation.z=1.0;parts.bamboo.rotation.z=.12*Math.sin(t*8)}
+   renderer.render(scene,camera);
+  }animate();
+ };
+ if(window.THREE){boot();return}
+ const script=document.createElement('script');script.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js';script.onload=boot;script.onerror=()=>{canvas.outerHTML='<div class="empty">Não foi possível carregar o motor 3D. Verifique a conexão com a internet.</div>'};document.head.appendChild(script);
+}
+
 const accessories=[
  {id:'headphones',slot:'head',icon:'🎧',name:'Fones de estudo',xp:0},
  {id:'cap',slot:'head',icon:'🧢',name:'Boné do foco',xp:100},
@@ -123,6 +204,7 @@ function pandaAction(a){
  let p=data.panda,now=Date.now(),last=p.actions[a]||0;
  if(now-last<12000){p.talk='Calma! Vamos esperar um pouquinho antes de repetir essa brincadeira. 😊';renderPanda();return}
  p.actions[a]=now;
+ panda3d.action=a==='play'?'dance':a==='rest'?'sleep':a==='feed'?'eat':'idle';
  const msgs={feed:['NHAC! Bambu delicioso! 🎋',8,0],play:['Oba! Adoro brincar com você! ⚽',-5,5],pet:['Aaaah, carinho! Você é demais! 💗',5,3],rest:['Zzz… recarregando as energias. 💤',12,0]};
  let [msg,delta,xp]=msgs[a];p.well=Math.max(0,Math.min(100,(p.well||50)+delta));p.xp=(p.xp||0)+xp;p.talk=msg+' Obrigado por cuidar de mim!';
  let stage=document.getElementById('pandaStage');stage.classList.remove('dance');void stage.offsetWidth;stage.classList.add('dance');persist();
@@ -166,5 +248,5 @@ function render(){
 }
 function saveSession(){let c=active();if(!c){alert('Cadastre e selecione um concurso primeiro.');tab('contests');return}let min=+minutes.value,q=+questions.value,cor=+correct.value;if(min<1||q<0||cor<0||cor>q){alert('Confira os valores.');return}let date=document.getElementById('date').value||new Date().toISOString().slice(0,10);c.sessions.push({sub:subject.value,date,min,q,c:cor,notes:notes.value});let xp=Math.max(5,Math.floor(min/10)+Math.floor(cor/5));data.panda.xp=(data.panda.xp||0)+xp;data.panda.well=Math.min(100,(data.panda.well||50)+Math.min(18,Math.max(3,Math.floor(min/20))));data.panda.lastStudy=date;data.panda.talk=`Você estudou ${min} minutos e fez ${q} questões! Ganhei ${xp} pontos de experiência. Estou orgulhoso de você! 🐼🎋`;localStorage.setItem(KEY,JSON.stringify(data));saved.textContent='Sessão salva! O panda ganhou experiência e ficou mais feliz!';notes.value='';render()}
 date.value=new Date().toISOString().slice(0,10);
-render();
+render();initPanda3D();
 </script></body></html>
