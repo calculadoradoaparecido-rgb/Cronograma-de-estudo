@@ -1,34 +1,31 @@
-TRILHA PANDA — VERSÃO 5.3 (MASCOTE VISUAL REFEITO + PWA)
+TRILHA PANDA — VERSÃO 5.4
+PANDA 3D ARTICULADO E ANIMADO + PWA INSTALÁVEL
 
-ESTA VERSÃO CORRIGE O PRINCIPAL PROBLEMA VISUAL
-O panda anterior era construído com esferas e peças geométricas básicas, o que produzia aparência rígida. Nesta versão, essa montagem procedural foi removida da tela principal e substituída por uma arte 3D de mascote, com fones roxos, moletom, rosto expressivo e cenário de estudos. A imagem é incluída localmente no pacote e não depende de CDN.
+O QUE MUDOU
+- A imagem estática foi removida da área principal.
+- O panda agora é criado em tempo real no Three.js, com uma hierarquia articulada de ossos/pivôs.
+- Cabeça, ombros, braços, antebraços, patas, quadris e joelhos têm articulação própria.
+- Clipes de animação: idle (respiração/balanço suave), happy, dance, eat, sleep e pet.
+- O personagem tem rosto detalhado, olhos em camadas, focinho, bochechas, orelhas, moletom roxo, fones e bambu.
+- Arraste o mouse ou o dedo sobre o panda para girá-lo.
+- Clique no panda para fazer carinho.
+- Os botões alimentar, brincar, carinho e descansar acionam animações correspondentes.
 
 PUBLICAÇÃO
-1. Extraia o ZIP.
-2. Envie TODOS os arquivos para a raiz do repositório GitHub conectado ao Cloudflare Pages:
-   - index.html
-   - panda-mascote.webp
-   - manifest.webmanifest
-   - sw.js
-   - panda-icon.svg
-3. Faça commit e aguarde a publicação HTTPS.
+Envie TODOS estes arquivos para a raiz do repositório conectado ao Cloudflare Pages:
+- index.html
+- manifest.webmanifest
+- sw.js
+- panda-icon.svg
+- LEIA-ME.txt
 
-INSTALAR COMO APLICATIVO (SEM APK)
-- Android/Chrome: abra o site publicado, menu ⋮ e escolha "Instalar app" ou "Adicionar à tela inicial".
+Instalação:
+- Android/Chrome: menu ⋮ > Instalar app / Adicionar à tela inicial.
 - iPhone/Safari: Compartilhar > Adicionar à Tela de Início.
-- Desktop/Chrome/Edge: use o ícone Instalar na barra de endereço, quando disponível.
+- Desktop: ícone Instalar no Chrome/Edge, quando disponível.
 
-RECURSOS PRESERVADOS
-- Cadastro e seleção de vários concursos.
-- Cronograma semanal editável por concurso.
-- Edital verticalizado.
-- Registro de sessões com tempo, questões, acertos e observações.
-- Desempenho geral e por concurso.
-- XP, níveis, necessidades, conquistas e inventário.
-- Exportação e importação de backup JSON.
-- PWA com manifesto e cache básico da interface.
-
-LIMITAÇÕES
-- O mascote principal é uma arte visual 3D incluída localmente. As ações do panda provocam reações visuais; não é um modelo 3D articulado em tempo real, portanto não gira em 360 graus.
-- Os dados permanecem no navegador. Para sincronização entre dispositivos é necessário banco de dados e autenticação.
-- O conteúdo inicial do TJPB é uma estrutura editável e deve ser conferido com o edital oficial e suas retificações.
+IMPORTANTE
+- O motor Three.js é carregado da CDN na primeira visita; é necessária internet para carregar o personagem 3D.
+- O modelo é uma criação procedural articulada em tempo real com hierarquia de ossos e animações por clipes. Não é uma imagem estática, mas também não é um arquivo GLB de estúdio com rig de captura de movimento.
+- Os dados do usuário continuam salvos localmente no navegador. Use Exportar backup para transferi-los entre dispositivos.
+- O conteúdo do TJPB é inicial/editável e deve ser conferido no edital oficial e retificações.
