@@ -1,10 +1,10 @@
-# Trilha Panda 5.8
+# Trilha Panda 5.9
 
 Organizador pessoal de estudos em formato PWA, com cadastro de concursos, cronograma semanal, edital verticalizado, registro de sessões, desempenho, inventário e backup local.
 
 ## Mascote animado
 
-O panda é um desenho vetorial em camadas, integrado ao HTML e sem dependência de CDN. A ilustração agora segue um estilo mais clássico: panda sentado, pelo preto e creme, olhos grandes com brilho, patinhas rosadas e bambu entre os braços. Ele respira, pisca e movimenta os braços continuamente. Alimentar, brincar, fazer carinho e descansar acionam poses e mensagens específicas. O movimento respeita a preferência de movimento reduzido do dispositivo.
+O panda é um desenho vetorial em camadas, integrado ao HTML e sem dependência de CDN. A ilustração segue um estilo clássico: panda sentado, pelo preto e creme, manchas oculares inclinadas, focinho arredondado, sorriso marcado, patinhas rosadas e bambu entre os braços. Ao descansar, os olhos fecham antes de aparecerem os sinais de sono. Alimentar, brincar, fazer carinho e descansar acionam poses e mensagens específicas. O movimento respeita a preferência de movimento reduzido do dispositivo.
 
 ## Instalar e publicar
 
