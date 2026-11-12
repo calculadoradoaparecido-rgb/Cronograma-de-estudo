@@ -1,9 +1,13 @@
-TRILHA PANDA — VERSÃO 5.2 (PANDA REFINADO + PWA)
+TRILHA PANDA — VERSÃO 5.3 (MASCOTE VISUAL REFEITO + PWA)
+
+ESTA VERSÃO CORRIGE O PRINCIPAL PROBLEMA VISUAL
+O panda anterior era construído com esferas e peças geométricas básicas, o que produzia aparência rígida. Nesta versão, essa montagem procedural foi removida da tela principal e substituída por uma arte 3D de mascote, com fones roxos, moletom, rosto expressivo e cenário de estudos. A imagem é incluída localmente no pacote e não depende de CDN.
 
 PUBLICAÇÃO
 1. Extraia o ZIP.
-2. Envie TODOS os arquivos para a raiz do repositório GitHub ligado ao Cloudflare Pages:
+2. Envie TODOS os arquivos para a raiz do repositório GitHub conectado ao Cloudflare Pages:
    - index.html
+   - panda-mascote.webp
    - manifest.webmanifest
    - sw.js
    - panda-icon.svg
@@ -14,14 +18,17 @@ INSTALAR COMO APLICATIVO (SEM APK)
 - iPhone/Safari: Compartilhar > Adicionar à Tela de Início.
 - Desktop/Chrome/Edge: use o ícone Instalar na barra de endereço, quando disponível.
 
-MELHORIAS
-- Panda 3D redesenhado com proporções mais fofas, cabeça maior, olhos brilhantes, focinho, bochechas, hoodie roxo, fones detalhados, bambu e brilhos.
-- Animações de dança, descanso, alimentação e comemoração.
-- Arrastar para girar; clicar para carinho.
-- Mantidos concursos, cronograma, edital, registros, estatísticas, XP, inventário e backup.
-- Manifesto e service worker para instalação como PWA e cache básico da interface.
+RECURSOS PRESERVADOS
+- Cadastro e seleção de vários concursos.
+- Cronograma semanal editável por concurso.
+- Edital verticalizado.
+- Registro de sessões com tempo, questões, acertos e observações.
+- Desempenho geral e por concurso.
+- XP, níveis, necessidades, conquistas e inventário.
+- Exportação e importação de backup JSON.
+- PWA com manifesto e cache básico da interface.
 
-LIMITAÇÕES IMPORTANTES
-- O motor Three.js é carregado de CDN e precisa de internet na primeira carga; o service worker guarda a interface, mas não baixa automaticamente a biblioteca externa.
-- Dados permanecem locais no navegador; para sincronizar entre dispositivos é necessário banco de dados e autenticação.
-- Conteúdo do edital inicial é editável e precisa ser conferido no edital oficial e retificações.
+LIMITAÇÕES
+- O mascote principal é uma arte visual 3D incluída localmente. As ações do panda provocam reações visuais; não é um modelo 3D articulado em tempo real, portanto não gira em 360 graus.
+- Os dados permanecem no navegador. Para sincronização entre dispositivos é necessário banco de dados e autenticação.
+- O conteúdo inicial do TJPB é uma estrutura editável e deve ser conferido com o edital oficial e suas retificações.

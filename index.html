@@ -2,12 +2,23 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#100d20">\n<link rel="manifest" href="manifest.webmanifest">\n<link rel="icon" href="panda-icon.svg" type="image/svg+xml">\n<meta name="apple-mobile-web-app-capable" content="yes">\n<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Trilha Panda — Central de Estudos</title>
+<meta name="theme-color" content="#100d20">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="panda-icon.svg" type="image/svg+xml">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Trilha Panda 5.3 — Central de Estudos</title>
 <style>
 :root{--bg:#100d20;--panel:#19152d;--panel2:#211b3b;--line:#352b55;--text:#f7f3ff;--muted:#b5accb;--purple:#9c5cff;--purple2:#713be0;--green:#43df8b;--yellow:#ffc94f;--pink:#ff6eae;--blue:#57b9ff;--shadow:0 15px 45px #05030b66}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% -10%,#332057 0,transparent 40%),var(--bg);color:var(--text);font:15px/1.45 Inter,system-ui,-apple-system,Segoe UI,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;color:var(--text);background:linear-gradient(135deg,var(--purple),var(--purple2));padding:10px 14px;border-radius:12px;font-weight:700;transition:.18s}button:hover{filter:brightness(1.12);transform:translateY(-1px)}button:disabled{opacity:.4;cursor:not-allowed;transform:none}.secondary{background:#292342;border:1px solid var(--line)}.green{background:linear-gradient(135deg,#27c979,#15965b)}.pink{background:linear-gradient(135deg,#ed66a6,#b43e7d)}.blue{background:linear-gradient(135deg,#48aaff,#356ed4)}.danger{background:#762e49}.small{padding:6px 9px;font-size:12px}.app{display:grid;grid-template-columns:235px minmax(0,1fr);min-height:100vh}.sidebar{background:#100d20ed;border-right:1px solid var(--line);padding:22px 14px;position:sticky;top:0;height:100vh;overflow:auto}.brand{display:flex;align-items:center;gap:10px;padding:0 8px 22px}.brand-mark{font-size:35px}.brand strong{display:block;font-size:19px;line-height:1.1}.brand small{color:var(--muted)}.nav{display:grid;gap:5px}.nav button{background:transparent;text-align:left;color:#d8d0e8;border:1px solid transparent;padding:11px 12px;font-weight:600}.nav button.active,.nav button:hover{background:#39265f;border-color:#7048ad;color:white}.sidebar-foot{position:absolute;bottom:18px;left:18px;right:18px;color:var(--muted);font-size:11px}.main{min-width:0;padding:22px clamp(14px,3vw,36px) 50px;max-width:1600px;width:100%;margin:auto}.topbar{display:flex;align-items:center;gap:12px;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap}.top-left{display:flex;align-items:center;gap:10px;min-width:200px}.top-left h1{font-size:22px;margin:0}.top-left p{margin:2px 0;color:var(--muted);font-size:12px}.top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.select-top{min-width:230px;max-width:340px}.field,select,textarea{background:#100d20;color:var(--text);border:1px solid var(--line);padding:10px 11px;border-radius:10px;width:100%;outline:none}.field:focus,select:focus,textarea:focus{border-color:var(--purple)}label{display:block;color:var(--muted);font-size:12px;margin:10px 0 5px}.content{display:none}.content.active{display:block}.grid{display:grid;gap:14px}.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}.card{background:linear-gradient(145deg,#201a38,#171329);border:1px solid var(--line);border-radius:19px;padding:17px;box-shadow:var(--shadow);min-width:0}.card h2,.card h3{margin:0 0 12px}.card h2{font-size:17px}.muted{color:var(--muted)}.tiny{font-size:11px;color:var(--muted)}.hero{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.9fr);gap:14px}.panda-card{min-height:390px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 48% 45%,#5b3784 0,#2a2045 40%,#171329 78%)}.panda-card:before{content:"";position:absolute;inset:auto 0 0;height:80px;background:linear-gradient(transparent,#120e20aa);pointer-events:none}.panda-scene{height:330px;position:relative;display:flex;justify-content:center;align-items:center;background:radial-gradient(ellipse at 50% 78%,#9c5cff24,transparent 56%)}.panda-canvas{width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab}.speech{position:absolute;right:12px;top:12px;max-width:210px;padding:12px 14px;border:1px solid #b98aff;border-radius:18px;background:#211737eF;box-shadow:0 8px 25px #0005;font-weight:650;font-size:13px}.speech:after{content:"";position:absolute;bottom:-8px;left:30px;width:14px;height:14px;background:#211737;border-right:1px solid #b98aff;border-bottom:1px solid #b98aff;transform:rotate(45deg)}.panda-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}.panda-actions button{flex:1;min-width:90px}.statrow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#100d2077;border:1px solid #45345f;border-radius:13px;padding:11px}.stat b{display:block;font-size:22px}.stat small{color:var(--muted);font-size:11px}.bar{height:9px;border-radius:20px;background:#39324d;overflow:hidden}.bar i{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#33d982,#a1f17b)}.meter-row{display:grid;grid-template-columns:75px 1fr 38px;gap:8px;align-items:center;margin:12px 0;font-size:13px}.meter-row .bar i{background:linear-gradient(90deg,#9c5cff,#df85ff)}.pill{display:inline-block;padding:4px 9px;background:#39285b;color:#e5d4ff;border-radius:30px;font-size:11px;font-weight:700}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:2px 0 14px;flex-wrap:wrap}.section-head h2{margin:0;font-size:22px}.list{display:grid;gap:8px}.list-item{padding:11px 12px;background:#100d2077;border:1px solid #342b4e;border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}.list-item .left{min-width:0}.list-item strong{display:block}.progress-ring{width:116px;height:116px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--green) var(--pct,0%),#39324d 0);position:relative;flex-shrink:0}.progress-ring:before{content:"";position:absolute;inset:10px;border-radius:50%;background:#1b1630}.progress-ring b{position:relative;font-size:23px}.ringrow{display:flex;align-items:center;gap:17px}.checkline{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid #352b554d}.checkline:last-child{border:0}.checkline input{accent-color:var(--green);width:17px;height:17px;margin-top:2px}.checkline.done span{text-decoration:line-through;color:#9489aa}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}.formgrid .full{grid-column:1/-1}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.contest-card{border:1px solid var(--line);background:#171329;border-radius:14px;padding:14px}.contest-card.active{border-color:var(--green);box-shadow:0 0 0 1px #43df8b44}.subject-group{border-top:1px solid #403459;padding:12px 0}.subject-group:first-child{border:0}.topicrow{display:flex;align-items:flex-start;gap:8px;padding:7px 0}.topicrow input{accent-color:var(--green);margin-top:4px}.topicrow span{flex:1}.weekgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}.daybox{background:#100d2077;border:1px solid var(--line);border-radius:13px;padding:10px;min-height:130px}.daybox strong{display:block;margin-bottom:8px}.daybox small{color:var(--muted)}.session{border-bottom:1px solid #403459;padding:11px 0}.session:last-child{border:0}.badge{font-size:10px;padding:3px 7px;border-radius:20px;background:#253f36;color:#9df1bd}.empty{text-align:center;color:var(--muted);padding:22px}.item-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.item{background:#100d2077;border:1px solid var(--line);border-radius:14px;padding:13px;text-align:center}.item .emoji{font-size:34px}.item.locked{opacity:.55}.toast{position:fixed;right:20px;bottom:20px;z-index:20;background:#2a2045;border:1px solid #8e5be0;border-radius:13px;padding:12px 16px;box-shadow:var(--shadow);display:none;max-width:340px}.mobilebar{display:none}.footnote{font-size:11px;color:var(--muted);text-align:center;margin:22px 0 0}.hidden{display:none!important}
-.panda-canvas{filter:drop-shadow(0 18px 18px #05020c88)}\n@media(max-width:1050px){.app{grid-template-columns:190px minmax(0,1fr)}.hero{grid-template-columns:1fr}.grid.four{grid-template-columns:repeat(2,1fr)}}
+.panda-artwork{display:block;width:min(100%,590px);height:100%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 20px 22px #05020c88);cursor:pointer;transition:transform .35s ease}
+.panda-artwork:hover{transform:translateY(-4px) scale(1.015)}
+.panda-scene{overflow:hidden}
+.panda-scene:after{content:"";position:absolute;bottom:0;left:12%;right:12%;height:18px;border-radius:50%;background:#08051166;filter:blur(12px);z-index:0}
+.panda-artwork{position:relative;z-index:1}
+.panda-scene .speech{z-index:2}
+.panda-actions{margin-top:0}
+@media(max-width:720px){.panda-artwork{width:100%;object-fit:contain}.panda-scene{height:280px}}\n@media(max-width:1050px){.app{grid-template-columns:190px minmax(0,1fr)}.hero{grid-template-columns:1fr}.grid.four{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.app{display:block}.sidebar{display:none}.main{padding:14px 12px 90px}.topbar{align-items:flex-start}.top-actions{width:100%}.select-top{max-width:none;flex:1}.grid.two,.grid.three{grid-template-columns:1fr}.grid.four{grid-template-columns:repeat(2,1fr)}.panda-scene{height:260px}.speech{max-width:160px;font-size:11px}.weekgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.mobilebar{display:flex;position:fixed;bottom:0;left:0;right:0;background:#100d20f2;border-top:1px solid var(--line);padding:7px 4px;justify-content:space-around;z-index:10;backdrop-filter:blur(15px)}.mobilebar button{background:transparent;padding:7px 4px;font-size:10px;display:grid;gap:2px;justify-items:center}.mobilebar button span{font-size:18px}.stat b{font-size:18px}}
 </style>
 </head>
@@ -25,7 +36,7 @@
   <button data-page="inventory">🎁 &nbsp; Inventário</button>
   <button data-page="settings">⚙️ &nbsp; Dados e configurações</button>
  </nav>
- <div class="sidebar-foot">Versão 5.0 · seus estudos, sua jornada.</div>
+ <div class="sidebar-foot">Versão 5.3 · seu companheiro de aprovação.</div>
 </aside>
 <main class="main">
  <header class="topbar">
@@ -36,7 +47,7 @@
  <section class="content active" id="page-home">
   <div class="hero">
    <div class="card panda-card">
-    <div class="panda-scene"><canvas id="pandaCanvas" class="panda-canvas" aria-label="Panda 3D: arraste para girar e clique para interagir"></canvas><div class="speech" id="speech">Oi! Sou seu panda. Vamos conquistar seus objetivos? 🎋</div></div>
+    <div class="panda-scene"><img id="pandaArtwork" class="panda-artwork" src="panda-mascote.webp" alt="Panda 3D de moletom roxo estudando com fones de ouvido" onclick="pandaCare('pet')"><div class="speech" id="speech">Oi! Sou seu panda. Vamos conquistar seus objetivos? 🎋</div></div>
     <div class="panda-actions">
      <button class="green" onclick="pandaCare('feed')">🎋 Alimentar</button><button onclick="pandaCare('play')">🎮 Brincar</button><button class="pink" onclick="pandaCare('pet')">💗 Carinho</button><button class="blue" onclick="pandaCare('rest')">💤 Descansar</button>
     </div>
@@ -117,7 +128,7 @@
    <div class="card"><h2>💾 Backup dos seus estudos</h2><p class="muted">Exporte um arquivo JSON para guardar seus concursos, sessões, cronogramas, edital e evolução do panda. Importe esse arquivo em outro navegador para restaurar.</p><div class="actions"><button onclick="exportBackup()">⬇ Exportar backup</button><button class="secondary" onclick="document.getElementById('importFile').click()">⬆ Importar backup</button><input id="importFile" type="file" accept=".json,application/json" class="hidden" onchange="importBackup(event)"></div></div>
    <div class="card"><h2>🧹 Gerenciar dados</h2><p class="muted">Os dados ficam neste navegador. Não há sincronização automática entre aparelhos; use o backup para transferir seus dados.</p><button class="danger" onclick="resetPanda()">Reiniciar apenas o panda</button><button class="danger" style="margin-top:8px" onclick="wipeAll()">Apagar todos os dados</button></div>
   </div>
-  <div class="card" style="margin-top:14px"><h2>Sobre o aplicativo</h2><p class="muted">Trilha Panda é um organizador pessoal de estudos. O conteúdo programático inicial é editável e deve ser conferido com o edital oficial e suas retificações. O aplicativo não substitui orientação jurídica ou informações oficiais de concursos.</p><p class="tiny">Panda 3D procedural com Three.js. O motor 3D é carregado pela internet; o restante do app funciona localmente depois de aberto.</p></div>
+  <div class="card" style="margin-top:14px"><h2>Sobre o aplicativo</h2><p class="muted">Trilha Panda é um organizador pessoal de estudos. O conteúdo programático inicial é editável e deve ser conferido com o edital oficial e suas retificações. O aplicativo não substitui orientação jurídica ou informações oficiais de concursos.</p><p class="tiny">Mascote ilustrado em estilo 3D, com arte local incluída no pacote; não depende de biblioteca 3D externa.</p></div>
  </section>
  <p class="footnote">Trilha Panda · Estude com constância, cuide do seu mascote e acompanhe sua evolução. Seus dados são armazenados localmente neste navegador.</p>
 </main>
@@ -215,7 +226,7 @@ function renderPerformance(){let sessions=allSessions(),minutes=sum(sessions,'mi
  let bars=[];for(let i=13;i>=0;i--){let d=new Date();d.setDate(d.getDate()-i);let key=d.toISOString().slice(0,10),m=sum(sessions.filter(s=>s.date===key),'minutes');bars.push({key,m})}let max=Math.max(60,...bars.map(x=>x.m));document.getElementById('dailyBars').innerHTML=bars.map(x=>`<div title="${formatDate(x.key)}: ${x.m} min" style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:5px"><div style="width:100%;height:${Math.max(3,x.m/max*100)}%;background:linear-gradient(#b47aff,#713be0);border-radius:5px 5px 0 0"></div><small style="font-size:9px">${x.key.slice(8)}</small></div>`).join('')}
 function renderInventory(){let xp=data.panda.xp||0;document.getElementById('inventoryItems').innerHTML=catalog.map(it=>{let unlocked=xp>=it.xp,equipped=data.panda.equipped[it.slot]===it.id;return `<div class="item ${unlocked?'':'locked'}"><div class="emoji">${unlocked?it.emoji:'🔒'}</div><strong>${it.name}</strong><p class="tiny">${unlocked?(equipped?'Em uso':'Desbloqueado'):`Desbloqueia com ${it.xp} XP`}</p><button class="small ${equipped?'secondary':''}" ${unlocked?'':'disabled'} onclick="equipItem('${it.slot}','${it.id}')">${equipped?'Equipado':unlocked?'Equipar':'Bloqueado'}</button></div>`}).join('')}
 function equipItem(slot,id){data.panda.equipped[slot]=data.panda.equipped[slot]===id?'':id;data.panda.speech='Olha meu visual novo! Ficou incrível? 🐼';save();toast('Visual do panda atualizado.')}
-function pandaCare(action){let p=data.panda,now=Date.now(),last=p.actions[action]||0;if(now-last<8000)return toast('Vamos esperar alguns segundos antes de repetir essa ação.');p.actions[action]=now;let msgs={feed:['NHAC! Bambu fresquinho! 🎋',8,12,0,0],play:['Oba! Essa brincadeira foi demais! 🎮',12,-4,-10,3],pet:['Que carinho gostoso! Gosto de estudar com você. 💗',15,0,2,2],rest:['Zzz… recarregando as energias. 💤',3,0,25,1]};let [msg,hun,hap,en,xp]=msgs[action];p.happiness=Math.max(0,Math.min(100,p.happiness+hap));p.hunger=Math.max(0,Math.min(100,p.hunger+hun));p.energy=Math.max(0,Math.min(100,p.energy+en));p.xp+=xp;p.speech=msg;save();if(window.panda3D)window.panda3D.action=action==='play'?'dance':action==='rest'?'sleep':action==='feed'?'eat':'happy';}
+function pandaCare(action){let p=data.panda,now=Date.now(),last=p.actions[action]||0;if(now-last<8000)return toast('Vamos esperar alguns segundos antes de repetir essa ação.');p.actions[action]=now;let msgs={feed:['NHAC! Bambu fresquinho! 🎋',8,12,0,0],play:['Oba! Essa brincadeira foi demais! 🎮',12,-4,-10,3],pet:['Que carinho gostoso! Gosto de estudar com você. 💗',15,0,2,2],rest:['Zzz… recarregando as energias. 💤',3,0,25,1]};let [msg,hun,hap,en,xp]=msgs[action];p.happiness=Math.max(0,Math.min(100,p.happiness+hap));p.hunger=Math.max(0,Math.min(100,p.hunger+hun));p.energy=Math.max(0,Math.min(100,p.energy+en));p.xp+=xp;p.speech=msg;document.getElementById('speech').textContent=msg;save();const art=document.getElementById('pandaArtwork');if(art){art.style.transform=action==='play'?'rotate(-2deg) scale(1.025)':action==='rest'?'translateY(5px) scale(.99)':action==='feed'?'translateY(-3px) scale(1.02)':'translateY(-4px) scale(1.015)';setTimeout(()=>art.style.transform='',850);}}
 function renderAll(){renderHeader();renderHome();renderContests();renderSchedule();renderSyllabus();renderStudy();renderPerformance();renderInventory()}
 function exportBackup(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='trilha-panda-backup-'+todayISO()+'.json';a.click();URL.revokeObjectURL(url);toast('Backup exportado. Guarde o arquivo em local seguro.')}
 function importBackup(event){let file=event.target.files?.[0];if(!file)return;let reader=new FileReader();reader.onload=()=>{try{let d=JSON.parse(reader.result);if(!Array.isArray(d.contests)||!d.panda)throw new Error('Formato inválido');if(!confirm('Importar backup e substituir os dados atuais deste navegador?'))return;data=normalizeData(d);save();toast('Backup restaurado com sucesso.')}catch(e){toast('Não foi possível importar: arquivo inválido.')}event.target.value=''};reader.readAsText(file)}
@@ -224,93 +235,6 @@ function wipeAll(){if(!confirm('ATENÇÃO: apagar todos os concursos, sessões, 
 renderAll();showPage('home');document.getElementById('studyDate').value=todayISO();
 </script>
 <script>
-// Panda 3D aprimorado: proporções fofas, materiais suaves, detalhes e animações.
-(function(){
- const canvas=document.getElementById('pandaCanvas');
- const state={ready:false,action:'idle',root:null,parts:{},targetY:0};
- window.panda3D=state;
- function start(){
-  if(!window.THREE)return;
-  const T=window.THREE,scene=new T.Scene(),camera=new T.PerspectiveCamera(31,1,.1,100);
-  camera.position.set(0,1.52,8.2);camera.lookAt(0,1.36,0);
-  const renderer=new T.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'high-performance'});
-  renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.shadowMap.enabled=true;
-  renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.32;
-  scene.add(new T.HemisphereLight(0xfff5ff,0x57416e,2.1));
-  const key=new T.DirectionalLight(0xffe8d1,3.6);key.position.set(-3,5,6);key.castShadow=true;scene.add(key);
-  const fill=new T.PointLight(0xc18aff,42,10);fill.position.set(3,2.6,2);scene.add(fill);
-  const warm=new T.PointLight(0xffc36b,18,8);warm.position.set(-3,1,2);scene.add(warm);
-  const root=new T.Group();scene.add(root);state.root=root;
-  const mat=(color,rough=.78,metal=0)=>new T.MeshStandardMaterial({color,roughness:rough,metalness:metal});
-  const black=mat(0x211d28,.88),white=mat(0xfff7ef,.96),cream=mat(0xf5e8d9,.98),pink=mat(0xf28da7,.65),dark=mat(0x17121d,.3),purple=mat(0x934bfa,.32,.08),purpleDark=mat(0x4a2677,.45),hoodie=mat(0x7136bd,.72),hoodieLight=mat(0xa65cff,.58),gold=mat(0xf4c46b,.35,.4),leaf=mat(0x62ad51,.7);
-  function sphere(name,scale,pos,material,parent=root){let o=new T.Mesh(new T.SphereGeometry(1,40,32),material);o.name=name;o.scale.set(...scale);o.position.set(...pos);o.castShadow=true;o.receiveShadow=true;parent.add(o);state.parts[name]=o;return o}
-  function roundedBox(name,size,pos,material,parent=root,radius=.08){let geo=new T.BoxGeometry(...size);let o=new T.Mesh(geo,material);o.name=name;o.position.set(...pos);o.castShadow=true;parent.add(o);state.parts[name]=o;return o}
-  // Body: plush rounded silhouette with a soft cream belly and a little purple hoodie.
-  sphere('body',[.78,.92,.59],[0,.91,0],black);
-  sphere('belly',[.56,.68,.13],[0,.94,.52],cream);
-  sphere('hoodieTorso',[.69,.47,.16],[0,1.02,.53],hoodie);
-  sphere('hoodiePocket',[.25,.15,.035],[0,.91,.685],hoodieLight);
-  // Head intentionally oversized and gently tilted for a friendly baby-panda proportion.
-  const head=sphere('head',[1.02,.91,.78],[0,2.18,.02],white);head.rotation.z=-.035;
-  sphere('earL',[.29,.34,.22],[-.77,2.86,-.02],black);sphere('earR',[.29,.34,.22],[.77,2.86,-.02],black);
-  sphere('earInL',[.16,.21,.065],[-.77,2.86,.17],pink);sphere('earInR',[.16,.21,.065],[.77,2.86,.17],pink);
-  // Eye patches, large glossy eyes and catchlights.
-  let pl=sphere('patchL',[.31,.4,.105],[-.43,2.22,.70],black);pl.rotation.z=.31;
-  let pr=sphere('patchR',[.31,.4,.105],[.43,2.22,.70],black);pr.rotation.z=-.31;
-  sphere('eyeL',[.105,.14,.05],[-.43,2.23,.785],white);sphere('eyeR',[.105,.14,.05],[.43,2.23,.785],white);
-  sphere('pupilL',[.066,.096,.036],[-.41,2.22,.825],dark);sphere('pupilR',[.066,.096,.036],[.45,2.22,.825],dark);
-  sphere('glintL',[.027,.034,.018],[-.435,2.265,.855],white);sphere('glintR',[.027,.034,.018],[.425,2.265,.855],white);
-  sphere('cheekL',[.18,.105,.05],[-.65,1.96,.70],pink);sphere('cheekR',[.18,.105,.05],[.65,1.96,.70],pink);
-  sphere('muzzleL',[.16,.13,.11],[-.105,1.99,.77],cream);sphere('muzzleR',[.16,.13,.11],[.105,1.99,.77],cream);
-  sphere('nose',[.095,.068,.06],[0,2.095,.88],dark);
-  // Smile curve and tiny chin.
-  let smile=new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3([new T.Vector3(-.12,1.92,.85),new T.Vector3(0,1.87,.89),new T.Vector3(.12,1.92,.85)]),20,.022,8,false),dark);root.add(smile);
-  // Arms are separate pivots for waving, hugging bamboo and dancing.
-  let left=new T.Group();left.position.set(-.68,1.48,.02);root.add(left);state.parts.leftArm=left;
-  sphere('leftSleeve',[.23,.39,.25],[-.09,-.13,.12],hoodie,left).rotation.z=.45;
-  sphere('leftPaw',[.205,.18,.19],[-.18,-.42,.24],black,left);
-  let right=new T.Group();right.position.set(.68,1.48,.02);root.add(right);state.parts.rightArm=right;
-  sphere('rightSleeve',[.23,.39,.25],[.09,-.13,.12],hoodie,right).rotation.z=-.45;
-  sphere('rightPaw',[.205,.18,.19],[.18,-.42,.24],black,right);
-  // Seated legs and pink paw pads.
-  sphere('legL',[.36,.29,.42],[-.46,.22,.18],black);sphere('legR',[.36,.29,.42],[.46,.22,.18],black);
-  sphere('padL',[.21,.16,.05],[-.46,.20,.56],pink);sphere('padR',[.21,.16,.05],[.46,.20,.56],pink);
-  for(let x of [-.54,-.37,.37,.54])sphere('toe'+x,[.045,.045,.025],[x,.12,.605],pink);
-  // Detailed headphones with padded cups and paw emblem.
-  let band=new T.Mesh(new T.TorusGeometry(.79,.09,16,56,Math.PI),purple);band.position.set(0,2.48,.01);band.rotation.z=Math.PI;root.add(band);
-  sphere('headbandCushion',[.65,.08,.1],[0,2.98,.04],purpleDark);
-  for(let x of [-1,1]){sphere('cup'+x,[.19,.31,.18],[x*.91,2.37,.14],purpleDark);sphere('cupGlow'+x,[.135,.23,.07],[x*.94,2.37,.29],purple);sphere('cupCenter'+x,[.07,.09,.025],[x*.95,2.37,.355],gold)}
-  // Hoodie drawstrings and tiny paw emblem.
-  for(let x of [-.09,.09]){let cord=new T.Mesh(new T.CylinderGeometry(.012,.012,.22,8),cream);cord.position.set(x,1.18,.685);root.add(cord)}
-  sphere('hoodieLogo',[.10,.10,.025],[0,1.0,.704],cream);
-  // Bamboo bunch held at the side; leaves sway while eating.
-  let bamboo=new T.Group();bamboo.position.set(1.23,.37,-.08);root.add(bamboo);state.parts.bamboo=bamboo;
-  for(let i=0;i<3;i++){let stalk=new T.Mesh(new T.CylinderGeometry(.045,.052,.95,16),leaf);stalk.position.set(i*.12,.48,0);bamboo.add(stalk);for(let j=0;j<3;j++){let node=new T.Mesh(new T.TorusGeometry(.05,.012,8,16),cream);node.rotation.x=Math.PI/2;node.position.set(i*.12,.18+j*.29,.012);bamboo.add(node)}}
-  for(let i=0;i<4;i++){let l=sphere('bambooLeaf'+i,[.18,.055,.035],[.2+i*.08,.82+(i%2)*.18,.02],leaf,bamboo);l.rotation.z=(i%2?-.5:.5)}
-  // Floating contact shadow and subtle sparkles.
-  let shadow=new T.Mesh(new T.CircleGeometry(1.25,56),new T.MeshBasicMaterial({color:0x090511,transparent:true,opacity:.28}));shadow.rotation.x=-Math.PI/2;shadow.position.y=-.045;shadow.scale.set(1.35,.63,1);root.add(shadow);
-  for(let i=0;i<8;i++){let star=new T.Mesh(new T.SphereGeometry(.025,10,8),new T.MeshBasicMaterial({color:0xe3bdff,transparent:true,opacity:.7}));star.position.set(Math.sin(i*2.3)*1.65,1.1+(i%4)*.5,-.2);root.add(star);state.parts['spark'+i]=star}
-  state.scene=scene;state.camera=camera;state.renderer=renderer;state.ready=true;
-  const resize=()=>{let w=canvas.clientWidth||500,h=canvas.clientHeight||330;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()};new ResizeObserver(resize).observe(canvas);resize();
-  let dragging=false,lastX=0;canvas.addEventListener('pointerdown',e=>{dragging=true;lastX=e.clientX;canvas.setPointerCapture(e.pointerId)});
-  canvas.addEventListener('pointermove',e=>{if(dragging){root.rotation.y+=(e.clientX-lastX)*.012;lastX=e.clientX}});
-  canvas.addEventListener('pointerup',()=>dragging=false);canvas.addEventListener('pointercancel',()=>dragging=false);
-  canvas.addEventListener('click',()=>{if(typeof pandaCare==='function')pandaCare('pet')});
-  let clock=new T.Clock();function loop(){requestAnimationFrame(loop);let t=clock.getElapsedTime();
-   root.position.y=.035*Math.sin(t*1.8);
-   state.parts.leftArm.rotation.z=.05*Math.sin(t*1.6);state.parts.rightArm.rotation.z=-.05*Math.sin(t*1.6);
-   state.parts.head.rotation.z=-.035+.012*Math.sin(t*.8);
-   for(let i=0;i<8;i++){let st=state.parts['spark'+i];st.position.y=1.1+(i%4)*.5+.06*Math.sin(t*1.8+i);st.material.opacity=.35+.35*(.5+.5*Math.sin(t*2+i))}
-   if(state.action==='dance'){state.parts.leftArm.rotation.z=-1.15;state.parts.rightArm.rotation.z=1.15;root.rotation.z=.065*Math.sin(t*10)}
-   else if(state.action==='sleep'){root.position.y=-.04+Math.sin(t*1.1)*.018;state.parts.leftArm.rotation.z=.3;state.parts.rightArm.rotation.z=-.3}
-   else if(state.action==='eat'){state.parts.rightArm.rotation.z=1.0;state.parts.bamboo.rotation.z=.13*Math.sin(t*7)}
-   else if(state.action==='happy'){state.parts.leftArm.rotation.z=-.75;state.parts.rightArm.rotation.z=.75}
-   else root.rotation.z=0;
-   renderer.render(scene,camera)}loop();
- }
- function load(){if(window.THREE){start();return}let sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js';sc.onload=start;sc.onerror=()=>{document.getElementById('speech').textContent='Não consegui carregar o panda 3D. Verifique sua conexão e atualize a página.'};document.head.appendChild(sc)}
- load();
-})();
 </script>
 <script>
 if('serviceWorker' in navigator && location.protocol!=='file:'){
