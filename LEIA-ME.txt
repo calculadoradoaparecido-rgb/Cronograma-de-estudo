@@ -1,7 +1,27 @@
-TRILHA DE ESTUDOS — PANDA
-1. Publique o arquivo index.html na raiz do seu novo repositório GitHub.
-2. No Cloudflare Pages, use o repositório, deixe o comando de build vazio e defina a pasta de saída como / (raiz) ou .
-3. Abra o endereço publicado. O aplicativo funciona sem instalação e salva os dados no armazenamento local do navegador.
-4. Cadastre concursos na aba Concursos. O TJPB vem como exemplo inicial.
-5. Os registros, tópicos e cronogramas são separados por concurso. A experiência do panda é compartilhada entre todos os concursos.
-ATENÇÃO: os dados ficam neste navegador/aparelho; não há sincronização automática entre dispositivos nem backup em nuvem.
+TRILHA PANDA — VERSÃO 5.2 (PANDA REFINADO + PWA)
+
+PUBLICAÇÃO
+1. Extraia o ZIP.
+2. Envie TODOS os arquivos para a raiz do repositório GitHub ligado ao Cloudflare Pages:
+   - index.html
+   - manifest.webmanifest
+   - sw.js
+   - panda-icon.svg
+3. Faça commit e aguarde a publicação HTTPS.
+
+INSTALAR COMO APLICATIVO (SEM APK)
+- Android/Chrome: abra o site publicado, menu ⋮ e escolha "Instalar app" ou "Adicionar à tela inicial".
+- iPhone/Safari: Compartilhar > Adicionar à Tela de Início.
+- Desktop/Chrome/Edge: use o ícone Instalar na barra de endereço, quando disponível.
+
+MELHORIAS
+- Panda 3D redesenhado com proporções mais fofas, cabeça maior, olhos brilhantes, focinho, bochechas, hoodie roxo, fones detalhados, bambu e brilhos.
+- Animações de dança, descanso, alimentação e comemoração.
+- Arrastar para girar; clicar para carinho.
+- Mantidos concursos, cronograma, edital, registros, estatísticas, XP, inventário e backup.
+- Manifesto e service worker para instalação como PWA e cache básico da interface.
+
+LIMITAÇÕES IMPORTANTES
+- O motor Three.js é carregado de CDN e precisa de internet na primeira carga; o service worker guarda a interface, mas não baixa automaticamente a biblioteca externa.
+- Dados permanecem locais no navegador; para sincronizar entre dispositivos é necessário banco de dados e autenticação.
+- Conteúdo do edital inicial é editável e precisa ser conferido no edital oficial e retificações.
