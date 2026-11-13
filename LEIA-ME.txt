@@ -1,4 +1,4 @@
-TRILHA PANDA — VERSÃO 5.11
+TRILHA PANDA — VERSÃO 5.12
 MASCOTE VETORIAL ANIMADO · PWA INSTALÁVEL
 
 O QUE MUDOU
@@ -13,6 +13,8 @@ O QUE MUDOU
 - As ações mantêm os indicadores, XP, mensagens, inventário e dados salvos.
 - O panda cresce em seis etapas de XP e ganha uma forma mais robusta e brilhos conforme estuda.
 - Acessórios desbloqueados surgem automaticamente no panda; itens escolhidos manualmente são preservados.
+- A nova seção Resumos organiza notas por concurso e disciplina, sem contar como sessão nem gerar XP.
+- Cada resumo pode ter título, texto e link para a aula de origem; tudo entra no backup local.
 - O service worker busca o HTML atualizado pela rede e mantém cópia offline como alternativa.
 
 PUBLICAÇÃO

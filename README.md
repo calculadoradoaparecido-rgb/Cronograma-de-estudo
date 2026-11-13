@@ -1,6 +1,6 @@
-# Trilha Panda 5.11
+# Trilha Panda 5.12
 
-Organizador pessoal de estudos em formato PWA, com cadastro de concursos, cronograma semanal, edital verticalizado, registro de sessões, desempenho, inventário e backup local.
+Organizador pessoal de estudos em formato PWA, com cadastro de concursos, cronograma semanal, edital verticalizado, biblioteca de resumos por concurso, registro de sessões, desempenho, inventário e backup local.
 
 ## Mascote animado
 
@@ -14,7 +14,7 @@ Publique os arquivos da raiz deste repositório em uma hospedagem HTTPS, como Cl
 
 ## Dados e privacidade
 
-Concursos, cronogramas e registros ficam no armazenamento local do navegador. Use **Dados e configurações → Exportar backup** para guardar uma cópia e **Importar backup** para restaurá-la em outro navegador.
+Concursos, cronogramas, resumos e registros ficam no armazenamento local do navegador. Os resumos são separados do histórico de estudo e não geram XP. Use **Dados e configurações → Exportar backup** para guardar uma cópia e **Importar backup** para restaurá-la em outro navegador.
 
 ## Desenvolvimento
 
