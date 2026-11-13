@@ -3,6 +3,8 @@
 /README.md
 /LEIA-ME.txt
 /wrangler.jsonc
+/worker.js
+/schema.sql
 /app.js
 /styles.css
 /panda-mascote.webp

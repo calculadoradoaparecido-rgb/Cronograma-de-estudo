@@ -68,13 +68,13 @@ Ao sair da conta, o app limpa os dados da sessão em memória e volta à tela de
 
 O catálogo JSON pode ser compartilhado entre instalações. Importar atualiza os dados do concurso e os tópicos correspondentes, preservando sessões existentes e tópicos já marcados como concluídos. Resumos são combinados por identificador ou por disciplina e título.
 
-**Limites para venda:** este projeto continua sendo um PWA estático. Contas e PINs existem somente no navegador, não há autenticação de servidor, sincronização entre aparelhos, área administrativa protegida, cobrança, controle de acesso por comprador ou upload de arquivos para um servidor. O modo desenvolvedor também é apenas uma preferência local, não um controle de acesso. Não publique materiais privados nem use este painel para administrar conteúdo exclusivo até integrar autenticação e armazenamento no servidor. O catálogo e o backup são arquivos que precisam ser distribuídos manualmente.
+**Venda e biblioteca online:** o cronograma pessoal continua guardado no navegador e usa PIN local. A página `materiais.html` é uma biblioteca separada com contas de servidor (e-mail e senha), sessões protegidas, arquivos privados no R2 e permissões por cliente. A área de desenvolvedor local não concede privilégios administrativos no servidor. Um administrador ativa a primeira conta usando um segredo configurado no Worker, publica os materiais e libera o acesso após confirmar cada pagamento. **A cobrança automática ainda não está integrada**: não anuncie checkout automático até configurar um provedor de pagamentos e validar seus webhooks. O catálogo JSON local continua disponível para concursos e resumos usados dentro do cronograma.
 
 ## Instalar e publicar
 
 Publique os arquivos da raiz deste repositório em uma hospedagem HTTPS. O projeto não precisa de etapa de build. Depois, abra o endereço no navegador e use a opção de instalar o aplicativo.
 
-Com Cloudflare Workers (Static Assets), o `wrangler.jsonc` publica a raiz e o `.assetsignore` deixa `testes/` e `node_modules` de fora. Em hospedagens que publicam a pasta inteira, sem um arquivo de exclusão equivalente, a pasta `testes/` também fica acessível como arquivos estáticos. Isso não afeta o app, mas pode ser evitado movendo `testes/` para fora da pasta publicada.
+Com Cloudflare Workers, crie o banco D1 `trilha-panda-auth`, aplique `schema.sql`, atualize `database_id` em `wrangler.jsonc` e configure o segredo `ADMIN_BOOTSTRAP_TOKEN` antes de publicar. O bucket privado `trilha-panda-materiais` precisa estar vinculado ao Worker pelo binding `MATERIALS`; não habilite acesso público no bucket. Configure `APP_ORIGIN` com o domínio real do app. Após a publicação, crie sua conta em `/materiais.html` e use o segredo administrativo uma única vez para ativar a administração. Guarde esse segredo fora do repositório. O `.assetsignore` deixa `testes/`, `worker.js`, `schema.sql` e configurações fora dos arquivos públicos.
 
 ## Dados e privacidade
 
