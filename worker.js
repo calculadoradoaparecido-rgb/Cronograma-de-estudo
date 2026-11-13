@@ -1,6 +1,6 @@
 const SESSION_DAYS = 30;
 const SESSION_COOKIE = "tp_session";
-const PBKDF2_ITERATIONS = 120000;
+const PBKDF2_ITERATIONS = 100000;
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
 const ALLOWED_TYPES = new Set([
   "application/pdf", "text/plain", "text/markdown",
