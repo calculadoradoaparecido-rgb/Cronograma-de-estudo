@@ -170,20 +170,23 @@
 @media(prefers-reduced-motion:reduce){.login-brand img{animation:none}}
 
 /* Panda em pé e caminhando (desenho separado, ciclo de passos por CSS) */
-.walker{position:absolute;left:50%;bottom:12px;width:190px;height:auto;margin-left:-95px;z-index:1;overflow:visible}
+.walker{position:absolute;left:50%;bottom:6px;width:300px;height:auto;margin-left:-150px;z-index:1;overflow:visible;filter:drop-shadow(0 10px 14px #05020c99)}
 .walker[hidden]{display:none}
-.walk-leg-l{transform-origin:123px 210px;animation:walk-leg .6s ease-in-out infinite}
-.walk-leg-r{transform-origin:177px 210px;animation:walk-leg .6s ease-in-out -.3s infinite}
-@keyframes walk-leg{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(20deg)}}
-.walk-arm-l{transform-origin:98px 150px;animation:walk-arm .6s ease-in-out -.3s infinite}
-.walk-arm-r{transform-origin:200px 150px;animation:walk-arm .6s ease-in-out infinite}
-@keyframes walk-arm{0%,100%{transform:rotate(14deg)}50%{transform:rotate(-14deg)}}
-.walker.walking .walk-body{animation:walk-bob .3s ease-in-out infinite}
-@keyframes walk-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.walk-leg-l{transform-origin:165px 270px;animation:walk-leg .6s ease-in-out infinite}
+.walk-leg-r{transform-origin:255px 270px;animation:walk-leg .6s ease-in-out -.3s infinite}
+@keyframes walk-leg{0%{transform:rotate(-18deg)}25%{transform:rotate(0) translateY(-14px)}50%{transform:rotate(18deg)}100%{transform:rotate(-18deg)}}
+.walk-arm-l{transform-origin:150px 200px;animation:walk-arm .6s ease-in-out infinite}
+.walk-arm-r{transform-origin:270px 200px;animation:walk-arm .6s ease-in-out -.3s infinite}
+@keyframes walk-arm{0%{transform:rotate(12deg)}50%{transform:rotate(-12deg)}100%{transform:rotate(12deg)}}
+.walker.walking .walk-body{transform-origin:210px 300px;animation:walk-bob .3s ease-in-out infinite}
+@keyframes walk-bob{0%,100%{transform:translateY(0) scale(1.02,.97)}50%{transform:translateY(-7px) scale(.98,1.03)}}
+.walker.walking .walk-head{transform-origin:210px 150px;animation:walk-head .6s ease-in-out infinite}
+@keyframes walk-head{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.walker.walking .walk-shadow{transform-origin:210px 344px;animation:walk-shadow .3s ease-in-out infinite}
+@keyframes walk-shadow{0%,100%{transform:scale(1)}50%{transform:scale(.86)}}
 .walker.idle .walk-leg,.walker.idle .walk-arm{animation:none}
-.walker.idle .walk-body{transform-origin:150px 250px;animation:stand-sway 4.2s ease-in-out infinite}
-@keyframes stand-sway{0%,100%{transform:rotate(-.6deg)}50%{transform:rotate(.6deg)}}
-.walk-bamboo{transform-origin:200px 230px}
+.walker.idle .walk-body{transform-origin:210px 300px;animation:stand-sway 4.2s ease-in-out infinite}
+@keyframes stand-sway{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
 @media(prefers-reduced-motion:reduce){.walker *{animation:none!important}}
 .summary-source{color:#d0a8ff;font-weight:700;text-decoration:none}.summary-source:hover{text-decoration:underline}
 </style>
@@ -237,7 +240,8 @@
   <div class="hero">
    <div class="card panda-card" id="pandaCard">
     <div class="panda-scene">
-     <svg id="pandaArtwork" class="panda-artwork" viewBox="0 0 420 360" role="button" tabindex="0" aria-label="Panda animado. Ative para fazer carinho." onclick="pandaCare('pet')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();pandaCare('pet')}">      <defs>
+     <svg id="pandaArtwork" class="panda-artwork" viewBox="0 0 420 360" role="button" tabindex="0" aria-label="Panda animado. Ative para fazer carinho." onclick="pandaCare('pet')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();pandaCare('pet')}">
+      <defs>
        <radialGradient id="fur" cx="38%" cy="24%"><stop stop-color="#fffdf5"/><stop offset=".68" stop-color="#fff8e9"/><stop offset="1" stop-color="#e2d7c6"/></radialGradient>
        <radialGradient id="blackFur" cx="38%" cy="25%"><stop class="dk-a" stop-color="#49404b"/><stop class="dk-b" offset=".62" stop-color="#29232d"/><stop class="dk-c" offset="1" stop-color="#17141c"/></radialGradient>
        <radialGradient id="patch" cx="38%" cy="25%"><stop class="pt-a" stop-color="#49404c"/><stop class="pt-b" offset=".72" stop-color="#302a35"/><stop class="pt-c" offset="1" stop-color="#211d27"/></radialGradient>
@@ -253,23 +257,16 @@
       </defs>
       <ellipse class="halo" cx="210" cy="190" rx="175" ry="170" fill="url(#halo)"/>
       <ellipse cx="210" cy="344" rx="119" ry="13" fill="#090615" opacity=".3"/>
-      <ellipse cx="210" cy="339" rx="80" ry="7" fill="#b9a0df" opacity=".14"/>
       <g class="growth-torso">
       <g class="torso" filter="url(#softShadow)">
-       <path d="M145 214C149 182 174 164 210 162 246 164 271 182 275 214L294 286C301 312 283 328 257 329H163C137 328 119 312 126 286Z" fill="url(#blackFur)" stroke="#17131b" stroke-width="3"/>
-       <path d="M164 211C176 195 192 188 210 188 228 188 244 195 256 211L267 281C269 301 250 313 226 315H194C170 313 151 301 153 281Z" fill="url(#belly)"/>
-       <path d="M174 216Q210 199 246 216" fill="none" stroke="#fffefa" stroke-opacity=".55" stroke-width="3" stroke-linecap="round"/>
-       <path d="M183 298Q210 306 237 298" fill="none" stroke="#d6c9c2" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+       <path d="M150 212C150 186 176 172 210 172S270 186 270 212L282 286C288 314 270 330 240 330H180C150 330 132 314 138 286Z" fill="url(#fur)" stroke="#2b2330" stroke-width="3.5"/>
+       <path d="M178 264Q210 278 242 264" fill="none" stroke="#d9cfc4" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>
       </g>
       <g class="feet" filter="url(#softShadow)">
-       <ellipse cx="157" cy="304" rx="43" ry="39" fill="url(#blackFur)" stroke="#17131b" stroke-width="3"/>
-       <ellipse cx="263" cy="304" rx="43" ry="39" fill="url(#blackFur)" stroke="#17131b" stroke-width="3"/>
-       <ellipse cx="157" cy="318" rx="25" ry="19" fill="#493a44" stroke="#211b25" stroke-width="2"/>
-       <ellipse cx="263" cy="318" rx="25" ry="19" fill="#493a44" stroke="#211b25" stroke-width="2"/>
-       <path d="M157 324C148 324 145 315 149 308 152 302 162 302 165 308 169 316 166 324 157 324Z" fill="url(#pawPad)"/>
-       <path d="M263 324C254 324 251 315 255 308 258 302 268 302 271 308 275 316 272 324 263 324Z" fill="url(#pawPad)"/>
-       <ellipse cx="140" cy="306" rx="6" ry="7" fill="url(#pawPad)"/><ellipse cx="151" cy="299" rx="6" ry="7" fill="url(#pawPad)"/><ellipse cx="164" cy="299" rx="6" ry="7" fill="url(#pawPad)"/><ellipse cx="175" cy="306" rx="6" ry="7" fill="url(#pawPad)"/>
-       <ellipse cx="245" cy="306" rx="6" ry="7" fill="url(#pawPad)"/><ellipse cx="256" cy="299" rx="6" ry="7" fill="url(#pawPad)"/><ellipse cx="269" cy="299" rx="6" ry="7" fill="url(#pawPad)"/><ellipse cx="280" cy="306" rx="6" ry="7" fill="url(#pawPad)"/>
+       <ellipse cx="160" cy="304" rx="44" ry="36" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
+       <ellipse cx="260" cy="304" rx="44" ry="36" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
+       <ellipse cx="160" cy="319" rx="21" ry="13" fill="url(#pawPad)"/>
+       <ellipse cx="260" cy="319" rx="21" ry="13" fill="url(#pawPad)"/>
       </g>
       <g class="bamboo">
        <path d="M207 304 93 128" fill="none" stroke="#245b32" stroke-width="24" stroke-linecap="round"/>
@@ -282,46 +279,31 @@
        <path d="M51 130Q72 139 95 151M89 91Q96 117 101 148M145 124Q126 139 102 153M45 171Q70 161 97 157" fill="none" stroke="#d3f08e" stroke-width="2" stroke-linecap="round" opacity=".78"/>
       </g>
       <g class="arm-left" filter="url(#softShadow)">
-       <path d="M148 186C130 185 116 200 118 218 120 237 135 248 154 246 174 244 193 229 207 220 213 216 214 211 209 206 191 195 167 187 148 186Z" fill="url(#blackFur)" stroke="#514650" stroke-width="2.5"/>
-       <path d="M184 220Q198 232 212 219" fill="none" stroke="#766a73" stroke-width="2.2" stroke-linecap="round" opacity=".82"/>
-       <path d="M187 212Q198 222 208 215" fill="none" stroke="#5d515b" stroke-width="2" stroke-linecap="round" opacity=".78"/>
+       <path d="M150 188C128 188 114 206 116 228 118 250 132 262 150 262 170 262 182 248 182 228 182 206 170 188 150 188Z" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
       </g>
       <g class="arm-right" filter="url(#softShadow)">
-       <path d="M272 186C290 185 304 200 302 218 300 237 285 248 266 246 246 244 227 229 213 220 207 216 206 211 211 206 229 195 253 187 272 186Z" fill="url(#blackFur)" stroke="#514650" stroke-width="2.5"/>
-       <path d="M236 220Q222 232 208 219" fill="none" stroke="#766a73" stroke-width="2.2" stroke-linecap="round" opacity=".82"/>
-       <path d="M233 212Q222 222 212 215" fill="none" stroke="#5d515b" stroke-width="2" stroke-linecap="round" opacity=".78"/>
+       <path d="M270 188C292 188 306 206 304 228 302 250 288 262 270 262 250 262 238 248 238 228 238 206 250 188 270 188Z" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
       </g>
       </g>
       <g class="growth-head">
       <g class="head" filter="url(#softShadow)">
-       <ellipse cx="141" cy="60" rx="42" ry="42" fill="url(#blackFur)" stroke="#17131b" stroke-width="3"/>
-       <ellipse cx="279" cy="60" rx="42" ry="42" fill="url(#blackFur)" stroke="#17131b" stroke-width="3"/>
-       <ellipse cx="141" cy="62" rx="24" ry="25" fill="#332a35" opacity=".68"/>
-       <ellipse cx="279" cy="62" rx="24" ry="25" fill="#332a35" opacity=".68"/>
-       <path d="M111 120C107 81 130 52 164 43 175 40 185 41 193 45Q202 31 210 38 218 29 227 42 242 36 258 44C291 52 311 81 309 120 307 168 274 202 210 207 146 202 113 168 111 120Z" fill="url(#fur)" stroke="#d8cdbf" stroke-width="2.5"/>
-       <path d="M178 49Q194 39 202 42 210 29 218 40 229 34 239 48" fill="none" stroke="#fffefa" stroke-width="4" stroke-linecap="round" opacity=".9"/>
-       <ellipse cx="176" cy="65" rx="39" ry="13" fill="#fff" opacity=".28"/><path d="M122 104Q122 70 150 52" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="3.5" stroke-linecap="round"/>
-       <ellipse cx="174" cy="128" rx="26" ry="36" transform="rotate(24 174 128)" fill="url(#patch)"/>
-       <ellipse cx="246" cy="128" rx="26" ry="36" transform="rotate(-24 246 128)" fill="url(#patch)"/>
-       <g class="eye-shape">
-        <ellipse cx="174" cy="127" rx="14.5" ry="17" fill="#fffaf1"/>
-        <ellipse cx="174" cy="128" rx="11.5" ry="14" fill="url(#iris)"/>
-        <ellipse cx="174" cy="129" rx="7.4" ry="9.5" fill="#17141b"/>
-        <circle cx="170.5" cy="122.5" r="4.2" fill="#fffefa"/><circle cx="179" cy="134" r="2" fill="#fffefa"/><circle cx="168" cy="134" r="1.3" fill="#fffefa" opacity=".8"/>
-        <ellipse cx="246" cy="127" rx="14.5" ry="17" fill="#fffaf1"/>
-        <ellipse cx="246" cy="128" rx="11.5" ry="14" fill="url(#iris)"/>
-        <ellipse cx="246" cy="129" rx="7.4" ry="9.5" fill="#17141b"/>
-        <circle cx="242.5" cy="122.5" r="4.2" fill="#fffefa"/><circle cx="251" cy="134" r="2" fill="#fffefa"/><circle cx="240" cy="134" r="1.3" fill="#fffefa" opacity=".8"/>
+       <circle cx="134" cy="66" r="40" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
+       <circle cx="286" cy="66" r="40" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
+       <ellipse cx="134" cy="70" rx="19" ry="20" fill="#f5a7b8"/>
+       <ellipse cx="286" cy="70" rx="19" ry="20" fill="#f5a7b8"/>
+       <path d="M110 124C110 76 150 48 210 48S310 76 310 124 276 204 210 208 110 176 110 124Z" fill="url(#fur)" stroke="#2b2330" stroke-width="3.5"/>
+       <path d="M134 92Q148 74 172 70" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".85"/>
+       <ellipse cx="174" cy="128" rx="28" ry="36" transform="rotate(20 174 128)" fill="url(#patch)"/>
+       <ellipse cx="246" cy="128" rx="28" ry="36" transform="rotate(-20 246 128)" fill="url(#patch)"/>
+       <g class="eye-shape" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round">
+        <path d="M161 131Q174 113 187 131"/><path d="M233 131Q246 113 259 131"/>
        </g>
        <g class="sleep-eyes" fill="none" stroke="#fff0e7" stroke-width="3.8" stroke-linecap="round"><path d="M157 131Q174 116 191 131"/><path d="M229 131Q246 116 263 131"/></g>
-       <ellipse cx="146" cy="167" rx="24" ry="15" fill="url(#cheek)"/>
-       <ellipse cx="274" cy="167" rx="24" ry="15" fill="url(#cheek)"/>
-       <ellipse cx="146" cy="167" rx="16" ry="7" transform="rotate(-14 146 167)" fill="#ef8997" opacity=".9"/>
-       <ellipse cx="274" cy="167" rx="16" ry="7" transform="rotate(14 274 167)" fill="#ef8997" opacity=".9"/>
-       <ellipse cx="210" cy="169" rx="34" ry="23" fill="url(#muzzle)" stroke="#e1d5cb" stroke-opacity=".65" stroke-width="1.5"/>
-       <path d="M194 157Q210 144 226 157 223 167 210 168 197 167 194 157Z" fill="#2b2228"/>
-       <ellipse cx="205" cy="154" rx="4.5" ry="2" fill="#fff" opacity=".38"/>
-       <path d="M210 166V174M210 174C204 183 193 180 192 170M210 174C216 183 227 180 228 170" fill="none" stroke="#3b2b32" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+       <ellipse cx="146" cy="170" rx="22" ry="14" fill="#ff8fa3" opacity=".78"/>
+       <ellipse cx="274" cy="170" rx="22" ry="14" fill="#ff8fa3" opacity=".78"/>
+       <path d="M200 156Q210 150 220 156 218 164 210 166 202 164 200 156Z" fill="#2b2228"/>
+       <path d="M194 170Q210 162 226 170Q224 190 210 192Q196 190 194 170Z" fill="#3b2b32" stroke="#2b2330" stroke-width="2"/>
+       <ellipse cx="210" cy="184" rx="9" ry="5" fill="#f08aa0"/>
        <g class="accessory-headphones">
         <path d="M135 105Q137 48 210 45 283 48 285 105" fill="none" stroke="url(#cup)" stroke-width="9" stroke-linecap="round"/>
         <rect x="121" y="99" width="23" height="48" rx="11.5" fill="url(#cup)" stroke="#7040a9" stroke-width="2"/>
@@ -340,32 +322,47 @@
       <g class="feeding-contact" stroke="#276d38" stroke-width="2.2" stroke-linejoin="round"><path d="M177 203Q193 190 208 177" fill="none" stroke="url(#bamboo)" stroke-width="11" stroke-linecap="round"/><path d="M203 180C194 178 188 172 187 164 198 165 206 170 211 179Z" fill="url(#leaf)"/><path d="M207 179C211 169 220 165 229 166 227 176 219 182 209 185Z" fill="url(#leaf)"/><path d="M190 168Q199 173 205 179M225 169Q218 175 209 181" fill="none" stroke="#d3f08e" stroke-width="1.8" stroke-linecap="round"/></g>
       <g class="heart" fill="#ff6eae"><path d="M92 112c-19-18-36 7 0 34 36-27 19-52 0-34Z"/><path d="M329 142c-14-13-27 5 0 26 27-21 14-39 0-26Z"/></g>
       <g class="sparkles" fill="#ffe17b"><path d="M91 158l5 12 12 5-12 5-5 12-5-12-12-5 12-5Z"/><path d="M331 89l4 9 9 4-9 4-4 9-4-9-9-4 9-4Z"/><circle cx="307" cy="180" r="4" fill="#f8c0ff"/></g>
-      <g class="sleepy" fill="#e8dcff" font-family="system-ui,sans-serif" font-weight="800"><text x="302" y="75" font-size="22">Z</text><text x="324" y="56" font-size="16">z</text><text x="340" y="42" font-size="12">z</text></g></svg>
-     <svg id="pandaWalker" class="walker idle" viewBox="0 0 300 340" aria-hidden="true" hidden>
-      <ellipse cx="150" cy="322" rx="92" ry="12" fill="#090615" opacity=".32"/>
-      <g class="walk-leg walk-leg-l" filter="url(#softShadow)"><rect x="108" y="206" width="30" height="92" rx="15" fill="url(#blackFur)" stroke="#17131b" stroke-width="2.5"/><ellipse cx="123" cy="306" rx="23" ry="14" fill="url(#blackFur)" stroke="#17131b" stroke-width="2.5"/><circle cx="113" cy="308" r="4" fill="#ef8997"/><circle cx="123" cy="312" r="4" fill="#ef8997"/><circle cx="133" cy="308" r="4" fill="#ef8997"/></g>
-      <g class="walk-leg walk-leg-r" filter="url(#softShadow)"><rect x="162" y="206" width="30" height="92" rx="15" fill="url(#blackFur)" stroke="#17131b" stroke-width="2.5"/><ellipse cx="177" cy="306" rx="23" ry="14" fill="url(#blackFur)" stroke="#17131b" stroke-width="2.5"/><circle cx="167" cy="308" r="4" fill="#ef8997"/><circle cx="177" cy="312" r="4" fill="#ef8997"/><circle cx="187" cy="308" r="4" fill="#ef8997"/></g>
+      <g class="sleepy" fill="#e8dcff" font-family="system-ui,sans-serif" font-weight="800"><text x="302" y="75" font-size="22">Z</text><text x="324" y="56" font-size="16">z</text><text x="340" y="42" font-size="12">z</text></g>
+    </svg>
+    <svg id="pandaWalker" class="walker idle" viewBox="0 0 420 360" aria-hidden="true" hidden>
+      <ellipse class="walk-shadow" cx="210" cy="344" rx="120" ry="12" fill="#090615" opacity=".35"/>
       <g class="walk-body">
-        <g class="walk-arm walk-arm-l" filter="url(#softShadow)"><rect x="86" y="146" width="24" height="80" rx="12" fill="url(#blackFur)" stroke="#17131b" stroke-width="2.5"/><ellipse cx="98" cy="228" rx="12" ry="10" fill="#fffdf8"/></g>
-        <ellipse cx="150" cy="176" rx="64" ry="62" fill="url(#blackFur)" stroke="#17131b" stroke-width="3" filter="url(#softShadow)"/>
-        <ellipse cx="150" cy="192" rx="40" ry="42" fill="url(#belly)"/>
-        <g class="walk-arm walk-arm-r" filter="url(#softShadow)"><rect x="188" y="146" width="24" height="80" rx="12" fill="url(#blackFur)" stroke="#17131b" stroke-width="2.5"/><ellipse cx="202" cy="228" rx="12" ry="10" fill="#fffdf8"/><g class="walk-bamboo"><rect x="197" y="44" width="10" height="186" rx="5" fill="#7fbf6a" stroke="#2f6b3a" stroke-width="2"/><path d="M207 130 Q236 108 252 66 Q228 94 207 118Z" fill="#8fd17a" stroke="#2f6b3a" stroke-width="1.6"/><path d="M197 92 Q170 74 152 40 Q176 62 197 80Z" fill="#8fd17a" stroke="#2f6b3a" stroke-width="1.6"/></g></g>
-        <g class="walk-head">
-          <circle cx="92" cy="46" r="23" fill="url(#blackFur)" stroke="#17131b" stroke-width="2.5"/>
-          <circle cx="208" cy="46" r="23" fill="url(#blackFur)" stroke="#17131b" stroke-width="2.5"/>
-          <ellipse cx="150" cy="100" rx="70" ry="58" fill="url(#blackFur)" stroke="#17131b" stroke-width="3" filter="url(#softShadow)"/>
-          <ellipse cx="150" cy="110" rx="50" ry="41" fill="url(#belly)"/>
-          <ellipse cx="119" cy="96" rx="18" ry="21" transform="rotate(-18 119 96)" fill="url(#blackFur)"/>
-          <ellipse cx="181" cy="96" rx="18" ry="21" transform="rotate(18 181 96)" fill="url(#blackFur)"/>
-          <circle cx="122" cy="94" r="9.5" fill="#fffdf8"/><circle cx="178" cy="94" r="9.5" fill="#fffdf8"/>
-          <circle cx="124" cy="95" r="5" fill="#17141b"/><circle cx="180" cy="95" r="5" fill="#17141b"/>
-          <circle cx="122" cy="92" r="1.8" fill="#fff"/><circle cx="178" cy="92" r="1.8" fill="#fff"/>
-          <ellipse cx="150" cy="122" rx="8" ry="6" fill="#2b2330"/>
-          <path d="M142 130Q150 137 158 130" fill="none" stroke="#2b2330" stroke-width="2.6" stroke-linecap="round"/>
-          <ellipse cx="116" cy="124" rx="12" ry="7" fill="#ef8997" opacity=".9"/><ellipse cx="184" cy="124" rx="12" ry="7" fill="#ef8997" opacity=".9"/>
-        </g>
+       <path d="M150 212C150 186 176 172 210 172S270 186 270 212L282 286C288 314 270 330 240 330H180C150 330 132 314 138 286Z" fill="url(#fur)" stroke="#2b2330" stroke-width="3.5"/>
+       <ellipse cx="210" cy="272" rx="40" ry="34" fill="url(#belly)"/>
+       <g class="walk-arm walk-arm-l" filter="url(#softShadow)">
+        <rect x="128" y="196" width="44" height="72" rx="22" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
+       </g>
+       <g class="walk-arm walk-arm-r" filter="url(#softShadow)">
+        <rect x="248" y="196" width="44" height="72" rx="22" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
+       </g>
+       <g class="walk-head">
+        <circle cx="134" cy="66" r="40" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
+        <circle cx="286" cy="66" r="40" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
+        <ellipse cx="134" cy="70" rx="19" ry="20" fill="#f5a7b8"/>
+        <ellipse cx="286" cy="70" rx="19" ry="20" fill="#f5a7b8"/>
+        <path d="M110 124C110 76 150 48 210 48S310 76 310 124 276 204 210 208 110 176 110 124Z" fill="url(#fur)" stroke="#2b2330" stroke-width="3.5"/>
+        <path d="M134 92Q148 74 172 70" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".85"/>
+        <ellipse cx="174" cy="128" rx="28" ry="36" transform="rotate(20 174 128)" fill="url(#patch)"/>
+        <ellipse cx="246" cy="128" rx="28" ry="36" transform="rotate(-20 246 128)" fill="url(#patch)"/>
+        <path d="M161 131Q174 113 187 131" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/>
+        <path d="M233 131Q246 113 259 131" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/>
+        <ellipse cx="146" cy="170" rx="22" ry="14" fill="#ff8fa3" opacity=".78"/>
+        <ellipse cx="274" cy="170" rx="22" ry="14" fill="#ff8fa3" opacity=".78"/>
+        <path d="M200 156Q210 150 220 156 218 164 210 166 202 164 200 156Z" fill="#2b2228"/>
+        <path d="M194 170Q210 162 226 170Q224 190 210 192Q196 190 194 170Z" fill="#3b2b32" stroke="#2b2330" stroke-width="2"/>
+       </g>
       </g>
-     </svg>
+      <g class="walk-leg walk-leg-l" filter="url(#softShadow)">
+       <path d="M141 282Q141 262 165 262Q189 262 189 282V316Q189 330 165 330Q141 330 141 316Z" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
+       <ellipse cx="165" cy="324" rx="36" ry="26" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
+       <ellipse cx="165" cy="332" rx="17" ry="10" fill="url(#pawPad)"/>
+      </g>
+      <g class="walk-leg walk-leg-r" filter="url(#softShadow)">
+       <path d="M231 282Q231 262 255 262Q279 262 279 282V316Q279 330 255 330Q231 330 231 316Z" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
+       <ellipse cx="255" cy="324" rx="36" ry="26" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
+       <ellipse cx="255" cy="332" rx="17" ry="10" fill="url(#pawPad)"/>
+      </g>
+    </svg>
      <div class="motes" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
      <div class="speech" id="speech">Oi! Sou seu panda. Vamos conquistar seus objetivos? 🎋</div>
     </div>
@@ -904,7 +901,7 @@ function startWalk(seconds){
  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return toast('Com movimento reduzido ativado, o panda não anda.');
  sv.style.visibility='hidden';
  wk.removeAttribute('hidden');wk.classList.remove('idle');wk.classList.add('walking');
- const half=Math.max(0,scene.clientWidth/2-110);
+ const half=Math.max(0,scene.clientWidth/2-170);
  walker.x=-half*.6;walker.dir=1;
  let last=performance.now();walker.end=last+seconds*1000;
  const step=now=>{
