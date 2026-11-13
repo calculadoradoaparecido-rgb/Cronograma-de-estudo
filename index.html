@@ -130,6 +130,18 @@
 .motes span:nth-child(6){left:44%;width:4px;height:4px;animation-delay:5.5s;animation-duration:7.2s}
 @keyframes mote{0%{transform:translateY(0) scale(.6);opacity:0}15%{opacity:.9}85%{opacity:.5}100%{transform:translateY(-360px) scale(1);opacity:0}}
 @media(prefers-reduced-motion:reduce){.motes span,.panda-artwork .halo{animation:none}.motes{display:none}}
+
+/* Movimentos: balanço suave do bambu, pose de comemoração e pausa para depuração */
+.panda-artwork .bamboo{animation:bamboo-sway 5.6s ease-in-out infinite}
+@keyframes bamboo-sway{0%,100%{transform:rotate(-1.4deg)}50%{transform:rotate(1.4deg)}}
+.panda-artwork.pose-celebrate .arm-left{animation:panda-wave .45s ease-in-out 4 alternate}
+.panda-artwork.pose-celebrate .arm-right{animation:panda-wave .45s ease-in-out 4 alternate-reverse}
+.panda-artwork.pose-celebrate .torso{animation:panda-hop .45s ease-in-out 4}
+.panda-artwork.pose-celebrate .sparkles,.panda-artwork.pose-celebrate .evolution-sparkles{opacity:1;animation:panda-sparkle .9s ease-in-out 3}
+.dev-paused .panda-artwork *{animation-play-state:paused!important}
+#devBack{position:fixed;right:16px;bottom:16px;z-index:15;box-shadow:var(--shadow)}
+.dev-grid label{margin-top:12px}
+.dev-grid .actions{margin-top:10px}
 .summary-source{color:#d0a8ff;font-weight:700;text-decoration:none}.summary-source:hover{text-decoration:underline}
 </style>
 </head>
@@ -147,6 +159,7 @@
   <button data-page="performance">📊 &nbsp; Desempenho</button>
   <button data-page="inventory">🎁 &nbsp; Inventário</button>
   <button data-page="settings">⚙️ &nbsp; Dados e configurações</button>
+  <button data-page="dev" id="devNav" class="hidden">🛠️ &nbsp; Desenvolvedor</button>
  </nav>
  <div class="sidebar-foot">Versão 5.13 · panda personalizável.</div>
 </aside>
@@ -366,10 +379,45 @@
  <div class="card"><p class="muted">Seu mascote conquista acessórios com a sua dedicação. Equipe os itens desbloqueados e personalize o panda.</p><div id="inventoryItems" class="item-grid"></div></div>
  </section>
 
+ <section class="content" id="page-dev">
+  <div class="section-head"><h2>🛠️ Área de desenvolvedor</h2><span class="pill">Só para testes</span></div>
+  <p class="muted">Ferramentas para testar animações, poses, estágios, acessórios e registros. As ações alteram os dados deste navegador, então exporte um backup antes.</p>
+  <div class="grid two dev-grid">
+   <div class="card"><h2>🐼 Estado do panda</h2>
+    <label for="devXp">XP total</label><input class="field" id="devXp" type="number" min="0" max="5000" step="10">
+    <div class="actions" id="devXpPresets"></div>
+    <div id="devNeeds"></div>
+    <div class="actions"><button onclick="applyDevState()">Aplicar estado</button><button class="secondary" onclick="renderDev()">Ler do panda</button></div>
+   </div>
+   <div class="card"><h2>🎬 Poses e animações</h2>
+    <p class="tiny">Só mostram a pose (não mudam necessidades nem XP) e levam você ao Meu Panda.</p>
+    <div class="actions"><button class="green" onclick="devPose('feed')">🎋 Alimentar</button><button onclick="devPose('play')">🎮 Brincar</button><button class="pink" onclick="devPose('pet')">💗 Carinho</button><button class="blue" onclick="devPose('rest')">💤 Descansar</button><button onclick="devPose('celebrate')">🎉 Celebrar</button></div>
+    <div class="actions"><button class="secondary" onclick="devEvolvePop()">Efeito de evolução</button><button class="secondary" id="devPauseBtn" onclick="devToggleAnim()">Pausar animações</button><button class="secondary" onclick="devClearCooldowns()">Zerar cooldowns</button></div>
+   </div>
+   <div class="card"><h2>🎨 Visual</h2>
+    <label for="devFur">Pelagem</label><select id="devFur"></select>
+    <label for="devBg">Cenário</label><select id="devBg"></select>
+    <div id="devSlots"></div>
+    <label class="checkline"><input type="checkbox" id="devUnlock" onchange="data.panda.devUnlock=this.checked;save();toast(this.checked?'Todos os estilos liberados para teste.':'Bloqueios por XP restaurados.')"><span>Liberar todos os estilos (ignora XP)</span></label>
+    <div class="actions"><button onclick="applyDevLook()">Aplicar visual</button><button class="danger" onclick="devRemoveAccessories()">Remover acessórios</button></div>
+   </div>
+   <div class="card"><h2>📚 Estudo e notificações</h2>
+    <p class="tiny">Cria registros reais de estudo, marcados com “[dev]” na observação, e mostra a celebração de XP.</p>
+    <div class="actions"><button onclick="devSimulateStudy(30,10,7)">Simular 30 min · 10 questões</button><button onclick="devSimulateStudy(120,40,30)">Simular 2 h · 40 questões</button></div>
+    <div class="actions"><button class="secondary" onclick="toast('Notificação de teste ✔')">Testar notificação</button><button class="danger" onclick="devClearTestSessions()">Apagar sessões de teste</button></div>
+   </div>
+   <div class="card" style="grid-column:1/-1"><h2>🧾 Estado bruto do panda</h2>
+    <textarea id="devJson" class="field" readonly rows="12" style="font-family:monospace;font-size:12px"></textarea>
+    <div class="actions"><button class="secondary" onclick="navigator.clipboard?.writeText(document.getElementById('devJson').value);toast('JSON copiado.')">Copiar JSON</button></div>
+   </div>
+  </div>
+ </section>
+
  <section class="content" id="page-settings">
   <div class="section-head"><h2>⚙️ Dados e configurações</h2></div>
   <div class="grid two">
   <div class="card"><h2>💾 Backup dos seus estudos</h2><p class="muted">Exporte um arquivo JSON para guardar seus concursos, sessões, resumos, cronogramas, edital e evolução do panda. Importe esse arquivo em outro navegador para restaurar.</p><div class="actions"><button onclick="exportBackup()">⬇ Exportar backup</button><button class="secondary" onclick="document.getElementById('importFile').click()">⬆ Importar backup</button><input id="importFile" type="file" accept=".json,application/json" class="hidden" onchange="importBackup(event)"></div></div>
+   <div class="card"><h2>🛠️ Modo desenvolvedor</h2><p class="muted">Mostra a área de testes do app: estado do panda, poses, visual, estudos simulados e JSON bruto. Não altera o backup.</p><label class="checkline"><input type="checkbox" id="devToggle" onchange="setDevMode(this.checked)"><span>Ativar área de desenvolvedor</span></label><button class="secondary" id="devOpen" onclick="showPage('dev')" style="margin-top:10px">Abrir área de desenvolvedor</button></div>
    <div class="card"><h2>🧹 Gerenciar dados</h2><p class="muted">Os dados ficam neste navegador. Não há sincronização automática entre aparelhos; use o backup para transferir seus dados.</p><button class="danger" onclick="resetPanda()">Reiniciar apenas o panda</button><button class="danger" style="margin-top:8px" onclick="wipeAll()">Apagar todos os dados</button></div>
   </div>
   <div class="card" style="margin-top:14px"><h2>Sobre o aplicativo</h2><p class="muted">Trilha Panda é um organizador pessoal de estudos. O conteúdo programático inicial é editável e deve ser conferido com o edital oficial e suas retificações. O aplicativo não substitui orientação jurídica ou informações oficiais de concursos.</p><p class="tiny">Mascote ilustrado em estilo 3D, com arte local incluída no pacote; não depende de biblioteca 3D externa.</p></div>
@@ -378,13 +426,14 @@
 </main>
 </div>
 <nav class="mobilebar" id="mobileNav"><button data-page="home"><span>🐼</span>Início</button><button data-page="contests"><span>🏆</span>Concursos</button><button data-page="schedule"><span>📅</span>Plano</button><button data-page="summaries"><span>🗒️</span>Resumos</button><button data-page="study"><span>✍️</span>Estudar</button><button data-page="performance"><span>📊</span>Dados</button></nav>
+<button id="devBack" class="hidden" onclick="showPage('dev')">🛠️ Desenvolvedor</button>
 <div class="toast" id="toast"></div>
 
 <script>
 'use strict';
 const STORAGE_KEY='trilhaPandaUltimate_v5';
 const DAY_NAMES=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
-const PAGE_META={home:['Meu Panda','Um passo por dia aproxima você da aprovação.'],contests:['Concursos','Organize diferentes objetivos sem misturar seus resultados.'],schedule:['Cronograma','Monte uma rotina realista e acompanhe sua execução.'],syllabus:['Edital verticalizado','Transforme o edital em tópicos acompanháveis.'],summaries:['Resumos','Guarde e consulte seus resumos por concurso e disciplina.'],study:['Registrar estudo','Cada sessão conta para sua evolução.'],performance:['Desempenho','Veja seu ritmo, aproveitamento e consistência.'],inventory:['Inventário','Personalize o panda com recompensas conquistadas.'],settings:['Dados e configurações','Faça backup e mantenha seus dados protegidos.']};
+const PAGE_META={home:['Meu Panda','Um passo por dia aproxima você da aprovação.'],contests:['Concursos','Organize diferentes objetivos sem misturar seus resultados.'],schedule:['Cronograma','Monte uma rotina realista e acompanhe sua execução.'],syllabus:['Edital verticalizado','Transforme o edital em tópicos acompanháveis.'],summaries:['Resumos','Guarde e consulte seus resumos por concurso e disciplina.'],study:['Registrar estudo','Cada sessão conta para sua evolução.'],performance:['Desempenho','Veja seu ritmo, aproveitamento e consistência.'],inventory:['Inventário','Personalize o panda com recompensas conquistadas.'],settings:['Dados e configurações','Faça backup e mantenha seus dados protegidos.'],dev:['Desenvolvedor','Testes de animações, estados e dados. Não aparece no backup.']};
 const initialTopics=[
 ['Língua Portuguesa',['Interpretação e compreensão de textos','Tipologia e gêneros textuais','Ortografia oficial e acentuação','Coesão, coerência e mecanismos de referenciação','Classes de palavras e emprego','Coordenação e subordinação','Pontuação','Concordância verbal e nominal','Regência verbal e nominal; crase','Colocação pronominal e reescrita']],
 ['Ética e Administração Pública',['Princípios da Administração Pública','Ética, moralidade e interesse público','Deveres e responsabilidades do servidor','Gestão de pessoas, liderança e trabalho em equipe','Integridade, transparência e conflito de interesses']],
@@ -416,7 +465,8 @@ const catalog=[
 const FUR_OPTIONS=[{id:'classico',label:'Clássico',xp:0,sw:'linear-gradient(135deg,#49404b,#17141c)'},{id:'noturno',label:'Noturno',xp:200,sw:'linear-gradient(135deg,#3d4f78,#141c30)'},{id:'cafe',label:'Café',xp:450,sw:'linear-gradient(135deg,#7a5140,#2e1d15)'},{id:'rosa',label:'Algodão-doce',xp:800,sw:'linear-gradient(135deg,#c46a95,#5a2442)'}];
 const BG_OPTIONS=[{id:'estrelas',label:'Noite estrelada',xp:0,sw:'radial-gradient(#5b3784,#171329)'},{id:'bambuzal',label:'Bambuzal',xp:100,sw:'radial-gradient(#4d8f57,#0d1a14)'},{id:'oceano',label:'Oceano',xp:300,sw:'radial-gradient(#3fa6c4,#0a1a2e)'},{id:'biblioteca',label:'Biblioteca',xp:600,sw:'radial-gradient(#94613a,#1a0f09)'},{id:'por-do-sol',label:'Por do sol',xp:1000,sw:'radial-gradient(#ff9a6e,#211737)'}];
 function pandaName(){return data?.panda?.name||'Panda'}
-function lookValue(kind){const list=kind==='fur'?FUR_OPTIONS:BG_OPTIONS;const id=data.panda.look?.[kind];const o=list.find(x=>x.id===id);return o&&(data.panda.xp||0)>=o.xp?o.id:list[0].id}
+function isUnlocked(o){return (data.panda.xp||0)>=o.xp||!!data.panda.devUnlock}
+function lookValue(kind){const list=kind==='fur'?FUR_OPTIONS:BG_OPTIONS;const id=data.panda.look?.[kind];const o=list.find(x=>x.id===id);return o&&isUnlocked(o)?o.id:list[0].id}
 function isoOf(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
 function uid(){return 'id'+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
 function todayISO(){return isoOf(new Date())}
@@ -432,7 +482,7 @@ function activeContest(){return data.contests.find(c=>c.id===data.activeId)||nul
 function allSessions(){return data.contests.flatMap(c=>(c.sessions||[]).map(s=>({...s,contestName:c.name,contestId:c.id})))}
 function sum(arr,key){return arr.reduce((n,x)=>n+(Number(x[key])||0),0)}
 function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.style.display='none',2800)}
-function showPage(page){document.querySelectorAll('.content').forEach(x=>x.classList.toggle('active',x.id==='page-'+page));document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===page));document.getElementById('pageTitle').textContent=page==='home'?pandaName():PAGE_META[page][0];document.getElementById('pageSub').textContent=PAGE_META[page][1];if(page==='study')renderStudy();if(page==='summaries')renderSummaries();if(page==='performance')renderPerformance();if(page==='inventory')renderInventory();window.scrollTo({top:0,behavior:'smooth'})}
+function showPage(page){document.querySelectorAll('.content').forEach(x=>x.classList.toggle('active',x.id==='page-'+page));document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===page));document.getElementById('pageTitle').textContent=page==='home'?pandaName():PAGE_META[page][0];if(page==='dev')renderDev();document.getElementById('pageSub').textContent=PAGE_META[page][1];if(page==='study')renderStudy();if(page==='summaries')renderSummaries();if(page==='performance')renderPerformance();if(page==='inventory')renderInventory();document.getElementById('devBack').classList.toggle('hidden',!(isDev()&&page==='home'));window.scrollTo({top:0,behavior:'smooth'})}
 document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
 document.getElementById('activeSelect').addEventListener('change',e=>{data.activeId=e.target.value;save()});
 function setActive(id){data.activeId=id;save();showPage('home')}
@@ -480,23 +530,78 @@ function editSummary(id){let c=activeContest(),s=c?.summaries.find(x=>x.id===id)
 function deleteSummary(id){let c=activeContest(),s=c?.summaries.find(x=>x.id===id);if(!s||!confirm(`Excluir o resumo “${s.title}”?`))return;c.summaries=c.summaries.filter(x=>x.id!==id);save();toast('Resumo excluído.')}
 function renderSummaries(){let c=activeContest(),all=c?.summaries||[],query=(document.getElementById('summaryFilter')?.value||'').trim().toLocaleLowerCase('pt-BR');document.getElementById('summaryContestLabel').textContent=c?`Concurso ativo: ${c.name}`:'Cadastre um concurso para organizar resumos.';document.getElementById('summaryCount').textContent=`${all.length} ${all.length===1?'resumo salvo':'resumos salvos'}`;let matches=all.filter(s=>!query||`${s.subject} ${s.title} ${s.body}`.toLocaleLowerCase('pt-BR').includes(query)).slice().sort((a,b)=>a.subject.localeCompare(b.subject,'pt-BR')||a.title.localeCompare(b.title,'pt-BR'));let list=document.getElementById('summaryList');list.innerHTML=matches.map(s=>`<article class="list-item" style="display:block"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;flex-wrap:wrap"><span class="pill">${escapeHTML(s.subject)}</span><strong>${escapeHTML(s.title)}</strong></div><div style="white-space:pre-wrap;overflow-wrap:anywhere;margin-top:10px">${escapeHTML(s.body)}</div>${safeSummaryUrl(s.source)?`<p class="tiny"><a class="summary-source" href="${escapeHTML(safeSummaryUrl(s.source))}" target="_blank" rel="noopener noreferrer">Abrir aula de origem ↗</a></p>`:''}<div class="actions"><button class="small secondary" data-edit-summary="${escapeHTML(s.id)}">Editar</button><button class="small danger" data-delete-summary="${escapeHTML(s.id)}">Excluir</button></div></article>`).join('')||(query?'<div class="empty">Nenhum resumo corresponde à busca.</div>':'<div class="empty">Nenhum resumo salvo neste concurso.</div>');list.querySelectorAll('[data-edit-summary]').forEach(b=>b.addEventListener('click',()=>editSummary(b.dataset.editSummary)));list.querySelectorAll('[data-delete-summary]').forEach(b=>b.addEventListener('click',()=>deleteSummary(b.dataset.deleteSummary)))}
 function renderStudy(){let c=activeContest();document.getElementById('studyContestName').textContent=c?`Concurso ativo: ${c.name}`:'Cadastre um concurso para registrar estudos.';document.getElementById('studySubject').innerHTML=(c?.subjects.length?c.subjects:['Geral']).map(s=>`<option>${escapeHTML(s)}</option>`).join('');document.getElementById('studyDate').value=todayISO();document.getElementById('studyHistory').innerHTML=c?.sessions.slice().reverse().slice(0,20).map(s=>`<div class="session"><strong>${escapeHTML(s.subject)}</strong><div class="tiny">${formatDate(s.date)} · ${s.minutes} min · ${escapeHTML(s.type||'Estudo')} · ${s.questions} questões · ${s.questions?Math.round(s.correct/s.questions*100):0}%</div>${s.notes?`<div class="tiny">${escapeHTML(s.notes)}</div>`:''}</div>`).join('')||'<div class="empty">Nenhuma sessão registrada neste concurso.</div>'}
-function saveStudy(){let c=activeContest();if(!c)return toast('Cadastre e selecione um concurso primeiro.');let minutes=+document.getElementById('studyMinutes').value,questions=+document.getElementById('studyQuestions').value,correct=+document.getElementById('studyCorrect').value;if(minutes<1||questions<0||correct<0||correct>questions)return toast('Confira tempo, questões e acertos.');let date=document.getElementById('studyDate').value||todayISO(),s={id:uid(),subject:document.getElementById('studySubject').value,date,minutes,questions,correct,type:document.getElementById('studyType').value,notes:document.getElementById('studyNotes').value.trim()},p=data.panda,previousXP=Number(p.xp)||0,previousStage=pandaGrowthStage(previousXP);c.sessions.push(s);let xp=Math.max(5,Math.round(minutes/10)+Math.round(correct/5));p.xp=previousXP+xp;let newStage=pandaGrowthStage(p.xp),earned=awardPandaAccessories(previousXP,p.xp);p.happiness=Math.min(100,p.happiness+Math.min(15,Math.ceil(minutes/30)));p.energy=Math.max(5,p.energy-Math.min(18,Math.ceil(minutes/35)));p.lastStudy=date;p.health=Math.min(100,p.health+2);p.actions.lastStudy=Date.now();p.speech=newStage>previousStage?`Evoluí com seus estudos! Estou mais fofinho e feliz! 🐼${earned.length?' Ganhei um acessório novo também!':''}`:earned.length?`Desbloqueei ${earned.at(-1).name}! Meu visual novo ficou lindo! 🐼`:`Você estudou ${minutes} minutos! Ganhei ${xp} XP. Estou muito orgulhoso! 🐼`;document.getElementById('studyNotes').value='';save();const celebration=newStage>previousStage||earned.length>0;showPage(celebration?'home':'study');if(celebration){const art=document.getElementById('pandaArtwork');if(art){art.classList.remove('evolution-pop');void art.getBoundingClientRect();art.classList.add('evolution-pop');art.addEventListener('animationend',()=>art.classList.remove('evolution-pop'),{once:true})}document.getElementById('speech').textContent=p.speech}toast(`Sessão salva! +${xp} XP${newStage>previousStage?' · Panda evoluiu!':''}${earned.length?' · Acessório desbloqueado!':''}`)}
+function saveStudy(){let c=activeContest();if(!c)return toast('Cadastre e selecione um concurso primeiro.');let minutes=+document.getElementById('studyMinutes').value,questions=+document.getElementById('studyQuestions').value,correct=+document.getElementById('studyCorrect').value;if(minutes<1||questions<0||correct<0||correct>questions)return toast('Confira tempo, questões e acertos.');let date=document.getElementById('studyDate').value||todayISO(),s={id:uid(),subject:document.getElementById('studySubject').value,date,minutes,questions,correct,type:document.getElementById('studyType').value,notes:document.getElementById('studyNotes').value.trim()},p=data.panda,previousXP=Number(p.xp)||0,previousStage=pandaGrowthStage(previousXP);c.sessions.push(s);let xp=Math.max(5,Math.round(minutes/10)+Math.round(correct/5));p.xp=previousXP+xp;let newStage=pandaGrowthStage(p.xp),earned=awardPandaAccessories(previousXP,p.xp);p.happiness=Math.min(100,p.happiness+Math.min(15,Math.ceil(minutes/30)));p.energy=Math.max(5,p.energy-Math.min(18,Math.ceil(minutes/35)));p.lastStudy=date;p.health=Math.min(100,p.health+2);p.actions.lastStudy=Date.now();p.speech=newStage>previousStage?`Evoluí com seus estudos! Estou mais fofinho e feliz! 🐼${earned.length?' Ganhei um acessório novo também!':''}`:earned.length?`Desbloqueei ${earned.at(-1).name}! Meu visual novo ficou lindo! 🐼`:`Você estudou ${minutes} minutos! Ganhei ${xp} XP. Estou muito orgulhoso! 🐼`;document.getElementById('studyNotes').value='';save();const celebration=newStage>previousStage||earned.length>0;showPage(celebration?'home':'study');if(celebration){const art=document.getElementById('pandaArtwork');if(art){art.classList.remove('evolution-pop');void art.getBoundingClientRect();art.classList.add('evolution-pop');art.addEventListener('animationend',()=>art.classList.remove('evolution-pop'),{once:true})}document.getElementById('speech').textContent=p.speech;playMascotPose('celebrate')}toast(`Sessão salva! +${xp} XP${newStage>previousStage?' · Panda evoluiu!':''}${earned.length?' · Acessório desbloqueado!':''}`)}
 function renderPerformance(){let sessions=allSessions(),minutes=sum(sessions,'minutes'),questions=sum(sessions,'questions'),correct=sum(sessions,'correct'),stats=[['Horas estudadas',(minutes/60).toFixed(1)+'h'],['Sessões',sessions.length],['Questões',questions],['Aproveitamento',questions?Math.round(correct/questions*100)+'%':'—']];document.getElementById('globalStats').innerHTML=stats.map(([a,b])=>`<div class="card stat"><b>${b}</b><small>${a}</small></div>`).join('');document.getElementById('contestPerformance').innerHTML=data.contests.map(c=>{let m=sum(c.sessions,'minutes'),q=sum(c.sessions,'questions'),a=sum(c.sessions,'correct');return `<div class="session"><strong>${escapeHTML(c.name)}</strong><div class="tiny">${(m/60).toFixed(1)}h · ${c.sessions.length} sessões · ${q?Math.round(a/q*100)+'% de acertos':'sem questões registradas'}</div></div>`}).join('')||'<div class="empty">Cadastre concursos para acompanhar.</div>';let c=activeContest(),by={};(c?.sessions||[]).forEach(s=>{let x=by[s.subject]??={m:0,q:0,a:0};x.m+=s.minutes;x.q+=s.questions;x.a+=s.correct});document.getElementById('subjectPerformance').innerHTML=Object.entries(by).sort((a,b)=>b[1].m-a[1].m).map(([s,x])=>`<div class="session"><strong>${escapeHTML(s)}</strong><div class="tiny">${(x.m/60).toFixed(1)}h · ${x.q} questões · ${x.q?Math.round(x.a/x.q*100)+'% acertos':'sem questões'}</div></div>`).join('')||'<div class="empty">Registre sessões para ver o desempenho.</div>';
  let bars=[];for(let i=13;i>=0;i--){let d=new Date();d.setDate(d.getDate()-i);let key=isoOf(d),m=sum(sessions.filter(s=>s.date===key),'minutes');bars.push({key,m})}let max=Math.max(60,...bars.map(x=>x.m));document.getElementById('dailyBars').innerHTML=bars.map(x=>`<div title="${formatDate(x.key)}: ${x.m} min" style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:5px"><div style="width:100%;height:${Math.max(3,x.m/max*100)}%;background:linear-gradient(#b47aff,#713be0);border-radius:5px 5px 0 0"></div><small style="font-size:9px">${x.key.slice(8)}</small></div>`).join('')}
-function renderLook(){const xp=data.panda.xp||0,cur={fur:lookValue('fur'),bg:lookValue('bg')};const input=document.getElementById('pandaNameInput');if(input&&document.activeElement!==input)input.value=pandaName();const opts=(kind,list)=>list.map(o=>{const unlocked=xp>=o.xp,on=cur[kind]===o.id;return `<div class="item ${unlocked?'':'locked'}"><div class="emoji"><span class="swatch" style="background:${o.sw}"></span></div><strong>${o.label}</strong><p class="tiny">${unlocked?(on?'Em uso':'Disponível'):`Desbloqueia com ${o.xp} XP`}</p><button class="small ${on?'secondary':''}" ${unlocked?'':'disabled'} onclick="setLook('${kind}','${o.id}')">${on?'Em uso':unlocked?'Usar':'Bloqueado'}</button></div>`}).join('');document.getElementById('furOptions').innerHTML=opts('fur',FUR_OPTIONS);document.getElementById('bgOptions').innerHTML=opts('bg',BG_OPTIONS)}
-function setLook(kind,id){const list=kind==='fur'?FUR_OPTIONS:BG_OPTIONS;const o=list.find(x=>x.id===id);if(!o||(data.panda.xp||0)<o.xp)return toast('Esse estilo ainda está bloqueado.');data.panda.look??={};data.panda.look[kind]=id;save();toast(`${o.label} aplicado ao panda!`)}
+function renderLook(){const xp=data.panda.xp||0,cur={fur:lookValue('fur'),bg:lookValue('bg')};const input=document.getElementById('pandaNameInput');if(input&&document.activeElement!==input)input.value=pandaName();const opts=(kind,list)=>list.map(o=>{const unlocked=isUnlocked(o),on=cur[kind]===o.id;return `<div class="item ${unlocked?'':'locked'}"><div class="emoji"><span class="swatch" style="background:${o.sw}"></span></div><strong>${o.label}</strong><p class="tiny">${unlocked?(on?'Em uso':'Disponível'):`Desbloqueia com ${o.xp} XP`}</p><button class="small ${on?'secondary':''}" ${unlocked?'':'disabled'} onclick="setLook('${kind}','${o.id}')">${on?'Em uso':unlocked?'Usar':'Bloqueado'}</button></div>`}).join('');document.getElementById('furOptions').innerHTML=opts('fur',FUR_OPTIONS);document.getElementById('bgOptions').innerHTML=opts('bg',BG_OPTIONS)}
+function setLook(kind,id){const list=kind==='fur'?FUR_OPTIONS:BG_OPTIONS;const o=list.find(x=>x.id===id);if(!o||!isUnlocked(o))return toast('Esse estilo ainda está bloqueado.');data.panda.look??={};data.panda.look[kind]=id;save();toast(`${o.label} aplicado ao panda!`)}
 function savePandaName(){const v=(document.getElementById('pandaNameInput').value||'').trim().slice(0,20);data.panda.name=v||'Panda';save();toast(`Oi, eu sou ${data.panda.name}!`)}
 function renderInventory(){renderLook();let xp=data.panda.xp||0;document.getElementById('inventoryItems').innerHTML=catalog.map(it=>{let unlocked=xp>=it.xp,equipped=data.panda.equipped[it.slot]===it.id;return `<div class="item ${unlocked?'':'locked'}"><div class="emoji">${unlocked?it.emoji:'🔒'}</div><strong>${it.name}</strong><p class="tiny">${unlocked?(equipped?'Em uso':'Desbloqueado'):`Desbloqueia com ${it.xp} XP`}</p><button class="small ${equipped?'secondary':''}" ${unlocked?'':'disabled'} onclick="equipItem('${it.slot}','${it.id}')">${equipped?'Equipado':unlocked?'Equipar':'Bloqueado'}</button></div>`}).join('')}
 function equipItem(slot,id){data.panda.autoEquipped??={};delete data.panda.autoEquipped[slot];data.panda.equipped[slot]=data.panda.equipped[slot]===id?'':id;data.panda.speech='Olha meu visual novo! Ficou incrível? 🐼';save();toast('Visual do panda atualizado.')}
 let mascotPoseTimer;
-function playMascotPose(action){const art=document.getElementById('pandaArtwork');if(!art)return;const poses=['pose-feed','pose-play','pose-pet','pose-rest'];art.classList.remove(...poses);void art.getBoundingClientRect();art.classList.add(`pose-${action}`);clearTimeout(mascotPoseTimer);mascotPoseTimer=setTimeout(()=>art.classList.remove(...poses),action==='rest'?3000:2300)}
+function playMascotPose(action){const art=document.getElementById('pandaArtwork');if(!art)return;const poses=['pose-feed','pose-play','pose-pet','pose-rest','pose-celebrate'];art.classList.remove(...poses);void art.getBoundingClientRect();art.classList.add(`pose-${action}`);clearTimeout(mascotPoseTimer);mascotPoseTimer=setTimeout(()=>art.classList.remove(...poses),action==='rest'?3000:2300)}
 function pandaCare(action){let p=data.panda,now=Date.now(),last=p.actions[action]||0;if(now-last<8000)return toast('Vamos esperar alguns segundos antes de repetir essa ação.');p.actions[action]=now;let msgs={feed:['NHAC! Bambu fresquinho! 🎋',8,12,0,0],play:['Oba! Essa brincadeira foi demais! 🎮',12,-4,-10,3],pet:['Que carinho gostoso! Gosto de estudar com você. 💗',15,0,2,2],rest:['Zzz… recarregando as energias. 💤',3,0,25,1]};let [msg,hun,hap,en,xp]=msgs[action];p.happiness=Math.max(0,Math.min(100,p.happiness+hap));p.hunger=Math.max(0,Math.min(100,p.hunger+hun));p.energy=Math.max(0,Math.min(100,p.energy+en));p.xp+=xp;p.speech=msg;save();document.getElementById('speech').textContent=msg;playMascotPose(action)}
+/* ===== Área de desenvolvedor ===== */
+function isDev(){return localStorage.getItem('trilhaPandaDev')==='1'}
+function setDevMode(on){localStorage.setItem('trilhaPandaDev',on?'1':'0');applyDevVisibility();toast(on?'Área de desenvolvedor ativada.':'Área de desenvolvedor oculta.')}
+function applyDevVisibility(){const on=isDev();document.getElementById('devNav').classList.toggle('hidden',!on);document.getElementById('devOpen').classList.toggle('hidden',!on);document.getElementById('devToggle').checked=on;document.getElementById('devBack').classList.toggle('hidden',!(on&&document.getElementById('page-home').classList.contains('active')));if(!on&&document.getElementById('page-dev').classList.contains('active'))showPage('settings')}
+function renderDev(){
+ const p=data.panda;
+ document.getElementById('devXp').value=p.xp||0;
+ document.getElementById('devXpPresets').innerHTML=[0,249,250,500,1250,2250,3500].map(v=>`<button class="small secondary" onclick="document.getElementById('devXp').value=${v}">${v} XP</button>`).join('');
+ document.getElementById('devNeeds').innerHTML=[['happiness','💗 Felicidade'],['hunger','🎋 Fome'],['energy','⚡ Energia'],['health','💚 Saúde']].map(([k,l])=>`<label>${l} · <b id="dvo-${k}">${p[k]}</b>%</label><input type="range" min="0" max="100" value="${p[k]}" id="dvr-${k}" style="width:100%" oninput="document.getElementById('dvo-${k}').textContent=this.value">`).join('');
+ document.getElementById('devFur').innerHTML=FUR_OPTIONS.map(o=>`<option value="${o.id}" ${(p.look?.fur||'classico')===o.id?'selected':''}>${o.label}</option>`).join('');
+ document.getElementById('devBg').innerHTML=BG_OPTIONS.map(o=>`<option value="${o.id}" ${(p.look?.bg||'estrelas')===o.id?'selected':''}>${o.label}</option>`).join('');
+ document.getElementById('devSlots').innerHTML=[['head','Cabeça'],['face','Rosto'],['neck','Pescoço'],['hand','Mão']].map(([s,l])=>`<label for="devSlot-${s}">${l}</label><select id="devSlot-${s}"><option value="">Nenhum</option>${catalog.filter(it=>it.slot===s).map(it=>`<option value="${it.id}" ${p.equipped?.[s]===it.id?'selected':''}>${it.emoji} ${it.name}</option>`).join('')}</select>`).join('');
+ document.getElementById('devUnlock').checked=!!p.devUnlock;
+ document.getElementById('devJson').value=JSON.stringify(p,null,2);
+ document.getElementById('devPauseBtn').textContent=document.body.classList.contains('dev-paused')?'Retomar animações':'Pausar animações';
+}
+function applyDevState(){
+ const p=data.panda;
+ p.xp=Math.max(0,Math.min(5000,Math.round(+document.getElementById('devXp').value||0)));
+ ['happiness','hunger','energy','health'].forEach(k=>{p[k]=Math.max(0,Math.min(100,+document.getElementById('dvr-'+k).value))});
+ save();renderDev();toast(`Estado aplicado · estágio de crescimento ${pandaGrowthStage(p.xp)}`);
+}
+function devPose(action){
+ const msgs={feed:'NHAC! Bambu fresquinho! 🎋',play:'Oba! Essa brincadeira foi demais! 🎮',pet:'Que carinho gostoso! 💗',rest:'Zzz… recarregando as energias. 💤',celebrate:'Eba! Conquista desbloqueada! 🎉'};
+ showPage('home');
+ document.getElementById('speech').textContent=msgs[action]||'';
+ playMascotPose(action);
+}
+function devEvolvePop(){
+ showPage('home');
+ const art=document.getElementById('pandaArtwork');art.classList.remove('evolution-pop');void art.getBoundingClientRect();art.classList.add('evolution-pop');
+ art.addEventListener('animationend',()=>art.classList.remove('evolution-pop'),{once:true});
+}
+function devToggleAnim(){document.body.classList.toggle('dev-paused');renderDev()}
+function devClearCooldowns(){data.panda.actions={};save();toast('Cooldowns zerados.')}
+function applyDevLook(){
+ const p=data.panda;
+ p.look={fur:document.getElementById('devFur').value,bg:document.getElementById('devBg').value};
+ p.autoEquipped={};
+ p.equipped={head:'',face:'',neck:'',hand:'',...Object.fromEntries(['head','face','neck','hand'].map(s=>[s,document.getElementById('devSlot-'+s).value]))};
+ save();toast('Visual aplicado.');
+}
+function devRemoveAccessories(){data.panda.equipped={head:'',face:'',neck:'',hand:''};data.panda.autoEquipped={};save();renderDev();toast('Acessórios removidos.')}
+function devSimulateStudy(minutes,questions,correct){
+ const c=activeContest();if(!c)return toast('Cadastre um concurso primeiro.');
+ showPage('study');
+ document.getElementById('studyMinutes').value=minutes;
+ document.getElementById('studyQuestions').value=questions;
+ document.getElementById('studyCorrect').value=correct;
+ document.getElementById('studyNotes').value='[dev] sessão simulada';
+ document.getElementById('studyDate').value=todayISO();
+ const sel=document.getElementById('studySubject');if(!sel.value&&sel.options.length)sel.selectedIndex=0;
+ saveStudy();
+}
+function devClearTestSessions(){data.contests.forEach(c=>{c.sessions=(c.sessions||[]).filter(s=>!String(s.notes||'').startsWith('[dev]'))});save();toast('Sessões de teste apagadas.')}
 function renderAll(){renderHeader();renderHome();renderContests();renderSchedule();renderSyllabus();renderSummaries();renderStudy();renderPerformance();renderInventory()}
 function exportBackup(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='trilha-panda-backup-'+todayISO()+'.json';a.click();URL.revokeObjectURL(url);toast('Backup exportado. Guarde o arquivo em local seguro.')}
 function importBackup(event){let file=event.target.files?.[0];if(!file)return;let reader=new FileReader();reader.onload=()=>{try{let d=JSON.parse(reader.result);if(!Array.isArray(d.contests)||!d.panda)throw new Error('Formato inválido');if(!confirm('Importar backup e substituir os dados atuais deste navegador?'))return;data=normalizeData(d);save();toast('Backup restaurado com sucesso.')}catch(e){toast('Não foi possível importar: arquivo inválido.')}event.target.value=''};reader.readAsText(file)}
 function resetPanda(){if(!confirm('Reiniciar XP, necessidades e acessórios do panda? Seus estudos serão preservados.'))return;const {name,look}=data.panda;data.panda={...freshData().panda,name,look};save();toast('Panda reiniciado.')}
 function wipeAll(){if(!confirm('ATENÇÃO: apagar todos os concursos, sessões, cronogramas e dados do panda deste navegador? Exporte um backup antes, se necessário.'))return;data=freshData();save();toast('Dados reiniciados.')}
-renderAll();showPage('home');document.getElementById('studyDate').value=todayISO();
+renderAll();showPage('home');document.getElementById('studyDate').value=todayISO();applyDevVisibility();
 </script>
 <script>
 </script>

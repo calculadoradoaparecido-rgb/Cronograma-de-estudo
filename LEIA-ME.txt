@@ -2,6 +2,8 @@ TRILHA PANDA — VERSÃO 5.13
 MASCOTE VETORIAL ANIMADO · PWA INSTALÁVEL
 
 O QUE MUDOU NA 5.13
+- Movimentos: bambu com balanço suave e nova pose de comemoração, usada ao subir de estágio ou evoluir.
+- Área de desenvolvedor (ative em Dados e configurações > Modo desenvolvedor): editar XP e necessidades, disparar poses e efeitos, trocar visual e acessórios, liberar todos os estilos, simular estudos, pausar animações e ver o JSON do panda.
 - Cabeça do panda: orelhas maiores e bochechas mais marcadas.
 - Acabamento visual do panda: halo luminoso pulsante, íris com mais profundidade, reflexo extra nos olhos, luz de contorno na cabeça e partículas flutuantes na cena.
 - O panda ganhou nome próprio, editável, usado no título e nas falas.
