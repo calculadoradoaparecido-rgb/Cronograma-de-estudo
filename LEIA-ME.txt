@@ -3,9 +3,9 @@ MASCOTE VETORIAL ANIMADO · PWA INSTALÁVEL
 
 O QUE MUDOU NA 5.13
 - Panda redesenhado no estilo da referência: cabeça grande, rosto branco com manchas escuras, olhos felizes em arco, boca aberta, bochechas rosas, orelhas pretas com interior rosa, braços e patas pretas com almofadas rosas.
-- Passeio refeito em tamanho maior (300 px): pernas pretas na frente do corpo com almofadas rosas. As patas se levantam ao dar o passo, os braços balançam em contrafase, o corpo quica a cada passo e a sombra acompanha o movimento.
-- Panda em pé que anda: botão “🚶 Passear” na tela Meu Panda (também no painel de desenvolvedor). Ele atravessa a cena, vira nas bordas e volta a ficar sentado.
-- Com movimento reduzido ativado no sistema, o passeio não acontece.
+- Panda em pé em tamanho maior (300 px), com corpo, cabeça e pernas no estilo da referência.
+- Panda em pé que acena: botão “👋 Acenar” na tela Meu Panda (também no painel de desenvolvedor). Ele fica parado no lugar, levanta o braço direito e acena por alguns segundos, depois volta a ficar sentado.
+- Com movimento reduzido ativado no sistema, o aceno não acontece.
 - Tela de login: contas locais com nome e PIN de 4 a 6 números. Cada conta tem seus próprios estudos neste aparelho.
 - O PIN é guardado como hash com sal; após 5 erros, a entrada fica bloqueada por 30 s.
 - Os estudos salvos antes desta versão são ligados à primeira conta criada.
