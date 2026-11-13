@@ -170,8 +170,13 @@ async function handleMaterials(request, url, env) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (url.pathname.startsWith("/api/auth/")) return handleAuth(request, url, env);
-    if (url.pathname.startsWith("/api/materials") || url.pathname.startsWith("/api/admin/")) return handleMaterials(request, url, env);
-    return env.ASSETS.fetch(request);
+    try {
+      if (url.pathname.startsWith("/api/auth/")) return await handleAuth(request, url, env);
+      if (url.pathname.startsWith("/api/materials") || url.pathname.startsWith("/api/admin/")) return await handleMaterials(request, url, env);
+      return await env.ASSETS.fetch(request);
+    } catch (error) {
+      console.error("Erro inesperado na biblioteca:", request.method, url.pathname, error);
+      return fail("O servidor não conseguiu concluir a ação. Se era um cadastro, tente entrar com o mesmo e-mail e senha; a conta pode ter sido gravada.", 500);
+    }
   }
 };
