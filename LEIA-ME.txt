@@ -2,6 +2,10 @@ TRILHA PANDA — VERSÃO 5.13
 MASCOTE VETORIAL ANIMADO · PWA INSTALÁVEL
 
 O QUE MUDOU NA 5.13
+- Tela de login: contas locais com nome e PIN de 4 a 6 números. Cada conta tem seus próprios estudos neste aparelho.
+- O PIN é guardado como hash com sal; após 5 erros, a entrada fica bloqueada por 30 s.
+- Os estudos salvos antes desta versão são ligados à primeira conta criada.
+- Em Dados e configurações há a opção Sair da conta. Esse login protege o acesso no aparelho e não substitui a segurança de um servidor.
 - Estudos: cronômetro de foco (25, 50 ou 90 min) que preenche o tempo ao terminar, e opção de usar o tempo decorrido.
 - Registro de sessão ligado aos tópicos do edital: os marcados viram concluídos.
 - Histórico com edição e exclusão de sessões, filtro por disciplina e totais de hoje, 7 dias e aproveitamento.

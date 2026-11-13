@@ -153,10 +153,46 @@
 .focus-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
 #studyFilterSubject{width:auto;min-width:220px}
 #studySubmit{flex:1}
+
+/* Tela de login (conta local protegida por PIN neste aparelho) */
+#loginScreen{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto;background:radial-gradient(ellipse at 50% -5%,#5b3784 0,#2a2045 38%,#0b0814 100%)}
+#loginScreen[hidden]{display:none}
+.login-card{width:min(420px,100%);background:linear-gradient(145deg,#211b3b,#171329);border:1px solid var(--line);border-radius:22px;padding:26px;box-shadow:var(--shadow)}
+.login-brand{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;margin-bottom:18px}
+.login-brand img{width:88px;height:88px;animation:login-float 4s ease-in-out infinite}
+@keyframes login-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.login-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#100d20;border-radius:14px;padding:4px;margin-bottom:16px}
+.login-tabs button{background:transparent;padding:9px;border-radius:10px;color:var(--muted)}
+.login-tabs button.active{background:linear-gradient(135deg,var(--purple),var(--purple2));color:var(--text)}
+.login-card form button[type=submit]{width:100%;margin-top:14px}
+.login-error{color:#ff8fb8;font-size:13px;min-height:18px;margin:10px 0 0;text-align:center}
+.login-note{font-size:11px;color:var(--muted);line-height:1.5;margin:12px 0 0;text-align:center}
+@media(prefers-reduced-motion:reduce){.login-brand img{animation:none}}
 .summary-source{color:#d0a8ff;font-weight:700;text-decoration:none}.summary-source:hover{text-decoration:underline}
 </style>
 </head>
 <body>
+<div id="loginScreen" hidden>
+ <div class="login-card">
+  <div class="login-brand"><img src="panda-icon.svg" alt=""><h1 style="margin:4px 0 0;font-size:22px">Trilha Panda</h1><p class="muted" style="margin:0;font-size:13px">Entre na sua conta para acessar seus estudos.</p></div>
+  <div class="login-tabs" role="tablist"><button type="button" id="tabEnter" class="active" onclick="showLoginTab('enter')">Entrar</button><button type="button" id="tabCreate" onclick="showLoginTab('create')">Criar conta</button></div>
+  <form id="formEnter" onsubmit="loginSubmit(event)">
+   <label for="loginAccount">Conta</label><select id="loginAccount" class="field"></select>
+   <label for="loginPin">PIN</label><input id="loginPin" class="field" type="password" inputmode="numeric" pattern="[0-9]{4,6}" maxlength="6" autocomplete="current-password" required>
+   <label class="checkline"><input type="checkbox" id="loginKeep" checked><span>Manter conectado neste aparelho</span></label>
+   <button type="submit" class="green">Entrar</button>
+  </form>
+  <form id="formCreate" hidden onsubmit="createAccount(event)">
+   <label for="newName">Nome</label><input id="newName" class="field" maxlength="20" autocomplete="nickname" required>
+   <label for="newPin">PIN (4 a 6 números)</label><input id="newPin" class="field" type="password" inputmode="numeric" pattern="[0-9]{4,6}" maxlength="6" autocomplete="new-password" required>
+   <label for="newPin2">Confirmar PIN</label><input id="newPin2" class="field" type="password" inputmode="numeric" pattern="[0-9]{4,6}" maxlength="6" autocomplete="new-password" required>
+   <p class="tiny" id="legacyNote" hidden>Os estudos já salvos neste aparelho serão ligados a esta conta.</p>
+   <button type="submit" class="green">Criar conta</button>
+  </form>
+  <p class="login-error" id="loginError" role="alert"></p>
+  <p class="login-note">O PIN protege o acesso neste aparelho. Não é uma senha de servidor: os dados continuam no navegador e não sincronizam entre aparelhos. Use o backup para transferir.</p>
+ </div>
+</div>
 <div class="app">
 <aside class="sidebar">
  <div class="brand"><div class="brand-mark">🐼</div><div><strong>Trilha Panda</strong><small>Seu parceiro de aprovação</small></div></div>
@@ -449,6 +485,7 @@
   <div class="section-head"><h2>⚙️ Dados e configurações</h2></div>
   <div class="grid two">
   <div class="card"><h2>💾 Backup dos seus estudos</h2><p class="muted">Exporte um arquivo JSON para guardar seus concursos, sessões, resumos, cronogramas, edital e evolução do panda. Importe esse arquivo em outro navegador para restaurar.</p><div class="actions"><button onclick="exportBackup()">⬇ Exportar backup</button><button class="secondary" onclick="document.getElementById('importFile').click()">⬆ Importar backup</button><input id="importFile" type="file" accept=".json,application/json" class="hidden" onchange="importBackup(event)"></div></div>
+   <div class="card"><h2>👤 Conta</h2><p class="muted">Conectado como <strong id="accountLabel">—</strong>. Cada conta tem seus próprios estudos neste aparelho.</p><button class="secondary" onclick="logout()">Sair da conta</button></div>
    <div class="card"><h2>🛠️ Modo desenvolvedor</h2><p class="muted">Mostra a área de testes do app: estado do panda, poses, visual, estudos simulados e JSON bruto. Não altera o backup.</p><label class="checkline"><input type="checkbox" id="devToggle" onchange="setDevMode(this.checked)"><span>Ativar área de desenvolvedor</span></label><button class="secondary" id="devOpen" onclick="showPage('dev')" style="margin-top:10px">Abrir área de desenvolvedor</button></div>
    <div class="card"><h2>🧹 Gerenciar dados</h2><p class="muted">Os dados ficam neste navegador. Não há sincronização automática entre aparelhos; use o backup para transferir seus dados.</p><button class="danger" onclick="resetPanda()">Reiniciar apenas o panda</button><button class="danger" style="margin-top:8px" onclick="wipeAll()">Apagar todos os dados</button></div>
   </div>
@@ -464,6 +501,8 @@
 <script>
 'use strict';
 const STORAGE_KEY='trilhaPandaUltimate_v5';
+const ACCOUNTS_KEY='trilhaPandaAccounts',SESSION_KEY='trilhaPandaSession',LEGACY_KEY='trilhaPandaUltimate_v5';
+let currentKey=null;
 const DAY_NAMES=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
 const PAGE_META={home:['Meu Panda','Um passo por dia aproxima você da aprovação.'],contests:['Concursos','Organize diferentes objetivos sem misturar seus resultados.'],schedule:['Cronograma','Monte uma rotina realista e acompanhe sua execução.'],syllabus:['Edital verticalizado','Transforme o edital em tópicos acompanháveis.'],summaries:['Resumos','Guarde e consulte seus resumos por concurso e disciplina.'],study:['Registrar estudo','Cada sessão conta para sua evolução.'],performance:['Desempenho','Veja seu ritmo, aproveitamento e consistência.'],inventory:['Inventário','Personalize o panda com recompensas conquistadas.'],settings:['Dados e configurações','Faça backup e mantenha seus dados protegidos.'],dev:['Desenvolvedor','Testes de animações, estados e dados. Não aparece no backup.']};
 const initialTopics=[
@@ -505,11 +544,11 @@ function todayISO(){return isoOf(new Date())}
 function escapeHTML(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function freshData(){let c={id:'tjp b'.replace(' ',''),name:'Tribunal de Justiça da Paraíba (TJPB)',role:'Analista Judiciário — Área Judiciária (Direito)',board:'FGV',date:'2027-01-24',subjects:initialTopics.map(x=>x[0]),notes:'Cadastro inicial ilustrativo. Confira o edital oficial e suas retificações.',topics:initialTopics.flatMap(([s,ts])=>ts.map(t=>({id:uid(),subject:s,text:t,done:false}))),sessions:[],summaries:[],goal:20,days:6,week:defaultWeek.map(day=>day.map(([title,min])=>({id:uid(),title,min,done:false})))};
 return {version:8,contests:[c],activeId:c.id,panda:{xp:0,happiness:78,hunger:72,energy:88,health:100,lastCare:todayISO(),lastStudy:'',name:'Panda',look:{fur:'classico',bg:'estrelas'},equipped:{head:'',face:'',neck:'',hand:''},autoEquipped:{},actions:{}},settings:{tips:true}}}
-function loadData(){try{let raw=localStorage.getItem(STORAGE_KEY);if(raw){let d=JSON.parse(raw);if(d&&Array.isArray(d.contests)&&d.panda)return normalizeData(d)}}catch(e){console.warn(e)}return freshData()}
+function loadData(){try{let raw=localStorage.getItem(currentKey);if(raw){let d=JSON.parse(raw);if(d&&Array.isArray(d.contests)&&d.panda)return normalizeData(d)}}catch(e){console.warn(e)}return freshData()}
 function seedPandaAccessories(p){p.autoEquipped??={};for(const slot of ['head','face','neck','hand']){if(p.equipped[slot])continue;const item=catalog.filter(it=>it.slot===slot&&it.xp>0&&it.xp<=Number(p.xp||0)).sort((a,b)=>b.xp-a.xp)[0];if(item){p.equipped[slot]=item.id;p.autoEquipped[slot]=item.id}}}
 function normalizeData(d){const previousVersion=Number(d.version)||0,hadAutoRewards=!!d.panda?.autoEquipped;d.version=8;d.contests.forEach(c=>{c.subjects??=[];c.topics??=[];c.sessions??=[];c.summaries??=[];c.goal??=20;c.days??=6;c.week??=defaultWeek.map(day=>day.map(([title,min])=>({id:uid(),title,min,done:false})));c.topics=c.topics.map(t=>({...t,id:t.id||uid()}));c.sessions=c.sessions.map(s=>({...s,id:s.id||uid()}));c.summaries=c.summaries.map(s=>({...s,id:s.id||uid(),subject:s.subject||'',title:s.title||'',body:s.body||'',source:s.source||''}))});d.panda={xp:0,happiness:78,hunger:72,energy:88,health:100,equipped:{head:'',face:'',neck:'',hand:''},autoEquipped:{},actions:{},...d.panda};d.panda.equipped={head:'',face:'',neck:'',hand:'',...(d.panda.equipped||{})};d.panda.autoEquipped??={};d.panda.name=String(d.panda.name||'Panda').slice(0,20)||'Panda';d.panda.look={fur:'classico',bg:'estrelas',...(d.panda.look||{})};if(previousVersion<6&&Number(d.panda.xp||0)===0&&d.panda.equipped.head==='headphones')d.panda.equipped.head='';if(!hadAutoRewards)seedPandaAccessories(d.panda);d.settings??={};if(!d.activeId||!d.contests.some(c=>c.id===d.activeId))d.activeId=d.contests[0]?.id||'';return d}
-let data=loadData();
-function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(data));renderAll()}
+let data=freshData();
+function save(){if(!currentKey)return;localStorage.setItem(currentKey,JSON.stringify(data));renderAll()}
 function activeContest(){return data.contests.find(c=>c.id===data.activeId)||null}
 function allSessions(){return data.contests.flatMap(c=>(c.sessions||[]).map(s=>({...s,contestName:c.name,contestId:c.id})))}
 function sum(arr,key){return arr.reduce((n,x)=>n+(Number(x[key])||0),0)}
@@ -739,12 +778,86 @@ function devSimulateStudy(minutes,questions,correct){
  saveStudy();
 }
 function devClearTestSessions(){data.contests.forEach(c=>{c.sessions=(c.sessions||[]).filter(s=>!String(s.notes||'').startsWith('[dev]'))});save();toast('Sessões de teste apagadas.')}
+/* ===== Login local ===== */
+let loginFails={},loginLock={};
+function getAccounts(){try{const a=JSON.parse(localStorage.getItem(ACCOUNTS_KEY));return Array.isArray(a)?a:[]}catch{return []}}
+function setAccounts(a){localStorage.setItem(ACCOUNTS_KEY,JSON.stringify(a))}
+function randomSalt(){const b=new Uint8Array(16);crypto.getRandomValues(b);return [...b].map(x=>x.toString(16).padStart(2,'0')).join('')}
+async function hashPin(pin,salt){
+ const text=salt+':'+pin;
+ if(window.crypto&&window.crypto.subtle){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('')}
+ let h=5381;for(let i=0;i<text.length;i++)h=((h<<5)+h+text.charCodeAt(i))|0;return 'djb2-'+(h>>>0).toString(16); // contexto sem Web Crypto: proteção fraca, só contra acesso casual
+}
+function loginError(msg){document.getElementById('loginError').textContent=msg}
+function showLoginTab(tab){const en=tab==='enter';document.getElementById('formEnter').hidden=!en;document.getElementById('formCreate').hidden=en;document.getElementById('tabEnter').classList.toggle('active',en);document.getElementById('tabCreate').classList.toggle('active',!en);loginError('')}
+function showLogin(){
+ const accounts=getAccounts();
+ document.getElementById('loginAccount').innerHTML=accounts.map(a=>`<option value="${a.id}">${escapeHTML(a.name)}</option>`).join('');
+ ['loginPin','newPin','newPin2'].forEach(id=>document.getElementById(id).value='');
+ document.getElementById('legacyNote').hidden=!(!accounts.length&&!!localStorage.getItem(LEGACY_KEY));
+ showLoginTab(accounts.length?'enter':'create');
+ document.getElementById('loginScreen').hidden=false;
+ if(!accounts.length)loginError('Nenhuma conta neste aparelho. Crie uma para começar.');
+ setTimeout(()=>document.getElementById(accounts.length?'loginPin':'newName').focus(),50);
+}
+async function loginSubmit(e){
+ e.preventDefault();
+ const id=document.getElementById('loginAccount').value;
+ const pin=document.getElementById('loginPin').value.trim();
+ const acc=getAccounts().find(a=>a.id===id);
+ if(!acc)return loginError('Escolha uma conta.');
+ const lock=loginLock[id]||0;
+ if(Date.now()<lock)return loginError(`Muitas tentativas. Aguarde ${Math.ceil((lock-Date.now())/1000)} s.`);
+ if(!/^\d{4,6}$/.test(pin))return loginError('Digite o PIN com 4 a 6 números.');
+ if(await hashPin(pin,acc.salt)!==acc.hash){
+  loginFails[id]=(loginFails[id]||0)+1;
+  if(loginFails[id]>=5){loginLock[id]=Date.now()+30000;loginFails[id]=0;return loginError('PIN incorreto. Depois de 5 tentativas, aguarde 30 s.')}
+  return loginError(`PIN incorreto. Tentativas restantes: ${5-loginFails[id]}.`);
+ }
+ loginFails[id]=0;
+ startSession(acc,document.getElementById('loginKeep').checked);
+}
+async function createAccount(e){
+ e.preventDefault();
+ const name=document.getElementById('newName').value.trim().slice(0,20);
+ const pin=document.getElementById('newPin').value.trim(),pin2=document.getElementById('newPin2').value.trim();
+ const accounts=getAccounts();
+ if(!name)return loginError('Informe um nome.');
+ if(accounts.some(a=>a.name.toLowerCase()===name.toLowerCase()))return loginError('Já existe uma conta com esse nome.');
+ if(!/^\d{4,6}$/.test(pin))return loginError('O PIN deve ter de 4 a 6 números.');
+ if(pin!==pin2)return loginError('Os PINs não coincidem.');
+ const id=uid(),salt=randomSalt();
+ const adopt=!accounts.length&&!!localStorage.getItem(LEGACY_KEY);
+ const acc={id,name,salt,hash:await hashPin(pin,salt),key:adopt?LEGACY_KEY:'trilhaPandaUltimate_v5:'+id,created:new Date().toISOString()};
+ accounts.push(acc);setAccounts(accounts);
+ startSession(acc,true);
+ toast(adopt?'Conta criada. Seus estudos anteriores foram ligados a ela.':`Bem-vindo, ${name}!`);
+}
+function startSession(acc,keep){
+ currentKey=acc.key;data=loadData();
+ sessionStorage.setItem(SESSION_KEY,acc.id);
+ if(keep)localStorage.setItem(SESSION_KEY,acc.id);else localStorage.removeItem(SESSION_KEY);
+ document.getElementById('loginScreen').hidden=true;
+ document.getElementById('accountLabel').textContent=acc.name;
+ document.getElementById('loginPin').value='';
+ renderAll();showPage('home');
+}
+function restoreSession(){
+ const id=sessionStorage.getItem(SESSION_KEY)||localStorage.getItem(SESSION_KEY);
+ const acc=id?getAccounts().find(a=>a.id===id):null;
+ if(acc){startSession(acc,!!localStorage.getItem(SESSION_KEY));return}
+ showLogin();
+}
+function logout(){
+ sessionStorage.removeItem(SESSION_KEY);localStorage.removeItem(SESSION_KEY);
+ currentKey=null;data=freshData();showLogin();toast('Você saiu da conta.');
+}
 function renderAll(){renderHeader();renderHome();renderContests();renderSchedule();renderSyllabus();renderSummaries();renderStudy();renderPerformance();renderInventory()}
 function exportBackup(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='trilha-panda-backup-'+todayISO()+'.json';a.click();URL.revokeObjectURL(url);toast('Backup exportado. Guarde o arquivo em local seguro.')}
 function importBackup(event){let file=event.target.files?.[0];if(!file)return;let reader=new FileReader();reader.onload=()=>{try{let d=JSON.parse(reader.result);if(!Array.isArray(d.contests)||!d.panda)throw new Error('Formato inválido');if(!confirm('Importar backup e substituir os dados atuais deste navegador?'))return;data=normalizeData(d);save();toast('Backup restaurado com sucesso.')}catch(e){toast('Não foi possível importar: arquivo inválido.')}event.target.value=''};reader.readAsText(file)}
 function resetPanda(){if(!confirm('Reiniciar XP, necessidades e acessórios do panda? Seus estudos serão preservados.'))return;const {name,look}=data.panda;data.panda={...freshData().panda,name,look};save();toast('Panda reiniciado.')}
 function wipeAll(){if(!confirm('ATENÇÃO: apagar todos os concursos, sessões, cronogramas e dados do panda deste navegador? Exporte um backup antes, se necessário.'))return;data=freshData();save();toast('Dados reiniciados.')}
-renderAll();showPage('home');document.getElementById('studyDate').value=todayISO();applyDevVisibility();
+renderAll();showPage('home');document.getElementById('studyDate').value=todayISO();applyDevVisibility();restoreSession();
 </script>
 <script>
 </script>
