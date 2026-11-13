@@ -2,6 +2,8 @@ TRILHA PANDA — VERSÃO 5.13
 MASCOTE VETORIAL ANIMADO · PWA INSTALÁVEL
 
 O QUE MUDOU NA 5.13
+- Panda em pé que anda: botão “🚶 Passear” na tela Meu Panda (também no painel de desenvolvedor). Ele atravessa a cena, vira nas bordas e volta a ficar sentado.
+- Com movimento reduzido ativado no sistema, o passeio não acontece.
 - Tela de login: contas locais com nome e PIN de 4 a 6 números. Cada conta tem seus próprios estudos neste aparelho.
 - O PIN é guardado como hash com sal; após 5 erros, a entrada fica bloqueada por 30 s.
 - Os estudos salvos antes desta versão são ligados à primeira conta criada.

@@ -168,6 +168,23 @@
 .login-error{color:#ff8fb8;font-size:13px;min-height:18px;margin:10px 0 0;text-align:center}
 .login-note{font-size:11px;color:var(--muted);line-height:1.5;margin:12px 0 0;text-align:center}
 @media(prefers-reduced-motion:reduce){.login-brand img{animation:none}}
+
+/* Panda em pé e caminhando (desenho separado, ciclo de passos por CSS) */
+.walker{position:absolute;left:50%;bottom:12px;width:190px;height:auto;margin-left:-95px;z-index:1;overflow:visible}
+.walker[hidden]{display:none}
+.walk-leg-l{transform-origin:123px 210px;animation:walk-leg .6s ease-in-out infinite}
+.walk-leg-r{transform-origin:177px 210px;animation:walk-leg .6s ease-in-out -.3s infinite}
+@keyframes walk-leg{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(20deg)}}
+.walk-arm-l{transform-origin:98px 150px;animation:walk-arm .6s ease-in-out -.3s infinite}
+.walk-arm-r{transform-origin:200px 150px;animation:walk-arm .6s ease-in-out infinite}
+@keyframes walk-arm{0%,100%{transform:rotate(14deg)}50%{transform:rotate(-14deg)}}
+.walker.walking .walk-body{animation:walk-bob .3s ease-in-out infinite}
+@keyframes walk-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.walker.idle .walk-leg,.walker.idle .walk-arm{animation:none}
+.walker.idle .walk-body{transform-origin:150px 250px;animation:stand-sway 4.2s ease-in-out infinite}
+@keyframes stand-sway{0%,100%{transform:rotate(-.6deg)}50%{transform:rotate(.6deg)}}
+.walk-bamboo{transform-origin:200px 230px}
+@media(prefers-reduced-motion:reduce){.walker *{animation:none!important}}
 .summary-source{color:#d0a8ff;font-weight:700;text-decoration:none}.summary-source:hover{text-decoration:underline}
 </style>
 </head>
@@ -324,11 +341,37 @@
       <g class="heart" fill="#ff6eae"><path d="M92 112c-19-18-36 7 0 34 36-27 19-52 0-34Z"/><path d="M329 142c-14-13-27 5 0 26 27-21 14-39 0-26Z"/></g>
       <g class="sparkles" fill="#ffe17b"><path d="M91 158l5 12 12 5-12 5-5 12-5-12-12-5 12-5Z"/><path d="M331 89l4 9 9 4-9 4-4 9-4-9-9-4 9-4Z"/><circle cx="307" cy="180" r="4" fill="#f8c0ff"/></g>
       <g class="sleepy" fill="#e8dcff" font-family="system-ui,sans-serif" font-weight="800"><text x="302" y="75" font-size="22">Z</text><text x="324" y="56" font-size="16">z</text><text x="340" y="42" font-size="12">z</text></g></svg>
+     <svg id="pandaWalker" class="walker idle" viewBox="0 0 300 340" aria-hidden="true" hidden>
+      <ellipse cx="150" cy="322" rx="92" ry="12" fill="#090615" opacity=".32"/>
+      <g class="walk-leg walk-leg-l" filter="url(#softShadow)"><rect x="108" y="206" width="30" height="92" rx="15" fill="url(#blackFur)" stroke="#17131b" stroke-width="2.5"/><ellipse cx="123" cy="306" rx="23" ry="14" fill="url(#blackFur)" stroke="#17131b" stroke-width="2.5"/><circle cx="113" cy="308" r="4" fill="#ef8997"/><circle cx="123" cy="312" r="4" fill="#ef8997"/><circle cx="133" cy="308" r="4" fill="#ef8997"/></g>
+      <g class="walk-leg walk-leg-r" filter="url(#softShadow)"><rect x="162" y="206" width="30" height="92" rx="15" fill="url(#blackFur)" stroke="#17131b" stroke-width="2.5"/><ellipse cx="177" cy="306" rx="23" ry="14" fill="url(#blackFur)" stroke="#17131b" stroke-width="2.5"/><circle cx="167" cy="308" r="4" fill="#ef8997"/><circle cx="177" cy="312" r="4" fill="#ef8997"/><circle cx="187" cy="308" r="4" fill="#ef8997"/></g>
+      <g class="walk-body">
+        <g class="walk-arm walk-arm-l" filter="url(#softShadow)"><rect x="86" y="146" width="24" height="80" rx="12" fill="url(#blackFur)" stroke="#17131b" stroke-width="2.5"/><ellipse cx="98" cy="228" rx="12" ry="10" fill="#fffdf8"/></g>
+        <ellipse cx="150" cy="176" rx="64" ry="62" fill="url(#blackFur)" stroke="#17131b" stroke-width="3" filter="url(#softShadow)"/>
+        <ellipse cx="150" cy="192" rx="40" ry="42" fill="url(#belly)"/>
+        <g class="walk-arm walk-arm-r" filter="url(#softShadow)"><rect x="188" y="146" width="24" height="80" rx="12" fill="url(#blackFur)" stroke="#17131b" stroke-width="2.5"/><ellipse cx="202" cy="228" rx="12" ry="10" fill="#fffdf8"/><g class="walk-bamboo"><rect x="197" y="44" width="10" height="186" rx="5" fill="#7fbf6a" stroke="#2f6b3a" stroke-width="2"/><path d="M207 130 Q236 108 252 66 Q228 94 207 118Z" fill="#8fd17a" stroke="#2f6b3a" stroke-width="1.6"/><path d="M197 92 Q170 74 152 40 Q176 62 197 80Z" fill="#8fd17a" stroke="#2f6b3a" stroke-width="1.6"/></g></g>
+        <g class="walk-head">
+          <circle cx="92" cy="46" r="23" fill="url(#blackFur)" stroke="#17131b" stroke-width="2.5"/>
+          <circle cx="208" cy="46" r="23" fill="url(#blackFur)" stroke="#17131b" stroke-width="2.5"/>
+          <ellipse cx="150" cy="100" rx="70" ry="58" fill="url(#blackFur)" stroke="#17131b" stroke-width="3" filter="url(#softShadow)"/>
+          <ellipse cx="150" cy="110" rx="50" ry="41" fill="url(#belly)"/>
+          <ellipse cx="119" cy="96" rx="18" ry="21" transform="rotate(-18 119 96)" fill="url(#blackFur)"/>
+          <ellipse cx="181" cy="96" rx="18" ry="21" transform="rotate(18 181 96)" fill="url(#blackFur)"/>
+          <circle cx="122" cy="94" r="9.5" fill="#fffdf8"/><circle cx="178" cy="94" r="9.5" fill="#fffdf8"/>
+          <circle cx="124" cy="95" r="5" fill="#17141b"/><circle cx="180" cy="95" r="5" fill="#17141b"/>
+          <circle cx="122" cy="92" r="1.8" fill="#fff"/><circle cx="178" cy="92" r="1.8" fill="#fff"/>
+          <ellipse cx="150" cy="122" rx="8" ry="6" fill="#2b2330"/>
+          <path d="M142 130Q150 137 158 130" fill="none" stroke="#2b2330" stroke-width="2.6" stroke-linecap="round"/>
+          <ellipse cx="116" cy="124" rx="12" ry="7" fill="#ef8997" opacity=".9"/><ellipse cx="184" cy="124" rx="12" ry="7" fill="#ef8997" opacity=".9"/>
+        </g>
+      </g>
+     </svg>
      <div class="motes" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
      <div class="speech" id="speech">Oi! Sou seu panda. Vamos conquistar seus objetivos? 🎋</div>
     </div>
     <div class="panda-actions">
      <button class="green" onclick="pandaCare('feed')">🎋 Alimentar</button><button onclick="pandaCare('play')">🎮 Brincar</button><button class="pink" onclick="pandaCare('pet')">💗 Carinho</button><button class="blue" onclick="pandaCare('rest')">💤 Descansar</button>
+      <button class="secondary" onclick="startWalk(10)">🚶 Passear</button>
     </div>
    </div>
    <div class="grid">
@@ -460,7 +503,7 @@
    <div class="card"><h2>🎬 Poses e animações</h2>
     <p class="tiny">Só mostram a pose (não mudam necessidades nem XP) e levam você ao Meu Panda.</p>
     <div class="actions"><button class="green" onclick="devPose('feed')">🎋 Alimentar</button><button onclick="devPose('play')">🎮 Brincar</button><button class="pink" onclick="devPose('pet')">💗 Carinho</button><button class="blue" onclick="devPose('rest')">💤 Descansar</button><button onclick="devPose('celebrate')">🎉 Celebrar</button></div>
-    <div class="actions"><button class="secondary" onclick="devEvolvePop()">Efeito de evolução</button><button class="secondary" id="devPauseBtn" onclick="devToggleAnim()">Pausar animações</button><button class="secondary" onclick="devClearCooldowns()">Zerar cooldowns</button></div>
+    <div class="actions"><button class="secondary" onclick="devEvolvePop()">Efeito de evolução</button><button class="secondary" id="devPauseBtn" onclick="devToggleAnim()">Pausar animações</button><button class="secondary" onclick="startWalk(10)">🚶 Passear</button><button class="secondary" onclick="devClearCooldowns()">Zerar cooldowns</button></div>
    </div>
    <div class="card"><h2>🎨 Visual</h2>
     <label for="devFur">Pelagem</label><select id="devFur"></select>
@@ -849,8 +892,36 @@ function restoreSession(){
  showLogin();
 }
 function logout(){
- sessionStorage.removeItem(SESSION_KEY);localStorage.removeItem(SESSION_KEY);
+ stopWalk();sessionStorage.removeItem(SESSION_KEY);localStorage.removeItem(SESSION_KEY);
  currentKey=null;data=freshData();showLogin();toast('Você saiu da conta.');
+}
+/* ===== Passeio do panda ===== */
+let walker={x:0,dir:1,raf:0,end:0};
+function startWalk(seconds){
+ const scene=document.querySelector('.panda-scene'),sv=document.getElementById('pandaArtwork'),wk=document.getElementById('pandaWalker');
+ if(!scene||!sv||!wk)return;
+ if(walker.raf)return;
+ if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return toast('Com movimento reduzido ativado, o panda não anda.');
+ sv.style.visibility='hidden';
+ wk.removeAttribute('hidden');wk.classList.remove('idle');wk.classList.add('walking');
+ const half=Math.max(0,scene.clientWidth/2-110);
+ walker.x=-half*.6;walker.dir=1;
+ let last=performance.now();walker.end=last+seconds*1000;
+ const step=now=>{
+  const dt=Math.min(64,now-last)/1000;last=now;
+  walker.x+=walker.dir*42*dt;
+  if(walker.x>half){walker.x=half;walker.dir=-1}
+  if(walker.x<-half){walker.x=-half;walker.dir=1}
+  wk.style.transform=`translateX(${walker.x.toFixed(1)}px) scaleX(${walker.dir})`;
+  if(now<walker.end)walker.raf=requestAnimationFrame(step);else stopWalk();
+ };
+ walker.raf=requestAnimationFrame(step);
+}
+function stopWalk(){
+ cancelAnimationFrame(walker.raf);walker.raf=0;
+ const sv=document.getElementById('pandaArtwork'),wk=document.getElementById('pandaWalker');
+ if(wk){wk.setAttribute('hidden','');wk.style.transform='';wk.classList.remove('walking');wk.classList.add('idle')}
+ if(sv)sv.style.visibility='';
 }
 function renderAll(){renderHeader();renderHome();renderContests();renderSchedule();renderSyllabus();renderSummaries();renderStudy();renderPerformance();renderInventory()}
 function exportBackup(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='trilha-panda-backup-'+todayISO()+'.json';a.click();URL.revokeObjectURL(url);toast('Backup exportado. Guarde o arquivo em local seguro.')}
