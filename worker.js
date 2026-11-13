@@ -67,7 +67,11 @@ async function handleAuth(request, url, env) {
     try {
       await env.DB.prepare("INSERT INTO users (id,email,display_name,password_salt,password_hash,password_iterations,role,created_at) VALUES (?,?,?,?,?,?,?,?)")
         .bind(id, email, name, hashed.salt, hashed.hash, PBKDF2_ITERATIONS, "customer", now).run();
-    } catch { return fail("Já existe uma conta com este e-mail.", 409); }
+    } catch (error) {
+      if (/unique|constraint/i.test(String(error?.message || error))) return fail("Já existe uma conta com este e-mail. Tente entrar com ele.", 409);
+      console.error("Falha ao criar conta na biblioteca:", error);
+      return fail("Não foi possível criar sua conta agora. Tente novamente em instantes.", 500);
+    }
     const token = await newSession(id, env);
     return json({ user: { id, email, name, role: "customer" } }, 201, { "set-cookie": cookieHeader(token, SESSION_DAYS * 86400) });
   }
