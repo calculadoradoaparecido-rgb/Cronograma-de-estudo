@@ -2,6 +2,7 @@ TRILHA PANDA — VERSÃO 5.13
 MASCOTE VETORIAL ANIMADO · PWA INSTALÁVEL
 
 O QUE MUDOU NA 5.13
+- Acabamento visual do panda: halo luminoso pulsante, íris com mais profundidade, reflexo extra nos olhos, luz de contorno na cabeça e partículas flutuantes na cena.
 - O panda ganhou nome próprio, editável, usado no título e nas falas.
 - Nova seção Personalizar: pelagens (Noturno, Café, Algodão-doce) e cenários (Bambuzal, Oceano, Biblioteca, Por do sol), liberados por XP.
 - Ao reiniciar só o panda, o nome e a personalização são mantidos.

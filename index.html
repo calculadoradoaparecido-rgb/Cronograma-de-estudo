@@ -116,6 +116,20 @@
 .swatch{display:inline-block;width:44px;height:44px;border-radius:50%;border:2px solid #ffffff33;box-shadow:inset 0 -6px 10px #0005}
 .look-card h3{margin:16px 0 4px}
 .look-card .item-grid{margin-top:8px}
+
+/* Acabamento visual: halo pulsante e partículas flutuantes */
+.panda-artwork .halo{transform-box:fill-box;transform-origin:center;animation:halo-pulse 4.2s ease-in-out infinite}
+@keyframes halo-pulse{0%,100%{transform:scale(.96);opacity:.85}50%{transform:scale(1.03);opacity:1}}
+.motes{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.motes span{position:absolute;bottom:-14px;width:7px;height:7px;border-radius:50%;background:radial-gradient(#fff6c8,#ffd978 55%,transparent 72%);opacity:0;animation:mote 7s linear infinite}
+.motes span:nth-child(1){left:14%;animation-delay:0s}
+.motes span:nth-child(2){left:30%;width:5px;height:5px;animation-delay:1.6s;animation-duration:8s}
+.motes span:nth-child(3){left:58%;animation-delay:3.1s;animation-duration:6.5s}
+.motes span:nth-child(4){left:76%;width:6px;height:6px;animation-delay:.8s;animation-duration:7.8s}
+.motes span:nth-child(5){left:88%;animation-delay:4.4s;animation-duration:9s}
+.motes span:nth-child(6){left:44%;width:4px;height:4px;animation-delay:5.5s;animation-duration:7.2s}
+@keyframes mote{0%{transform:translateY(0) scale(.6);opacity:0}15%{opacity:.9}85%{opacity:.5}100%{transform:translateY(-360px) scale(1);opacity:0}}
+@media(prefers-reduced-motion:reduce){.motes span,.panda-artwork .halo{animation:none}.motes{display:none}}
 .summary-source{color:#d0a8ff;font-weight:700;text-decoration:none}.summary-source:hover{text-decoration:underline}
 </style>
 </head>
@@ -158,8 +172,9 @@
        <radialGradient id="cheek"><stop stop-color="#ee8995" stop-opacity=".74"/><stop offset="1" stop-color="#ee8995" stop-opacity="0"/></radialGradient>
        <radialGradient id="pawPad" cx="35%" cy="25%"><stop stop-color="#ffc0bd"/><stop offset="1" stop-color="#e88299"/></radialGradient>
        <linearGradient id="cup" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f1dfff"/><stop offset="1" stop-color="#8a57d0"/></linearGradient>
-       <filter id="softShadow" x="-40%" y="-40%" width="180%" height="190%"><feGaussianBlur in="SourceAlpha" stdDeviation="4"/><feOffset dy="4"/><feComponentTransfer><feFuncA type="linear" slope=".24"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+       <radialGradient id="halo"><stop offset="0" stop-color="#b98aff" stop-opacity=".42"/><stop offset=".55" stop-color="#7c4fd6" stop-opacity=".16"/><stop offset="1" stop-color="#7c4fd6" stop-opacity="0"/></radialGradient><radialGradient id="iris" cx="40%" cy="35%"><stop offset="0" stop-color="#c3a3b4"/><stop offset="1" stop-color="#5a4156"/></radialGradient><filter id="softShadow" x="-40%" y="-40%" width="180%" height="190%"><feGaussianBlur in="SourceAlpha" stdDeviation="4"/><feOffset dy="4"/><feComponentTransfer><feFuncA type="linear" slope=".24"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
       </defs>
+      <ellipse class="halo" cx="210" cy="190" rx="175" ry="170" fill="url(#halo)"/>
       <ellipse cx="210" cy="344" rx="119" ry="13" fill="#090615" opacity=".3"/>
       <ellipse cx="210" cy="339" rx="80" ry="7" fill="#b9a0df" opacity=".14"/>
       <g class="growth-torso">
@@ -208,18 +223,18 @@
        <ellipse cx="275" cy="66" rx="18" ry="20" fill="#332a35" opacity=".68"/>
        <path d="M111 120C107 81 130 52 164 43 175 40 185 41 193 45Q202 31 210 38 218 29 227 42 242 36 258 44C291 52 311 81 309 120 307 168 274 202 210 207 146 202 113 168 111 120Z" fill="url(#fur)" stroke="#d8cdbf" stroke-width="2.5"/>
        <path d="M178 49Q194 39 202 42 210 29 218 40 229 34 239 48" fill="none" stroke="#fffefa" stroke-width="4" stroke-linecap="round" opacity=".9"/>
-       <ellipse cx="176" cy="65" rx="39" ry="13" fill="#fff" opacity=".28"/>
+       <ellipse cx="176" cy="65" rx="39" ry="13" fill="#fff" opacity=".28"/><path d="M122 104Q122 70 150 52" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="3.5" stroke-linecap="round"/>
        <ellipse cx="174" cy="128" rx="26" ry="36" transform="rotate(24 174 128)" fill="url(#patch)"/>
        <ellipse cx="246" cy="128" rx="26" ry="36" transform="rotate(-24 246 128)" fill="url(#patch)"/>
        <g class="eye-shape">
         <ellipse cx="174" cy="127" rx="14.5" ry="17" fill="#fffaf1"/>
-        <ellipse cx="174" cy="128" rx="11.5" ry="14" fill="#806477"/>
+        <ellipse cx="174" cy="128" rx="11.5" ry="14" fill="url(#iris)"/>
         <ellipse cx="174" cy="129" rx="7.4" ry="9.5" fill="#17141b"/>
-        <circle cx="170.5" cy="122.5" r="4.2" fill="#fffefa"/><circle cx="179" cy="134" r="2" fill="#fffefa"/>
+        <circle cx="170.5" cy="122.5" r="4.2" fill="#fffefa"/><circle cx="179" cy="134" r="2" fill="#fffefa"/><circle cx="168" cy="134" r="1.3" fill="#fffefa" opacity=".8"/>
         <ellipse cx="246" cy="127" rx="14.5" ry="17" fill="#fffaf1"/>
-        <ellipse cx="246" cy="128" rx="11.5" ry="14" fill="#806477"/>
+        <ellipse cx="246" cy="128" rx="11.5" ry="14" fill="url(#iris)"/>
         <ellipse cx="246" cy="129" rx="7.4" ry="9.5" fill="#17141b"/>
-        <circle cx="242.5" cy="122.5" r="4.2" fill="#fffefa"/><circle cx="251" cy="134" r="2" fill="#fffefa"/>
+        <circle cx="242.5" cy="122.5" r="4.2" fill="#fffefa"/><circle cx="251" cy="134" r="2" fill="#fffefa"/><circle cx="240" cy="134" r="1.3" fill="#fffefa" opacity=".8"/>
        </g>
        <g class="sleep-eyes" fill="none" stroke="#fff0e7" stroke-width="3.8" stroke-linecap="round"><path d="M157 131Q174 116 191 131"/><path d="M229 131Q246 116 263 131"/></g>
        <ellipse cx="147" cy="166" rx="19" ry="10" fill="url(#cheek)"/>
@@ -249,6 +264,7 @@
       <g class="heart" fill="#ff6eae"><path d="M92 112c-19-18-36 7 0 34 36-27 19-52 0-34Z"/><path d="M329 142c-14-13-27 5 0 26 27-21 14-39 0-26Z"/></g>
       <g class="sparkles" fill="#ffe17b"><path d="M91 158l5 12 12 5-12 5-5 12-5-12-12-5 12-5Z"/><path d="M331 89l4 9 9 4-9 4-4 9-4-9-9-4 9-4Z"/><circle cx="307" cy="180" r="4" fill="#f8c0ff"/></g>
       <g class="sleepy" fill="#e8dcff" font-family="system-ui,sans-serif" font-weight="800"><text x="302" y="75" font-size="22">Z</text><text x="324" y="56" font-size="16">z</text><text x="340" y="42" font-size="12">z</text></g></svg>
+     <div class="motes" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
      <div class="speech" id="speech">Oi! Sou seu panda. Vamos conquistar seus objetivos? 🎋</div>
     </div>
     <div class="panda-actions">
