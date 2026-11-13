@@ -1,7 +1,13 @@
-TRILHA PANDA — VERSÃO 5.12
+TRILHA PANDA — VERSÃO 5.13
 MASCOTE VETORIAL ANIMADO · PWA INSTALÁVEL
 
-O QUE MUDOU
+O QUE MUDOU NA 5.13
+- O panda ganhou nome próprio, editável, usado no título e nas falas.
+- Nova seção Personalizar: pelagens (Noturno, Café, Algodão-doce) e cenários (Bambuzal, Oceano, Biblioteca, Por do sol), liberados por XP.
+- Ao reiniciar só o panda, o nome e a personalização são mantidos.
+- Corrigido: o gráfico dos últimos 14 dias e a sequência de dias usavam UTC e podiam deslocar um dia à noite no Brasil.
+
+NA 5.12
 - O panda agora é formado por camadas vetoriais articuladas no próprio HTML.
 - O rosto foi aproximado da referência, com manchas oculares diagonais, olhos maiores, focinho arredondado e sorriso definido.
 - Os braços agora se encontram à frente do corpo para segurar o bambu.

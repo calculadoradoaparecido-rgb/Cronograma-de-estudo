@@ -1,4 +1,4 @@
-# Trilha Panda 5.12
+# Trilha Panda 5.13
 
 Organizador pessoal de estudos em formato PWA, com cadastro de concursos, cronograma semanal, edital verticalizado, biblioteca de resumos por concurso, registro de sessões, desempenho, inventário e backup local.
 
@@ -7,6 +7,16 @@ Organizador pessoal de estudos em formato PWA, com cadastro de concursos, cronog
 O panda é um desenho vetorial em camadas, integrado ao HTML e sem dependência de CDN. O rosto tem manchas oculares diagonais, olhos maiores, focinho arredondado e sorriso definido. Os braços se encontram à frente do corpo para segurar o bambu. Ao alimentar, ele ergue o bambu até a boca; ao descansar, fecha os olhos e mostra sinais de sono. Brincar e fazer carinho também acionam poses próprias. O movimento respeita a preferência de movimento reduzido do dispositivo.
 
 O panda cresce em seis etapas de XP: o corpo fica mais robusto e, nas etapas avançadas, aparecem brilhos. Ao desbloquear acessórios estudando, ele equipa automaticamente a nova recompensa se o espaço estiver livre ou usando uma recompensa automática anterior. Itens escolhidos manualmente continuam sob controle da pessoa.
+
+## Personalização do panda
+
+Na tela **Meu Panda**, use **🎨 Personalizar** (ou o cartão *Personalizar o panda* no Inventário) para:
+
+- dar um nome ao panda (até 20 caracteres), que aparece no título e nas falas;
+- escolher a pelagem: Clássico (inicial), Noturno (200 XP), Café (450 XP) e Algodão-doce (800 XP);
+- escolher o cenário: Noite estrelada (inicial), Bambuzal (100 XP), Oceano (300 XP), Biblioteca (600 XP) e Por do sol (1000 XP).
+
+As cores são controladas por variáveis CSS no SVG, então novas pelagens exigem só um bloco de variáveis.
 
 ## Instalar e publicar
 
