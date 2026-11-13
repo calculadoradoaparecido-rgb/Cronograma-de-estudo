@@ -171,9 +171,17 @@
 
 /* Panda em pé: uma única figura que se levanta, acena e volta a sentar (transições, sem trocar de imagem) */
 .panda-artwork .torso-shape{d:path("M150 212C150 186 176 172 210 172S270 186 270 212L282 286C288 314 270 330 240 330H180C150 330 132 314 138 286Z");transition:d .6s cubic-bezier(.3,.7,.2,1)}
-.panda-artwork.is-standing .torso-shape{d:path("M150 212C150 186 176 172 210 172S270 186 270 212L276 262C279 280 266 292 246 292H174C154 292 141 280 144 262Z")}
-.panda-artwork .feet{transform-box:view-box;transform-origin:210px 340px;transition:transform .6s cubic-bezier(.3,.7,.2,1)}
-.panda-artwork.is-standing .feet{transform:translate(0,4px) scale(1,.72)}
+.panda-artwork.is-standing .torso-shape{d:path("M150 212C150 186 176 172 210 172S270 186 270 212L278 262C282 280 268 288 246 288H174C152 288 138 280 142 262Z")}
+.panda-artwork .foot-l,.panda-artwork .foot-r,.panda-artwork .pad-l,.panda-artwork .pad-r{transform-box:view-box;transition:transform .6s cubic-bezier(.3,.7,.2,1)}
+.panda-artwork .foot-l{transform-origin:160px 304px}
+.panda-artwork .foot-r{transform-origin:260px 304px}
+.panda-artwork .pad-l{transform-origin:160px 319px}
+.panda-artwork .pad-r{transform-origin:260px 319px}
+.panda-artwork.is-standing .foot-l{transform:translate(12px,22px) scale(.773,.5)}
+.panda-artwork.is-standing .foot-r{transform:translate(-12px,22px) scale(.773,.5)}
+.panda-artwork.is-standing .pad-l{transform:translate(12px,14px) scale(.667,.538)}
+.panda-artwork.is-standing .pad-r{transform:translate(-12px,14px) scale(.667,.538)}
+.panda-artwork .stand-legs{opacity:1}
 .panda-artwork.is-standing{animation:panda-rise .7s ease-out}
 @keyframes panda-rise{0%{transform:translateY(0)}40%{transform:translateY(-8px)}70%{transform:translateY(-2px)}100%{transform:translateY(0)}}
 .panda-artwork.is-standing .arm-left{animation:none}
@@ -252,15 +260,19 @@
       <ellipse class="halo" cx="210" cy="190" rx="175" ry="170" fill="url(#halo)"/>
       <ellipse cx="210" cy="344" rx="119" ry="13" fill="#090615" opacity=".3"/>
       <g class="growth-torso">
+      <g class="stand-legs">
+       <rect x="152" y="262" width="40" height="66" rx="20" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
+       <rect x="228" y="262" width="40" height="66" rx="20" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
+      </g>
       <g class="torso" filter="url(#softShadow)">
        <path class="torso-shape" d="M150 212C150 186 176 172 210 172S270 186 270 212L282 286C288 314 270 330 240 330H180C150 330 132 314 138 286Z" fill="url(#fur)" stroke="#2b2330" stroke-width="3.5"/>
        <path d="M178 264Q210 278 242 264" fill="none" stroke="#d9cfc4" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>
       </g>
       <g class="feet" filter="url(#softShadow)">
-       <ellipse cx="160" cy="304" rx="44" ry="36" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
-       <ellipse cx="260" cy="304" rx="44" ry="36" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
-       <ellipse cx="160" cy="319" rx="21" ry="13" fill="url(#pawPad)"/>
-       <ellipse cx="260" cy="319" rx="21" ry="13" fill="url(#pawPad)"/>
+       <ellipse class="foot-l" cx="160" cy="304" rx="44" ry="36" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
+       <ellipse class="foot-r" cx="260" cy="304" rx="44" ry="36" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
+       <ellipse class="pad-l" cx="160" cy="319" rx="21" ry="13" fill="url(#pawPad)"/>
+       <ellipse class="pad-r" cx="260" cy="319" rx="21" ry="13" fill="url(#pawPad)"/>
       </g>
       <g class="bamboo">
        <path d="M207 304 93 128" fill="none" stroke="#245b32" stroke-width="24" stroke-linecap="round"/>
