@@ -136,15 +136,16 @@ async function handleMaterials(request, url, env) {
   }
   if (request.method === "GET" && url.pathname === "/api/materials") {
     const rows = await env.DB.prepare(`SELECT m.id,m.title,m.subject,m.exam,m.description,m.mime_type,m.size_bytes,m.access_level,m.created_at,
-      CASE WHEN m.access_level='free' OR ?='admin' OR EXISTS(SELECT 1 FROM material_entitlements e WHERE e.user_id=? AND e.material_id=m.id AND e.revoked_at IS NULL) THEN 1 ELSE 0 END AS can_access
-      FROM materials m WHERE m.status='published' ORDER BY m.created_at DESC`).bind(user?.role || "", user?.id || "").all();
+      CASE WHEN ?='admin' OR EXISTS(SELECT 1 FROM material_entitlements e WHERE e.user_id=? AND e.material_id=m.id AND e.revoked_at IS NULL) THEN 1 ELSE 0 END AS can_access
+      FROM materials m WHERE m.status='published' AND (?='admin' OR EXISTS(SELECT 1 FROM material_entitlements e WHERE e.user_id=? AND e.material_id=m.id AND e.revoked_at IS NULL))
+      ORDER BY m.created_at DESC`).bind(user?.role || "", user?.id || "", user?.role || "", user?.id || "").all();
     return json({ materials: rows.results || [] });
   }
   const match = url.pathname.match(/^\/api\/materials\/([\w-]+)$/);
   if (request.method === "GET" && match) {
     const material = await env.DB.prepare("SELECT * FROM materials WHERE id=? AND status='published'").bind(match[1]).first();
     if (!material) return fail("Material não encontrado.", 404);
-    const entitled = material.access_level === "free" || isAdmin(user) || (user && await env.DB.prepare("SELECT 1 FROM material_entitlements WHERE user_id=? AND material_id=? AND revoked_at IS NULL").bind(user.id, material.id).first());
+    const entitled = isAdmin(user) || (user && await env.DB.prepare("SELECT 1 FROM material_entitlements WHERE user_id=? AND material_id=? AND revoked_at IS NULL").bind(user.id, material.id).first());
     if (!entitled) return fail(user ? "Este material requer acesso liberado." : "Entre na sua conta para acessar este material.", 403);
     const object = await env.MATERIALS.get(material.object_key);
     if (!object) return fail("Arquivo indisponível.", 404);
