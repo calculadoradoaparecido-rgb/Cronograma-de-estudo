@@ -1,0 +1,12 @@
+{
+  "name": "trilha-panda-testes",
+  "private": true,
+  "description": "Testes do Trilha Panda: lógica e interface em jsdom, e comportamento em Chrome real.",
+  "scripts": {
+    "test": "node test.js && node test_dev.js && node test_study.js && node test_login.js && node test_wave.js && node test_panda.js",
+    "test:navegador": "node test_navegador.js"
+  },
+  "devDependencies": {
+    "jsdom": "^24.1.3"
+  }
+}
