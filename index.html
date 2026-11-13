@@ -169,24 +169,19 @@
 .login-note{font-size:11px;color:var(--muted);line-height:1.5;margin:12px 0 0;text-align:center}
 @media(prefers-reduced-motion:reduce){.login-brand img{animation:none}}
 
-/* Panda em pé e caminhando (desenho separado, ciclo de passos por CSS) */
-.walker{position:absolute;left:50%;bottom:6px;width:300px;height:auto;margin-left:-150px;z-index:1;overflow:visible;filter:drop-shadow(0 10px 14px #05020c99)}
-.walker[hidden]{display:none}
-.walk-leg-l{transform-origin:165px 330px;animation:walk-foot .6s ease-in-out infinite}
-.walk-leg-r{transform-origin:255px 330px;animation:walk-foot .6s ease-in-out -.3s infinite}
-@keyframes walk-foot{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-12px) rotate(-5deg)}50%{transform:translateY(0) rotate(0)}}
-.walk-arm-l{transform-origin:150px 200px;animation:walk-arm .6s ease-in-out infinite}
-.walk-arm-r{transform-origin:270px 200px;animation:walk-arm .6s ease-in-out -.3s infinite}
-@keyframes walk-arm{0%,100%{transform:rotate(10deg)}50%{transform:rotate(-10deg)}}
-.walker.waving .walk-leg,.walker.waving .walk-arm-l{animation:none}
-.walker.waving .walk-arm-r{transform-origin:270px 200px;transform:rotate(-124deg);animation:wave-arm .5s ease-in-out infinite}
-@keyframes wave-arm{0%,100%{transform:rotate(-128deg)}50%{transform:rotate(-108deg)}}
-.walker.waving .walk-body{transform-origin:210px 300px;animation:stand-sway 4.2s ease-in-out infinite}
-.walker.waving .walk-head{transform-origin:210px 150px;transform:rotate(3deg)}
-.walker.idle .walk-leg,.walker.idle .walk-arm{animation:none}
-.walker.idle .walk-body{transform-origin:210px 300px;animation:stand-sway 4.2s ease-in-out infinite}
-@keyframes stand-sway{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
-@media(prefers-reduced-motion:reduce){.walker *{animation:none!important}}
+/* Panda em pé: uma única figura que se levanta, acena e volta a sentar (transições, sem trocar de imagem) */
+.panda-artwork .torso-shape{d:path("M150 212C150 186 176 172 210 172S270 186 270 212L282 286C288 314 270 330 240 330H180C150 330 132 314 138 286Z");transition:d .6s cubic-bezier(.3,.7,.2,1)}
+.panda-artwork.is-standing .torso-shape{d:path("M150 212C150 186 176 172 210 172S270 186 270 212L276 262C279 280 266 292 246 292H174C154 292 141 280 144 262Z")}
+.panda-artwork .feet{transform-box:view-box;transform-origin:210px 340px;transition:transform .6s cubic-bezier(.3,.7,.2,1)}
+.panda-artwork.is-standing .feet{transform:translate(0,4px) scale(1,.72)}
+.panda-artwork.is-standing{animation:panda-rise .7s ease-out}
+@keyframes panda-rise{0%{transform:translateY(0)}40%{transform:translateY(-8px)}70%{transform:translateY(-2px)}100%{transform:translateY(0)}}
+.panda-artwork.is-standing .arm-left{animation:none}
+.panda-artwork.is-standing .arm-right{animation:none;transform-box:view-box;transform-origin:268px 212px}
+.panda-artwork .arm-right{transition:transform .45s cubic-bezier(.3,.7,.2,1)}
+.panda-artwork.is-waving .arm-right{transform:rotate(-120deg);animation:panda-hello .5s ease-in-out .45s infinite alternate}
+@keyframes panda-hello{from{transform:rotate(-122deg)}to{transform:rotate(-106deg)}}
+.panda-artwork.is-waving .head{animation:none;transform:rotate(-4deg);transition:transform .5s ease}
 .summary-source{color:#d0a8ff;font-weight:700;text-decoration:none}.summary-source:hover{text-decoration:underline}
 </style>
 </head>
@@ -258,7 +253,7 @@
       <ellipse cx="210" cy="344" rx="119" ry="13" fill="#090615" opacity=".3"/>
       <g class="growth-torso">
       <g class="torso" filter="url(#softShadow)">
-       <path d="M150 212C150 186 176 172 210 172S270 186 270 212L282 286C288 314 270 330 240 330H180C150 330 132 314 138 286Z" fill="url(#fur)" stroke="#2b2330" stroke-width="3.5"/>
+       <path class="torso-shape" d="M150 212C150 186 176 172 210 172S270 186 270 212L282 286C288 314 270 330 240 330H180C150 330 132 314 138 286Z" fill="url(#fur)" stroke="#2b2330" stroke-width="3.5"/>
        <path d="M178 264Q210 278 242 264" fill="none" stroke="#d9cfc4" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>
       </g>
       <g class="feet" filter="url(#softShadow)">
@@ -323,46 +318,7 @@
       <g class="sparkles" fill="#ffe17b"><path d="M91 158l5 12 12 5-12 5-5 12-5-12-12-5 12-5Z"/><path d="M331 89l4 9 9 4-9 4-4 9-4-9-9-4 9-4Z"/><circle cx="307" cy="180" r="4" fill="#f8c0ff"/></g>
       <g class="sleepy" fill="#e8dcff" font-family="system-ui,sans-serif" font-weight="800"><text x="302" y="75" font-size="22">Z</text><text x="324" y="56" font-size="16">z</text><text x="340" y="42" font-size="12">z</text></g>
     </svg>
-    <svg id="pandaWalker" class="walker idle" viewBox="0 0 420 360" aria-hidden="true" hidden>
-      <ellipse class="walk-shadow" cx="210" cy="344" rx="120" ry="12" fill="#090615" opacity=".35"/>
-      <g class="walk-body">
-       <path d="M150 212C150 186 176 172 210 172S270 186 270 212L282 286C288 314 270 330 240 330H180C150 330 132 314 138 286Z" fill="url(#fur)" stroke="#2b2330" stroke-width="3.5"/>
-       <ellipse cx="210" cy="272" rx="40" ry="34" fill="url(#belly)"/>
-       <g class="walk-arm walk-arm-l" filter="url(#softShadow)">
-        <rect x="128" y="196" width="44" height="72" rx="22" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
-       </g>
-       <g class="walk-arm walk-arm-r" filter="url(#softShadow)">
-        <rect x="248" y="196" width="44" height="72" rx="22" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
-        <ellipse cx="270" cy="258" rx="12" ry="9" fill="url(#pawPad)"/>
-       </g>
-       <g class="walk-head">
-        <circle cx="134" cy="66" r="40" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
-        <circle cx="286" cy="66" r="40" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
-        <ellipse cx="134" cy="70" rx="19" ry="20" fill="#f5a7b8"/>
-        <ellipse cx="286" cy="70" rx="19" ry="20" fill="#f5a7b8"/>
-        <path d="M110 124C110 76 150 48 210 48S310 76 310 124 276 204 210 208 110 176 110 124Z" fill="url(#fur)" stroke="#2b2330" stroke-width="3.5"/>
-        <path d="M134 92Q148 74 172 70" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".85"/>
-        <ellipse cx="174" cy="128" rx="28" ry="36" transform="rotate(20 174 128)" fill="url(#patch)"/>
-        <ellipse cx="246" cy="128" rx="28" ry="36" transform="rotate(-20 246 128)" fill="url(#patch)"/>
-        <path d="M161 131Q174 113 187 131" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/>
-        <path d="M233 131Q246 113 259 131" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/>
-        <ellipse cx="146" cy="170" rx="22" ry="14" fill="#ff8fa3" opacity=".78"/>
-        <ellipse cx="274" cy="170" rx="22" ry="14" fill="#ff8fa3" opacity=".78"/>
-        <path d="M200 156Q210 150 220 156 218 164 210 166 202 164 200 156Z" fill="#2b2228"/>
-        <path d="M194 170Q210 162 226 170Q224 190 210 192Q196 190 194 170Z" fill="#3b2b32" stroke="#2b2330" stroke-width="2"/>
-       </g>
-      </g>
-      <g class="walk-leg walk-leg-l" filter="url(#softShadow)">
-       <path d="M141 282Q141 262 165 262Q189 262 189 282V316Q189 330 165 330Q141 330 141 316Z" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
-       <ellipse cx="165" cy="324" rx="36" ry="26" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
-       <ellipse cx="165" cy="332" rx="17" ry="10" fill="url(#pawPad)"/>
-      </g>
-      <g class="walk-leg walk-leg-r" filter="url(#softShadow)">
-       <path d="M231 282Q231 262 255 262Q279 262 279 282V316Q279 330 255 330Q231 330 231 316Z" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
-       <ellipse cx="255" cy="324" rx="36" ry="26" fill="url(#blackFur)" stroke="#2b2330" stroke-width="3.5"/>
-       <ellipse cx="255" cy="332" rx="17" ry="10" fill="url(#pawPad)"/>
-      </g>
-    </svg>
+    
      <div class="motes" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
      <div class="speech" id="speech">Oi! Sou seu panda. Vamos conquistar seus objetivos? 🎋</div>
     </div>
@@ -892,22 +848,26 @@ function logout(){
  stopWave();sessionStorage.removeItem(SESSION_KEY);localStorage.removeItem(SESSION_KEY);
  currentKey=null;data=freshData();showLogin();toast('Você saiu da conta.');
 }
-/* ===== Aceno do panda ===== */
-let walker={timer:0};
+/* ===== Aceno do panda: levanta, acena e volta a sentar (mesma figura) ===== */
+let wave={timer:0,timers:[]};
 function startWave(seconds){
- const sv=document.getElementById('pandaArtwork'),wk=document.getElementById('pandaWalker');
- if(!sv||!wk)return;
- if(walker.timer)return;
+ const art=document.getElementById('pandaArtwork');
+ if(!art)return;
+ if(wave.timer)return;
  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return toast('Com movimento reduzido ativado, o panda não acena.');
- sv.style.visibility='hidden';
- wk.removeAttribute('hidden');wk.classList.remove('idle');wk.classList.add('waving');
- walker.timer=setTimeout(stopWave,seconds*1000);
+ const up=700,down=up+seconds*1000,sit=down+700;
+ art.classList.add('is-standing');
+ wave.timers=[
+  setTimeout(()=>art.classList.add('is-waving'),up),
+  setTimeout(()=>art.classList.remove('is-waving'),down),
+  setTimeout(()=>{art.classList.remove('is-standing');wave.timer=0;wave.timers=[]},sit)
+ ];
+ wave.timer=1;
 }
 function stopWave(){
- clearTimeout(walker.timer);walker.timer=0;
- const sv=document.getElementById('pandaArtwork'),wk=document.getElementById('pandaWalker');
- if(wk){wk.setAttribute('hidden','');wk.classList.remove('waving');wk.classList.add('idle')}
- if(sv)sv.style.visibility='';
+ wave.timers.forEach(clearTimeout);wave.timers=[];wave.timer=0;
+ const art=document.getElementById('pandaArtwork');
+ if(art)art.classList.remove('is-standing','is-waving');
 }
 function renderAll(){renderHeader();renderHome();renderContests();renderSchedule();renderSyllabus();renderSummaries();renderStudy();renderPerformance();renderInventory()}
 function exportBackup(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='trilha-panda-backup-'+todayISO()+'.json';a.click();URL.revokeObjectURL(url);toast('Backup exportado. Guarde o arquivo em local seguro.')}
