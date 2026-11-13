@@ -1,0 +1,19 @@
+{
+  "name": "Trilha Panda 5.13 — Biblioteca de Resumos",
+  "short_name": "Trilha Panda",
+  "description": "Organize seus estudos com um panda vetorial animado.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#100d20",
+  "theme_color": "#100d20",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "panda-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

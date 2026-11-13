@@ -1,0 +1,53 @@
+TRILHA PANDA — VERSÃO 5.13
+MASCOTE VETORIAL ANIMADO · PWA INSTALÁVEL
+
+O QUE MUDOU NA 5.13
+- Panda redesenhado no estilo da referência: cabeça grande, rosto branco com manchas escuras, olhos felizes em arco, boca aberta, bochechas rosas, orelhas pretas com interior rosa, braços e patas pretas com almofadas rosas.
+- Passeio refeito: as patas se levantam ao dar o passo, os braços balançam em contrafase, o corpo quica a cada passo e a sombra acompanha o movimento.
+- Panda em pé que anda: botão “🚶 Passear” na tela Meu Panda (também no painel de desenvolvedor). Ele atravessa a cena, vira nas bordas e volta a ficar sentado.
+- Com movimento reduzido ativado no sistema, o passeio não acontece.
+- Tela de login: contas locais com nome e PIN de 4 a 6 números. Cada conta tem seus próprios estudos neste aparelho.
+- O PIN é guardado como hash com sal; após 5 erros, a entrada fica bloqueada por 30 s.
+- Os estudos salvos antes desta versão são ligados à primeira conta criada.
+- Em Dados e configurações há a opção Sair da conta. Esse login protege o acesso no aparelho e não substitui a segurança de um servidor.
+- Estudos: cronômetro de foco (25, 50 ou 90 min) que preenche o tempo ao terminar, e opção de usar o tempo decorrido.
+- Registro de sessão ligado aos tópicos do edital: os marcados viram concluídos.
+- Histórico com edição e exclusão de sessões, filtro por disciplina e totais de hoje, 7 dias e aproveitamento.
+- Campos de questões e acertos começam vazios, sem valores padrão que eram salvos por engano.
+- Movimentos: bambu com balanço suave e nova pose de comemoração, usada ao subir de estágio ou evoluir.
+- Área de desenvolvedor (ative em Dados e configurações > Modo desenvolvedor): editar XP e necessidades, disparar poses e efeitos, trocar visual e acessórios, liberar todos os estilos, simular estudos, pausar animações e ver o JSON do panda.
+- Cabeça do panda: orelhas maiores e bochechas mais marcadas.
+- Acabamento visual do panda: halo luminoso pulsante, íris com mais profundidade, reflexo extra nos olhos, luz de contorno na cabeça e partículas flutuantes na cena.
+- O panda ganhou nome próprio, editável, usado no título e nas falas.
+- Nova seção Personalizar: pelagens (Noturno, Café, Algodão-doce) e cenários (Bambuzal, Oceano, Biblioteca, Por do sol), liberados por XP.
+- Ao reiniciar só o panda, o nome e a personalização são mantidos.
+- Corrigido: o gráfico dos últimos 14 dias e a sequência de dias usavam UTC e podiam deslocar um dia à noite no Brasil.
+
+NA 5.12
+- O panda agora é formado por camadas vetoriais articuladas no próprio HTML.
+- O rosto foi aproximado da referência, com manchas oculares diagonais, olhos maiores, focinho arredondado e sorriso definido.
+- Os braços agora se encontram à frente do corpo para segurar o bambu.
+- Ao alimentar, o bambu sobe até a boca; ao descansar, o panda fecha os olhos antes de aparecerem os sinais de sono.
+- O panda segue sentado, com pelo preto e creme, patinhas rosadas e bambu nos braços.
+- O desenho aproxima o mascote do estilo clássico de panda fofo da referência.
+- Há movimento contínuo de respiração, cabeça, braços e piscadas.
+- Alimentar, brincar, fazer carinho e descansar acionam poses próprias.
+- As ações mantêm os indicadores, XP, mensagens, inventário e dados salvos.
+- O panda cresce em seis etapas de XP e ganha uma forma mais robusta e brilhos conforme estuda.
+- Acessórios desbloqueados surgem automaticamente no panda; itens escolhidos manualmente são preservados.
+- A nova seção Resumos organiza notas por concurso e disciplina, sem contar como sessão nem gerar XP.
+- Cada resumo pode ter título, texto e link para a aula de origem; tudo entra no backup local.
+- O service worker busca o HTML atualizado pela rede e mantém cópia offline como alternativa.
+
+PUBLICAÇÃO
+Envie os arquivos da raiz deste repositório para a raiz do projeto conectado ao Cloudflare Pages. Não há etapa de build; publique por HTTPS.
+
+INSTALAÇÃO
+- Android/Chrome: menu ⋮ > Instalar app / Adicionar à tela inicial.
+- iPhone/Safari: Compartilhar > Adicionar à Tela de Início.
+- Desktop: use a opção Instalar do Chrome ou Edge, quando disponível.
+
+IMPORTANTE
+- O mascote é uma ilustração vetorial 2D animada, não um modelo 3D ou arquivo GLB.
+- Os dados de estudo permanecem no armazenamento local do navegador. Exporte um backup antes de trocar ou limpar o navegador.
+- O conteúdo inicial do TJPB é editável e deve ser conferido com o edital oficial e suas retificações.
