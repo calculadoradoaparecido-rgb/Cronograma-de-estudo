@@ -1,4 +1,4 @@
-# Trilha Panda 5.14
+# Trilha Panda 5.15
 
 Organizador pessoal de estudos em formato PWA, com cadastro de concursos, cronograma semanal, edital verticalizado, biblioteca de resumos por concurso, registro de sessões, desempenho, inventário e backup local.
 
@@ -62,7 +62,13 @@ As cores são controladas por variáveis CSS no SVG, então novas pelagens exige
 
 ## Área de desenvolvedor
 
-Ative em **Dados e configurações → Modo desenvolvedor**. Lá você edita XP e necessidades, dispara poses e efeitos, troca visual e acessórios, libera todos os estilos, simula estudos, pausa as animações, força os humores (atenção, curiosidade, pensar e repouso), dispara uma piscada e vê o JSON do panda.
+Ative em **Dados e configurações → Modo desenvolvedor**. Além dos controles do panda, a área permite cadastrar concursos, criar resumos e links para materiais hospedados, importar resumos em `.txt` ou `.md` e importar/exportar um catálogo JSON com concursos, edital e resumos. O catálogo não contém sessões de estudo nem dados do panda. Para PDF e outros arquivos, hospede-os em um serviço HTTPS e cadastre o link no resumo.
+
+Ao sair da conta, o app limpa os dados da sessão em memória e volta à tela de entrada com a última conta selecionada. Uma sessão salva inválida é removida ao abrir o app.
+
+O catálogo JSON pode ser compartilhado entre instalações. Importar atualiza os dados do concurso e os tópicos correspondentes, preservando sessões existentes e tópicos já marcados como concluídos. Resumos são combinados por identificador ou por disciplina e título.
+
+**Limites para venda:** este projeto continua sendo um PWA estático. Contas e PINs existem somente no navegador, não há autenticação de servidor, sincronização entre aparelhos, área administrativa protegida, cobrança, controle de acesso por comprador ou upload de arquivos para um servidor. O modo desenvolvedor também é apenas uma preferência local, não um controle de acesso. Não publique materiais privados nem use este painel para administrar conteúdo exclusivo até integrar autenticação e armazenamento no servidor. O catálogo e o backup são arquivos que precisam ser distribuídos manualmente.
 
 ## Instalar e publicar
 
@@ -91,7 +97,7 @@ npm run test:navegador    # suíte em Chrome real
 ## Estrutura
 
 - `index.html`: app completo (CSS, SVG do panda e script).
-- `sw.js`: service worker, com cache `trilha-panda-shell-v5-14`.
+- `sw.js`: service worker, com cache `trilha-panda-shell-v5-15`.
 - `manifest.webmanifest` e `panda-icon.svg`: instalação do PWA. O ícone é SVG.
 - `icons/`: PNGs que não são referenciados pelo manifesto nem pelo HTML. Estão mantidos e podem ser removidos.
 - `wrangler.jsonc` e `.assetsignore`: publicação em Cloudflare Workers.
@@ -101,4 +107,4 @@ npm run test:navegador    # suíte em Chrome real
 
 Sirva esta pasta por HTTP para testar o PWA e o service worker. Abrir o `index.html` diretamente permite conferir a interface, mas não ativa o service worker.
 
-Ao publicar uma versão com mudanças nos arquivos da raiz, troque o nome do cache em `sw.js` (hoje `trilha-panda-shell-v5-14`), para que os navegadores baixem a versão nova.
+Ao publicar uma versão com mudanças nos arquivos da raiz, troque o nome do cache em `sw.js` (hoje `trilha-panda-shell-v5-15`), para que os navegadores baixem a versão nova.

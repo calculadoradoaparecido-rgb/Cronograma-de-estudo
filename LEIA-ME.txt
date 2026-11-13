@@ -1,5 +1,13 @@
-TRILHA PANDA — VERSÃO 5.14
+TRILHA PANDA — VERSÃO 5.15
 MASCOTE VETORIAL ANIMADO · PWA INSTALÁVEL
+
+O QUE MUDOU NA 5.15
+- Área de desenvolvedor para criar e distribuir catálogo JSON de concursos, tópicos de edital e resumos sem copiar sessões de estudo ou dados do panda.
+- Importação de resumos em .txt e .md, com disciplina informada no painel e revisão antes de salvar.
+- Resumos aceitam links HTTPS para materiais e aulas hospedados.
+- Importação de catálogo preserva sessões e tópicos concluídos já existentes.
+- Fluxo de saída e retorno ao login limpa dados da sessão anterior, remove sessões inválidas e pré-seleciona a última conta usada.
+- Aviso de que contas, PIN e modo desenvolvedor são locais e não substituem autenticação de servidor.
 
 O QUE MUDOU NA 5.14
 - Controlador único do panda: um só lugar decide o humor (repouso, atenção, curiosidade, pensar, transição, interação e comemoração). Um estado passivo, como o cursor passando sobre o panda, não interrompe uma ação nem o aceno.
@@ -11,7 +19,7 @@ O QUE MUDOU NA 5.14
 - Movimento reduzido: sem piscadas automáticas, tremor de orelha ou aceno. As animações contínuas terminam no último quadro, então as poses ficam paradas.
 - Área de desenvolvedor: botões para forçar o humor (atenção, curiosidade, pensar e repouso) e disparar uma piscada.
 - Arquivos sem uso removidos: app.js, styles.css e panda-mascote.webp (cerca de 83 KB). Nenhum arquivo os referenciava.
-- Service worker com cache trilha-panda-shell-v5-14.
+- Service worker com cache trilha-panda-shell-v5-15.
 - Pasta testes/: 160 verificações em jsdom (npm test) e 32 em Chrome real (npm run test:navegador). Testes e node_modules ficam fora da publicação no Cloudflare Workers, pelo arquivo .assetsignore.
 
 O QUE MUDOU NA 5.13
