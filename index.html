@@ -172,18 +172,20 @@
 /* Panda em pé e caminhando (desenho separado, ciclo de passos por CSS) */
 .walker{position:absolute;left:50%;bottom:6px;width:300px;height:auto;margin-left:-150px;z-index:1;overflow:visible;filter:drop-shadow(0 10px 14px #05020c99)}
 .walker[hidden]{display:none}
-.walk-leg-l{transform-origin:165px 270px;animation:walk-leg .6s ease-in-out infinite}
-.walk-leg-r{transform-origin:255px 270px;animation:walk-leg .6s ease-in-out -.3s infinite}
-@keyframes walk-leg{0%{transform:rotate(-18deg)}25%{transform:rotate(0) translateY(-14px)}50%{transform:rotate(18deg)}100%{transform:rotate(-18deg)}}
+.walk-leg-l{transform-origin:165px 330px;animation:walk-foot .6s ease-in-out infinite}
+.walk-leg-r{transform-origin:255px 330px;animation:walk-foot .6s ease-in-out -.3s infinite}
+@keyframes walk-foot{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-12px) rotate(-5deg)}50%{transform:translateY(0) rotate(0)}}
 .walk-arm-l{transform-origin:150px 200px;animation:walk-arm .6s ease-in-out infinite}
 .walk-arm-r{transform-origin:270px 200px;animation:walk-arm .6s ease-in-out -.3s infinite}
-@keyframes walk-arm{0%{transform:rotate(12deg)}50%{transform:rotate(-12deg)}100%{transform:rotate(12deg)}}
-.walker.walking .walk-body{transform-origin:210px 300px;animation:walk-bob .3s ease-in-out infinite}
-@keyframes walk-bob{0%,100%{transform:translateY(0) scale(1.02,.97)}50%{transform:translateY(-7px) scale(.98,1.03)}}
+@keyframes walk-arm{0%,100%{transform:rotate(10deg)}50%{transform:rotate(-10deg)}}
+.walker.walking{transform-origin:50% 100%;animation:walk-sway .6s ease-in-out infinite}
+@keyframes walk-sway{0%,100%{rotate:-3deg}50%{rotate:3deg}}
+.walker.walking .walk-body{transform-origin:210px 330px;animation:walk-bob .3s ease-in-out infinite}
+@keyframes walk-bob{0%,100%{transform:translateY(0) scale(1.02,.98)}50%{transform:translateY(-5px) scale(.99,1.02)}}
 .walker.walking .walk-head{transform-origin:210px 150px;animation:walk-head .6s ease-in-out infinite}
-@keyframes walk-head{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@keyframes walk-head{0%,100%{transform:rotate(2deg)}50%{transform:rotate(-2deg)}}
 .walker.walking .walk-shadow{transform-origin:210px 344px;animation:walk-shadow .3s ease-in-out infinite}
-@keyframes walk-shadow{0%,100%{transform:scale(1)}50%{transform:scale(.86)}}
+@keyframes walk-shadow{0%,100%{transform:scale(1)}50%{transform:scale(.88)}}
 .walker.idle .walk-leg,.walker.idle .walk-arm{animation:none}
 .walker.idle .walk-body{transform-origin:210px 300px;animation:stand-sway 4.2s ease-in-out infinite}
 @keyframes stand-sway{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
