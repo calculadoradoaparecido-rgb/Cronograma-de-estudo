@@ -54,7 +54,7 @@ async function newSession(userId, env) {
   return token;
 }
 async function handleAuth(request, url, env) {
-  if (!validOrigin(request, env)) return fail("Origem não permitida.", 403);
+  if (request.method !== "GET" && !validOrigin(request, env)) return fail("Origem não permitida.", 403);
   if (request.method === "GET" && url.pathname === "/api/auth/me") {
     const user = await currentUser(request, env);
     return json({ user: user ? { id: user.id, email: user.email, name: user.display_name, role: user.role } : null });
