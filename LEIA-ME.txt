@@ -1,4 +1,4 @@
-TRILHA PANDA — VERSÃO 5.12
+TRILHA PANDA — VERSÃO 5.13
 MASCOTE VETORIAL ANIMADO · PWA INSTALÁVEL
 
 O QUE MUDOU
@@ -15,10 +15,13 @@ O QUE MUDOU
 - Acessórios desbloqueados surgem automaticamente no panda; itens escolhidos manualmente são preservados.
 - A nova seção Resumos organiza notas por concurso e disciplina, sem contar como sessão nem gerar XP.
 - Cada resumo pode ter título, texto e link para a aula de origem; tudo entra no backup local.
+- A tela Cursos ganhou abas Resumos e Materiais, com anotações, links sincronizados e anexos locais de até 20 MB por arquivo.
+- A conta identifica a pessoa por nome de usuário e senha. A senha é protegida no navegador, a sessão usa cookie HttpOnly e os estudos são separados e sincronizados por conta.
+- Na primeira entrada, a pessoa escolhe se quer importar os dados antigos deste navegador para sua conta.
 - O service worker busca o HTML atualizado pela rede e mantém cópia offline como alternativa.
 
 PUBLICAÇÃO
-Envie os arquivos da raiz deste repositório para a raiz do projeto conectado ao Cloudflare Pages. Não há etapa de build; publique por HTTPS.
+O Worker precisa do binding D1 `DB`, conforme `wrangler.jsonc`, e do esquema em `schema.sql`. Publique por HTTPS para ativar login, sincronização e materiais.
 
 INSTALAÇÃO
 - Android/Chrome: menu ⋮ > Instalar app / Adicionar à tela inicial.
@@ -27,5 +30,6 @@ INSTALAÇÃO
 
 IMPORTANTE
 - O mascote é uma ilustração vetorial 2D animada, não um modelo 3D ou arquivo GLB.
-- Os dados de estudo permanecem no armazenamento local do navegador. Exporte um backup antes de trocar ou limpar o navegador.
+- Os dados da conta ficam no banco da plataforma. Anexos ficam apenas no navegador que os recebeu, não sincronizam entre aparelhos e não entram no backup JSON.
+- A recuperação de senha ainda não está disponível; guarde seu nome de usuário e senha.
 - O conteúdo inicial do TJPB é editável e deve ser conferido com o edital oficial e suas retificações.
