@@ -142,6 +142,17 @@
 #devBack{position:fixed;right:16px;bottom:16px;z-index:15;box-shadow:var(--shadow)}
 .dev-grid label{margin-top:12px}
 .dev-grid .actions{margin-top:10px}
+
+/* Estudos: foco, tópicos do edital e histórico editável */
+.study-topics{max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:4px 10px;background:#100d20}
+.study-topics .topicrow{padding:6px 0;border-bottom:1px solid #352b554d}
+.study-topics .topicrow:last-child{border:0}
+.focus-display{font-size:56px;font-weight:800;text-align:center;font-variant-numeric:tabular-nums;margin:14px 0 6px;letter-spacing:1px}
+.focus-presets{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.focus-presets button{padding:6px 12px}
+.focus-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+#studyFilterSubject{width:auto;min-width:220px}
+#studySubmit{flex:1}
 .summary-source{color:#d0a8ff;font-weight:700;text-decoration:none}.summary-source:hover{text-decoration:underline}
 </style>
 </head>
@@ -346,14 +357,35 @@
 
  <section class="content" id="page-study">
   <div class="grid two">
-   <div class="card"><h2>✍️ Registrar sessão</h2><p class="tiny" id="studyContestName"></p>
-    <label>Disciplina</label><select id="studySubject"></select>
-    <div class="formgrid"><div><label>Data</label><input id="studyDate" type="date" class="field"></div><div><label>Tempo estudado (minutos)</label><input id="studyMinutes" type="number" min="1" value="50" class="field"></div><div><label>Questões feitas</label><input id="studyQuestions" type="number" min="0" value="20" class="field"></div><div><label>Acertos</label><input id="studyCorrect" type="number" min="0" value="14" class="field"></div></div>
-    <label>Tipo de atividade</label><select id="studyType"><option>Teoria</option><option>Questões</option><option>Revisão</option><option>Lei seca</option><option>Simulado</option><option>Discursiva</option></select>
-    <label>Observações</label><textarea id="studyNotes" rows="3" placeholder="O que estudou, dificuldades, pontos para revisar..."></textarea>
-    <button class="green" style="width:100%;margin-top:14px" onclick="saveStudy()">Salvar sessão e ganhar XP 🐼</button>
+   <div class="card">
+    <h2 id="studyFormTitle">✍️ Registrar sessão</h2><p class="tiny" id="studyContestName"></p>
+    <label for="studySubject">Disciplina</label><select id="studySubject" onchange="renderStudyTopics()"></select>
+    <div class="formgrid">
+     <div><label for="studyDate">Data</label><input id="studyDate" type="date" class="field"></div>
+     <div><label for="studyMinutes">Tempo estudado (minutos)</label><input id="studyMinutes" type="number" min="1" max="1440" placeholder="ex.: 50" class="field"></div>
+     <div><label for="studyQuestions">Questões feitas</label><input id="studyQuestions" type="number" min="0" placeholder="0" class="field"></div>
+     <div><label for="studyCorrect">Acertos</label><input id="studyCorrect" type="number" min="0" placeholder="0" class="field"></div>
+    </div>
+    <label for="studyType">Tipo de atividade</label><select id="studyType"><option>Teoria</option><option>Questões</option><option>Revisão</option><option>Lei seca</option><option>Simulado</option><option>Discursiva</option></select>
+    <label>Tópicos do edital estudados <span class="tiny">(marcados viram concluídos)</span></label>
+    <div id="studyTopics" class="study-topics"></div>
+    <label for="studyNotes">Observações</label><textarea id="studyNotes" rows="3" placeholder="O que estudou, dificuldades, pontos para revisar..." class="field"></textarea>
+    <div class="actions" style="margin-top:14px"><button class="green" id="studySubmit" onclick="saveStudy()">Salvar sessão e ganhar XP 🐼</button><button class="secondary" id="studyCancelEdit" onclick="resetStudyForm()" hidden>Cancelar edição</button></div>
+    <p class="tiny">Edições não alteram o XP já conquistado.</p>
    </div>
-   <div class="card"><h2>📜 Histórico recente</h2><div id="studyHistory"></div></div>
+   <div class="card">
+    <h2>⏱️ Foco</h2>
+    <div class="focus-presets"><button class="small secondary" onclick="focusPreset(25)">25 min</button><button class="small secondary" onclick="focusPreset(50)">50 min</button><button class="small secondary" onclick="focusPreset(90)">90 min</button></div>
+    <div class="focus-display" id="focusDisplay">25:00</div>
+    <div class="focus-actions"><button id="focusToggle" onclick="focusToggle()">▶ Iniciar foco</button><button class="secondary" onclick="focusReset()">Reiniciar</button><button class="secondary" onclick="focusUseElapsed()">Usar tempo decorrido</button></div>
+    <p class="tiny" style="text-align:center;margin-top:10px">Ao terminar o ciclo, o tempo vai para o formulário. Você confere e salva.</p>
+    <div class="statrow" id="studyTotals" style="margin-top:16px"></div>
+   </div>
+  </div>
+  <div class="card" style="margin-top:14px">
+   <div class="section-head"><h2>📜 Histórico de sessões</h2><select id="studyFilterSubject" class="field" onchange="renderStudy()"></select></div>
+   <p class="tiny">Excluir uma sessão não remove o XP já ganho.</p>
+   <div id="studyHistory"></div>
   </div>
  </section>
 
@@ -482,7 +514,7 @@ function activeContest(){return data.contests.find(c=>c.id===data.activeId)||nul
 function allSessions(){return data.contests.flatMap(c=>(c.sessions||[]).map(s=>({...s,contestName:c.name,contestId:c.id})))}
 function sum(arr,key){return arr.reduce((n,x)=>n+(Number(x[key])||0),0)}
 function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.style.display='none',2800)}
-function showPage(page){document.querySelectorAll('.content').forEach(x=>x.classList.toggle('active',x.id==='page-'+page));document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===page));document.getElementById('pageTitle').textContent=page==='home'?pandaName():PAGE_META[page][0];if(page==='dev')renderDev();document.getElementById('pageSub').textContent=PAGE_META[page][1];if(page==='study')renderStudy();if(page==='summaries')renderSummaries();if(page==='performance')renderPerformance();if(page==='inventory')renderInventory();document.getElementById('devBack').classList.toggle('hidden',!(isDev()&&page==='home'));window.scrollTo({top:0,behavior:'smooth'})}
+function showPage(page){document.querySelectorAll('.content').forEach(x=>x.classList.toggle('active',x.id==='page-'+page));document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===page));document.getElementById('pageTitle').textContent=page==='home'?pandaName():PAGE_META[page][0];if(page==='dev')renderDev();document.getElementById('pageSub').textContent=PAGE_META[page][1];if(page==='study')renderStudy(true);if(page==='summaries')renderSummaries();if(page==='performance')renderPerformance();if(page==='inventory')renderInventory();document.getElementById('devBack').classList.toggle('hidden',!(isDev()&&page==='home'));window.scrollTo({top:0,behavior:'smooth'})}
 document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
 document.getElementById('activeSelect').addEventListener('change',e=>{data.activeId=e.target.value;save()});
 function setActive(id){data.activeId=id;save();showPage('home')}
@@ -529,8 +561,119 @@ function saveSummary(){let c=activeContest();if(!c)return toast('Cadastre um con
 function editSummary(id){let c=activeContest(),s=c?.summaries.find(x=>x.id===id);if(!s)return;document.getElementById('summaryEditId').value=s.id;document.getElementById('summarySubject').value=s.subject;document.getElementById('summaryTitle').value=s.title;document.getElementById('summaryBody').value=s.body;document.getElementById('summarySource').value=s.source||'';document.getElementById('summaryFormTitle').textContent='Editar resumo';document.getElementById('summaryTitle').focus()}
 function deleteSummary(id){let c=activeContest(),s=c?.summaries.find(x=>x.id===id);if(!s||!confirm(`Excluir o resumo “${s.title}”?`))return;c.summaries=c.summaries.filter(x=>x.id!==id);save();toast('Resumo excluído.')}
 function renderSummaries(){let c=activeContest(),all=c?.summaries||[],query=(document.getElementById('summaryFilter')?.value||'').trim().toLocaleLowerCase('pt-BR');document.getElementById('summaryContestLabel').textContent=c?`Concurso ativo: ${c.name}`:'Cadastre um concurso para organizar resumos.';document.getElementById('summaryCount').textContent=`${all.length} ${all.length===1?'resumo salvo':'resumos salvos'}`;let matches=all.filter(s=>!query||`${s.subject} ${s.title} ${s.body}`.toLocaleLowerCase('pt-BR').includes(query)).slice().sort((a,b)=>a.subject.localeCompare(b.subject,'pt-BR')||a.title.localeCompare(b.title,'pt-BR'));let list=document.getElementById('summaryList');list.innerHTML=matches.map(s=>`<article class="list-item" style="display:block"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;flex-wrap:wrap"><span class="pill">${escapeHTML(s.subject)}</span><strong>${escapeHTML(s.title)}</strong></div><div style="white-space:pre-wrap;overflow-wrap:anywhere;margin-top:10px">${escapeHTML(s.body)}</div>${safeSummaryUrl(s.source)?`<p class="tiny"><a class="summary-source" href="${escapeHTML(safeSummaryUrl(s.source))}" target="_blank" rel="noopener noreferrer">Abrir aula de origem ↗</a></p>`:''}<div class="actions"><button class="small secondary" data-edit-summary="${escapeHTML(s.id)}">Editar</button><button class="small danger" data-delete-summary="${escapeHTML(s.id)}">Excluir</button></div></article>`).join('')||(query?'<div class="empty">Nenhum resumo corresponde à busca.</div>':'<div class="empty">Nenhum resumo salvo neste concurso.</div>');list.querySelectorAll('[data-edit-summary]').forEach(b=>b.addEventListener('click',()=>editSummary(b.dataset.editSummary)));list.querySelectorAll('[data-delete-summary]').forEach(b=>b.addEventListener('click',()=>deleteSummary(b.dataset.deleteSummary)))}
-function renderStudy(){let c=activeContest();document.getElementById('studyContestName').textContent=c?`Concurso ativo: ${c.name}`:'Cadastre um concurso para registrar estudos.';document.getElementById('studySubject').innerHTML=(c?.subjects.length?c.subjects:['Geral']).map(s=>`<option>${escapeHTML(s)}</option>`).join('');document.getElementById('studyDate').value=todayISO();document.getElementById('studyHistory').innerHTML=c?.sessions.slice().reverse().slice(0,20).map(s=>`<div class="session"><strong>${escapeHTML(s.subject)}</strong><div class="tiny">${formatDate(s.date)} · ${s.minutes} min · ${escapeHTML(s.type||'Estudo')} · ${s.questions} questões · ${s.questions?Math.round(s.correct/s.questions*100):0}%</div>${s.notes?`<div class="tiny">${escapeHTML(s.notes)}</div>`:''}</div>`).join('')||'<div class="empty">Nenhuma sessão registrada neste concurso.</div>'}
-function saveStudy(){let c=activeContest();if(!c)return toast('Cadastre e selecione um concurso primeiro.');let minutes=+document.getElementById('studyMinutes').value,questions=+document.getElementById('studyQuestions').value,correct=+document.getElementById('studyCorrect').value;if(minutes<1||questions<0||correct<0||correct>questions)return toast('Confira tempo, questões e acertos.');let date=document.getElementById('studyDate').value||todayISO(),s={id:uid(),subject:document.getElementById('studySubject').value,date,minutes,questions,correct,type:document.getElementById('studyType').value,notes:document.getElementById('studyNotes').value.trim()},p=data.panda,previousXP=Number(p.xp)||0,previousStage=pandaGrowthStage(previousXP);c.sessions.push(s);let xp=Math.max(5,Math.round(minutes/10)+Math.round(correct/5));p.xp=previousXP+xp;let newStage=pandaGrowthStage(p.xp),earned=awardPandaAccessories(previousXP,p.xp);p.happiness=Math.min(100,p.happiness+Math.min(15,Math.ceil(minutes/30)));p.energy=Math.max(5,p.energy-Math.min(18,Math.ceil(minutes/35)));p.lastStudy=date;p.health=Math.min(100,p.health+2);p.actions.lastStudy=Date.now();p.speech=newStage>previousStage?`Evoluí com seus estudos! Estou mais fofinho e feliz! 🐼${earned.length?' Ganhei um acessório novo também!':''}`:earned.length?`Desbloqueei ${earned.at(-1).name}! Meu visual novo ficou lindo! 🐼`:`Você estudou ${minutes} minutos! Ganhei ${xp} XP. Estou muito orgulhoso! 🐼`;document.getElementById('studyNotes').value='';save();const celebration=newStage>previousStage||earned.length>0;showPage(celebration?'home':'study');if(celebration){const art=document.getElementById('pandaArtwork');if(art){art.classList.remove('evolution-pop');void art.getBoundingClientRect();art.classList.add('evolution-pop');art.addEventListener('animationend',()=>art.classList.remove('evolution-pop'),{once:true})}document.getElementById('speech').textContent=p.speech;playMascotPose('celebrate')}toast(`Sessão salva! +${xp} XP${newStage>previousStage?' · Panda evoluiu!':''}${earned.length?' · Acessório desbloqueado!':''}`)}
+let editingStudyId=null;
+let focus={total:25*60,left:25*60,running:false,iv:null};
+function fmtMin(m){m=Math.round(m)||0;return m>=60?`${Math.floor(m/60)}h ${String(m%60).padStart(2,'0')}`:`${m} min`}
+function focusFmt(){const m=Math.floor(focus.left/60),sec=focus.left%60;return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`}
+function focusRender(){document.getElementById('focusDisplay').textContent=focusFmt();document.getElementById('focusToggle').textContent=focus.running?'⏸ Pausar':(focus.left<focus.total&&focus.left>0?'▶ Continuar':'▶ Iniciar foco')}
+function focusPreset(min){focus.running=false;clearInterval(focus.iv);focus.total=min*60;focus.left=focus.total;focusRender()}
+function focusToggle(){
+ if(focus.running){focus.running=false;clearInterval(focus.iv);focusRender();return}
+ if(focus.left<=0)focus.left=focus.total;
+ focus.running=true;
+ focus.iv=setInterval(()=>{focus.left--;if(focus.left<=0){clearInterval(focus.iv);focus.running=false;focusRender();focusDone();return}focusRender()},1000);
+ focusRender();
+}
+function focusReset(){focus.running=false;clearInterval(focus.iv);focus.left=focus.total;focusRender()}
+function focusDone(){
+ document.getElementById('studyMinutes').value=Math.round(focus.total/60);
+ focus.left=focus.total;focusRender();
+ toast('Ciclo de foco concluído! Confira e salve a sessão.');
+ if('vibrate' in navigator)navigator.vibrate([150,80,150]);
+}
+function focusUseElapsed(){
+ const el=Math.round((focus.total-focus.left)/60);
+ if(el<1)return toast('Ainda não há um minuto de foco para usar.');
+ document.getElementById('studyMinutes').value=el;
+ toast(`${el} min preenchidos no formulário.`);
+}
+function renderStudyTopics(selectedIds){
+ const c=activeContest(),box=document.getElementById('studyTopics');if(!box)return;
+ const subject=document.getElementById('studySubject').value;
+ const topics=(c?.topics||[]).filter(t=>t.subject===subject);
+ if(!topics.length){box.innerHTML='<div class="tiny" style="padding:8px 0">Nenhum tópico desta disciplina. Cadastre-os em Edital verticalizado.</div>';return}
+ const sel=new Set(selectedIds||[]);
+ box.innerHTML=topics.map(t=>`<label class="topicrow"><input type="checkbox" value="${t.id}" ${sel.has(t.id)?'checked':''}><span>${escapeHTML(t.text)}${t.done?' <small class="tiny">(já concluído)</small>':''}</span></label>`).join('');
+}
+function markTopics(c,ids){c.topics.forEach(t=>{if(ids.includes(t.id))t.done=true})}
+function resetStudyForm(){
+ editingStudyId=null;
+ document.getElementById('studyFormTitle').textContent='✍️ Registrar sessão';
+ document.getElementById('studySubmit').textContent='Salvar sessão e ganhar XP 🐼';
+ document.getElementById('studyCancelEdit').hidden=true;
+ ['studyMinutes','studyQuestions','studyCorrect','studyNotes'].forEach(id=>document.getElementById(id).value='');
+ document.getElementById('studyDate').value=todayISO();
+ renderStudyTopics([]);
+}
+function editStudy(id){
+ const c=activeContest(),s=c?.sessions.find(x=>x.id===id);if(!s)return;
+ showPage('study');
+ editingStudyId=id;
+ const sel=document.getElementById('studySubject');
+ if(![...sel.options].some(o=>o.value===s.subject))sel.add(new Option(s.subject,s.subject));
+ sel.value=s.subject;
+ document.getElementById('studyDate').value=s.date;
+ document.getElementById('studyMinutes').value=s.minutes;
+ document.getElementById('studyQuestions').value=s.questions||0;
+ document.getElementById('studyCorrect').value=s.correct||0;
+ document.getElementById('studyType').value=s.type||'Teoria';
+ document.getElementById('studyNotes').value=s.notes||'';
+ renderStudyTopics(s.topicIds||[]);
+ document.getElementById('studyFormTitle').textContent='✏️ Editar sessão';
+ document.getElementById('studySubmit').textContent='Salvar alterações';
+ document.getElementById('studyCancelEdit').hidden=false;
+ document.getElementById('studyMinutes').focus();
+}
+function deleteStudy(id){
+ const c=activeContest(),s=c?.sessions.find(x=>x.id===id);if(!s)return;
+ if(!confirm('Excluir esta sessão? O XP já ganho será mantido.'))return;
+ if(editingStudyId===id)resetStudyForm();
+ c.sessions=c.sessions.filter(x=>x.id!==id);save();toast('Sessão excluída.');
+}
+function renderStudy(fresh){
+ const c=activeContest();
+ document.getElementById('studyContestName').textContent=c?`Concurso ativo: ${c.name}`:'Cadastre um concurso para registrar estudos.';
+ const subjects=c?.subjects?.length?c.subjects:['Geral'];
+ const sel=document.getElementById('studySubject'),prev=sel.value;
+ sel.innerHTML=subjects.map(x=>`<option>${escapeHTML(x)}</option>`).join('');
+ if(subjects.includes(prev))sel.value=prev;
+ const fil=document.getElementById('studyFilterSubject'),prevF=fil.value;
+ fil.innerHTML='<option value="">Todas as disciplinas</option>'+subjects.map(x=>`<option>${escapeHTML(x)}</option>`).join('');
+ if(subjects.includes(prevF))fil.value=prevF;
+ if(fresh)resetStudyForm();
+ focusRender();
+ const sessions=c?.sessions||[],today=todayISO();
+ const wk=new Date();wk.setDate(wk.getDate()-6);const weekStart=isoOf(wk);
+ const todayMin=sum(sessions.filter(x=>x.date===today),'minutes'),weekMin=sum(sessions.filter(x=>x.date>=weekStart),'minutes');
+ const q=sum(sessions,'questions'),ok=sum(sessions,'correct');
+ document.getElementById('studyTotals').innerHTML=[[fmtMin(todayMin),'estudado hoje'],[fmtMin(weekMin),'últimos 7 dias'],[q?Math.round(ok/q*100)+'%':'—','aproveitamento']].map(([a,b])=>`<div class="stat"><b>${a}</b><small>${b}</small></div>`).join('');
+ const filter=fil.value;
+ const list=sessions.filter(x=>!filter||x.subject===filter).slice().sort((a,b)=>(b.date+(b.createdAt||'')).localeCompare(a.date+(a.createdAt||''))).slice(0,50);
+ document.getElementById('studyHistory').innerHTML=list.length?list.map(x=>{const acc=x.questions?Math.round(x.correct/x.questions*100)+'%':'—';const nt=(x.topicIds||[]).length;return `<div class="session" style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start"><div style="min-width:0"><strong>${escapeHTML(x.subject)}</strong><div class="tiny">${formatDate(x.date)} · ${fmtMin(x.minutes)} · ${escapeHTML(x.type||'Estudo')} · ${x.questions||0} questões · acertos ${acc}${nt?` · ${nt} tópico(s)`:''}</div>${x.notes?`<div class="tiny">${escapeHTML(x.notes)}</div>`:''}</div><div class="actions" style="margin-top:0;flex-shrink:0"><button class="small secondary" onclick="editStudy('${x.id}')">Editar</button><button class="small danger" onclick="deleteStudy('${x.id}')">Excluir</button></div></div>`}).join(''):'<div class="empty">Nenhuma sessão registrada ainda.</div>';
+}
+function saveStudy(){
+ let c=activeContest();if(!c)return toast('Cadastre e selecione um concurso primeiro.');
+ const subject=document.getElementById('studySubject').value;
+ const minutes=Math.round(+document.getElementById('studyMinutes').value||0);
+ const questions=Math.round(+document.getElementById('studyQuestions').value||0);
+ const correct=Math.round(+document.getElementById('studyCorrect').value||0);
+ const date=document.getElementById('studyDate').value||todayISO();
+ const type=document.getElementById('studyType').value;
+ const notes=document.getElementById('studyNotes').value.trim();
+ const topicIds=[...document.querySelectorAll('#studyTopics input:checked')].map(i=>i.value);
+ if(!subject)return toast('Escolha uma disciplina.');
+ if(minutes<1)return toast('Informe o tempo estudado em minutos.');
+ if(questions<0||correct<0||correct>questions)return toast('Confira as questões e os acertos.');
+ if(editingStudyId){
+  const s=c.sessions.find(x=>x.id===editingStudyId);
+  if(!s){resetStudyForm();return toast('Sessão não encontrada.')}
+  Object.assign(s,{subject,date,minutes,questions,correct,type,notes,topicIds});
+  markTopics(c,topicIds);save();resetStudyForm();toast('Sessão atualizada. XP mantido.');return;
+ }
+ const s={id:uid(),subject,date,minutes,questions,correct,type,notes,topicIds,createdAt:new Date().toISOString()};
+ c.sessions.push(s);markTopics(c,topicIds);
+ const p=data.panda,previousXP=Number(p.xp)||0,previousStage=pandaGrowthStage(previousXP);
+ let xp=Math.max(5,Math.round(minutes/10)+Math.round(correct/5));p.xp=previousXP+xp;let newStage=pandaGrowthStage(p.xp),earned=awardPandaAccessories(previousXP,p.xp);p.happiness=Math.min(100,p.happiness+Math.min(15,Math.ceil(minutes/30)));p.energy=Math.max(5,p.energy-Math.min(18,Math.ceil(minutes/35)));p.lastStudy=date;p.health=Math.min(100,p.health+2);p.actions.lastStudy=Date.now();p.speech=newStage>previousStage?`Evoluí com seus estudos! Estou mais fofinho e feliz! 🐼${earned.length?' Ganhei um acessório novo também!':''}`:earned.length?`Desbloqueei ${earned.at(-1).name}! Meu visual novo ficou lindo! 🐼`:`Você estudou ${minutes} minutos! Ganhei ${xp} XP. Estou muito orgulhoso! 🐼`;document.getElementById('studyNotes').value='';save();const celebration=newStage>previousStage||earned.length>0;showPage(celebration?'home':'study');if(celebration){const art=document.getElementById('pandaArtwork');if(art){art.classList.remove('evolution-pop');void art.getBoundingClientRect();art.classList.add('evolution-pop');art.addEventListener('animationend',()=>art.classList.remove('evolution-pop'),{once:true})}document.getElementById('speech').textContent=p.speech;playMascotPose('celebrate')}toast(`Sessão salva! +${xp} XP${newStage>previousStage?' · Panda evoluiu!':''}${earned.length?' · Acessório desbloqueado!':''}`)}
 function renderPerformance(){let sessions=allSessions(),minutes=sum(sessions,'minutes'),questions=sum(sessions,'questions'),correct=sum(sessions,'correct'),stats=[['Horas estudadas',(minutes/60).toFixed(1)+'h'],['Sessões',sessions.length],['Questões',questions],['Aproveitamento',questions?Math.round(correct/questions*100)+'%':'—']];document.getElementById('globalStats').innerHTML=stats.map(([a,b])=>`<div class="card stat"><b>${b}</b><small>${a}</small></div>`).join('');document.getElementById('contestPerformance').innerHTML=data.contests.map(c=>{let m=sum(c.sessions,'minutes'),q=sum(c.sessions,'questions'),a=sum(c.sessions,'correct');return `<div class="session"><strong>${escapeHTML(c.name)}</strong><div class="tiny">${(m/60).toFixed(1)}h · ${c.sessions.length} sessões · ${q?Math.round(a/q*100)+'% de acertos':'sem questões registradas'}</div></div>`}).join('')||'<div class="empty">Cadastre concursos para acompanhar.</div>';let c=activeContest(),by={};(c?.sessions||[]).forEach(s=>{let x=by[s.subject]??={m:0,q:0,a:0};x.m+=s.minutes;x.q+=s.questions;x.a+=s.correct});document.getElementById('subjectPerformance').innerHTML=Object.entries(by).sort((a,b)=>b[1].m-a[1].m).map(([s,x])=>`<div class="session"><strong>${escapeHTML(s)}</strong><div class="tiny">${(x.m/60).toFixed(1)}h · ${x.q} questões · ${x.q?Math.round(x.a/x.q*100)+'% acertos':'sem questões'}</div></div>`).join('')||'<div class="empty">Registre sessões para ver o desempenho.</div>';
  let bars=[];for(let i=13;i>=0;i--){let d=new Date();d.setDate(d.getDate()-i);let key=isoOf(d),m=sum(sessions.filter(s=>s.date===key),'minutes');bars.push({key,m})}let max=Math.max(60,...bars.map(x=>x.m));document.getElementById('dailyBars').innerHTML=bars.map(x=>`<div title="${formatDate(x.key)}: ${x.m} min" style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:5px"><div style="width:100%;height:${Math.max(3,x.m/max*100)}%;background:linear-gradient(#b47aff,#713be0);border-radius:5px 5px 0 0"></div><small style="font-size:9px">${x.key.slice(8)}</small></div>`).join('')}
 function renderLook(){const xp=data.panda.xp||0,cur={fur:lookValue('fur'),bg:lookValue('bg')};const input=document.getElementById('pandaNameInput');if(input&&document.activeElement!==input)input.value=pandaName();const opts=(kind,list)=>list.map(o=>{const unlocked=isUnlocked(o),on=cur[kind]===o.id;return `<div class="item ${unlocked?'':'locked'}"><div class="emoji"><span class="swatch" style="background:${o.sw}"></span></div><strong>${o.label}</strong><p class="tiny">${unlocked?(on?'Em uso':'Disponível'):`Desbloqueia com ${o.xp} XP`}</p><button class="small ${on?'secondary':''}" ${unlocked?'':'disabled'} onclick="setLook('${kind}','${o.id}')">${on?'Em uso':unlocked?'Usar':'Bloqueado'}</button></div>`}).join('');document.getElementById('furOptions').innerHTML=opts('fur',FUR_OPTIONS);document.getElementById('bgOptions').innerHTML=opts('bg',BG_OPTIONS)}
