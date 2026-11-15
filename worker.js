@@ -61,6 +61,7 @@ async function ensureSchema(env) {
         `CREATE TABLE IF NOT EXISTS creator_access (email TEXT PRIMARY KEY COLLATE NOCASE,granted_by TEXT NOT NULL REFERENCES users(id),granted_at INTEGER NOT NULL)`,
         `CREATE TABLE IF NOT EXISTS study_access (email TEXT PRIMARY KEY COLLATE NOCASE,granted_by TEXT NOT NULL REFERENCES users(id),granted_at INTEGER NOT NULL)`,
         `CREATE TABLE IF NOT EXISTS verticalized_syllabi (id TEXT PRIMARY KEY,name TEXT NOT NULL,role TEXT NOT NULL DEFAULT '',board TEXT NOT NULL DEFAULT '',exam_date TEXT NOT NULL DEFAULT '',subjects_json TEXT NOT NULL,topics_json TEXT NOT NULL,updated_by TEXT NOT NULL REFERENCES users(id),updated_at INTEGER NOT NULL)`,
+        `CREATE TABLE IF NOT EXISTS published_syllabus_content (syllabus_id TEXT PRIMARY KEY REFERENCES verticalized_syllabi(id) ON DELETE CASCADE,questions_json TEXT NOT NULL DEFAULT '[]',summaries_json TEXT NOT NULL DEFAULT '[]',updated_by TEXT NOT NULL REFERENCES users(id),updated_at INTEGER NOT NULL)`,
         `CREATE TABLE IF NOT EXISTS materials (id TEXT PRIMARY KEY,title TEXT NOT NULL,subject TEXT NOT NULL,exam TEXT NOT NULL,description TEXT NOT NULL DEFAULT '',filename TEXT NOT NULL,object_key TEXT NOT NULL UNIQUE,mime_type TEXT NOT NULL,size_bytes INTEGER NOT NULL,access_level TEXT NOT NULL CHECK (access_level IN ('free','paid')),status TEXT NOT NULL DEFAULT 'published' CHECK (status IN ('published','archived')),created_by TEXT NOT NULL REFERENCES users(id),created_at INTEGER NOT NULL)`,
         `CREATE INDEX IF NOT EXISTS materials_visibility ON materials(status,created_at)`,
         `CREATE TABLE IF NOT EXISTS material_entitlements (id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,material_id TEXT NOT NULL REFERENCES materials(id) ON DELETE CASCADE,granted_by TEXT NOT NULL REFERENCES users(id),created_at INTEGER NOT NULL,revoked_at INTEGER,UNIQUE (user_id,material_id))`
@@ -187,10 +188,14 @@ async function handleSyllabi(request, url, env) {
   const user = await currentUser(request, env);
   if (request.method === "GET" && url.pathname === "/api/syllabi") {
     if (!await canStudySyllabus(user, env)) return fail("Este e-mail ainda não tem acesso ao edital verticalizado.", 403);
-    const rows = await env.DB.prepare("SELECT id,name,role,board,exam_date,subjects_json,topics_json,updated_at FROM verticalized_syllabi ORDER BY name COLLATE NOCASE").all();
+    const rows = await env.DB.prepare(`SELECT s.id,s.name,s.role,s.board,s.exam_date,s.subjects_json,s.topics_json,s.updated_at,
+      c.questions_json,c.summaries_json FROM verticalized_syllabi s
+      LEFT JOIN published_syllabus_content c ON c.syllabus_id=s.id ORDER BY s.name COLLATE NOCASE`).all();
     const syllabi = (rows.results || []).map(row => ({
       id: row.id, name: row.name, role: row.role, board: row.board, date: row.exam_date,
-      subjects: JSON.parse(row.subjects_json), topics: JSON.parse(row.topics_json), updatedAt: row.updated_at
+      subjects: JSON.parse(row.subjects_json), topics: JSON.parse(row.topics_json),
+      questions: JSON.parse(row.questions_json || "[]"), summaries: JSON.parse(row.summaries_json || "[]"),
+      updatedAt: row.updated_at
     }));
     return json({ syllabi });
   }
@@ -198,7 +203,7 @@ async function handleSyllabi(request, url, env) {
   if (request.method === "PUT" && match) {
     if (!user || !isOwner(user) || !validOrigin(request, env)) return fail("Somente a conta proprietária pode criar ou alterar editais verticalizados.", 403);
     const raw = await request.text();
-    if (raw.length > 2_000_000) return fail("O edital excede o limite de tamanho.", 413);
+    if (raw.length > 8_000_000) return fail("O material do edital excede o limite de tamanho.", 413);
     let body;
     try { body = JSON.parse(raw); } catch { return fail("Os dados do edital estão inválidos."); }
     const name = String(body?.name || "").trim().slice(0, 160);
@@ -215,10 +220,48 @@ async function handleSyllabi(request, url, env) {
       text: String(topic?.text || "").trim().slice(0, 500)
     })).filter(topic => topic.subject && topic.text);
     if (rawTopics.length && !topics.length) return fail("O edital precisa ter tópicos válidos com matéria e conteúdo.");
+    const rawQuestions = Array.isArray(body?.questions) ? body.questions : null;
+    const rawSummaries = Array.isArray(body?.summaries) ? body.summaries : null;
+    if ((rawQuestions?.length || 0) > 5000 || (rawSummaries?.length || 0) > 2000) return fail("O edital pode incluir até 5.000 questões e 2.000 resumos.");
+    let questions = null, summaries = null;
+    try {
+      if (rawQuestions) questions = rawQuestions.map((item, index) => {
+        const options = (Array.isArray(item?.options) ? item.options : String(item?.options || "").split(/\r?\n/))
+          .map(option => String(option || "").trim().slice(0, 10000)).filter(Boolean);
+        const rawAnswer = item?.answer ?? item?.correctAnswer ?? item?.gabarito;
+        const answer = typeof rawAnswer === "string" && /^[A-E]$/i.test(rawAnswer.trim())
+          ? rawAnswer.trim().toUpperCase().charCodeAt(0) - 65 : Number(rawAnswer);
+        const question = String(item?.question ?? item?.prompt ?? item?.enunciado ?? "").trim().slice(0, 20000);
+        const subject = String(item?.subject ?? item?.discipline ?? item?.materia ?? "").trim().slice(0, 160);
+        if (!subject || !question || options.length < 2 || options.length > 5 || !Number.isInteger(answer) || answer < 0 || answer >= options.length) {
+          throw new Error(`A questão ${index + 1} está incompleta ou tem gabarito inválido.`);
+        }
+        return { id: String(item?.id || `question-${index}`).slice(0, 100), subject, question, options, answer,
+          explanation: String(item?.explanation ?? item?.comment ?? item?.comentario ?? "").trim().slice(0, 20000) };
+      });
+      if (rawSummaries) summaries = rawSummaries.map((item, index) => {
+        const title = String(item?.title || "").trim().slice(0, 140);
+        const subject = String(item?.subject || "").trim().slice(0, 160);
+        const text = String(item?.body || "").trim().slice(0, 5000);
+        if (!title || !subject || !text) throw new Error(`O resumo ${index + 1} está incompleto.`);
+        let source = "";
+        try { const parsed = new URL(String(item?.source || "")); if (["http:", "https:"].includes(parsed.protocol)) source = parsed.href; } catch {}
+        return { id: String(item?.id || `summary-${index}`).slice(0, 100), subject, title, body: text, source };
+      });
+    } catch (error) { return fail(error.message || "As questões ou os resumos enviados estão inválidos."); }
     const id = match[1], now = Date.now();
     await env.DB.prepare(`INSERT INTO verticalized_syllabi (id,name,role,board,exam_date,subjects_json,topics_json,updated_by,updated_at)
       VALUES (?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,role=excluded.role,board=excluded.board,exam_date=excluded.exam_date,subjects_json=excluded.subjects_json,topics_json=excluded.topics_json,updated_by=excluded.updated_by,updated_at=excluded.updated_at`)
       .bind(id, name, role, board, examDate, JSON.stringify(subjects), JSON.stringify(topics), user.id, now).run();
+    if (questions || summaries) {
+      const previous = await env.DB.prepare("SELECT questions_json,summaries_json FROM published_syllabus_content WHERE syllabus_id=?").bind(id).first();
+      const questionsJson = JSON.stringify(questions ?? JSON.parse(previous?.questions_json || "[]"));
+      const summariesJson = JSON.stringify(summaries ?? JSON.parse(previous?.summaries_json || "[]"));
+      await env.DB.prepare(`INSERT INTO published_syllabus_content (syllabus_id,questions_json,summaries_json,updated_by,updated_at)
+        VALUES (?,?,?,?,?) ON CONFLICT(syllabus_id) DO UPDATE SET questions_json=excluded.questions_json,
+        summaries_json=excluded.summaries_json,updated_by=excluded.updated_by,updated_at=excluded.updated_at`)
+        .bind(id, questionsJson, summariesJson, user.id, now).run();
+    }
     return json({ ok: true, id, updatedAt: now });
   }
   const deleteMatch = url.pathname.match(/^\/api\/syllabi\/([A-Za-z0-9_-]+)$/);
