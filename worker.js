@@ -59,6 +59,8 @@ async function ensureSchema(env) {
         `CREATE TABLE IF NOT EXISTS login_attempts (id INTEGER PRIMARY KEY AUTOINCREMENT,email TEXT NOT NULL COLLATE NOCASE,created_at INTEGER NOT NULL,succeeded INTEGER NOT NULL DEFAULT 0)`,
         `CREATE INDEX IF NOT EXISTS login_attempts_rate ON login_attempts(email,created_at,succeeded)`,
         `CREATE TABLE IF NOT EXISTS creator_access (email TEXT PRIMARY KEY COLLATE NOCASE,granted_by TEXT NOT NULL REFERENCES users(id),granted_at INTEGER NOT NULL)`,
+        `CREATE TABLE IF NOT EXISTS study_access (email TEXT PRIMARY KEY COLLATE NOCASE,granted_by TEXT NOT NULL REFERENCES users(id),granted_at INTEGER NOT NULL)`,
+        `CREATE TABLE IF NOT EXISTS verticalized_syllabi (id TEXT PRIMARY KEY,name TEXT NOT NULL,role TEXT NOT NULL DEFAULT '',board TEXT NOT NULL DEFAULT '',exam_date TEXT NOT NULL DEFAULT '',subjects_json TEXT NOT NULL,topics_json TEXT NOT NULL,updated_by TEXT NOT NULL REFERENCES users(id),updated_at INTEGER NOT NULL)`,
         `CREATE TABLE IF NOT EXISTS materials (id TEXT PRIMARY KEY,title TEXT NOT NULL,subject TEXT NOT NULL,exam TEXT NOT NULL,description TEXT NOT NULL DEFAULT '',filename TEXT NOT NULL,object_key TEXT NOT NULL UNIQUE,mime_type TEXT NOT NULL,size_bytes INTEGER NOT NULL,access_level TEXT NOT NULL CHECK (access_level IN ('free','paid')),status TEXT NOT NULL DEFAULT 'published' CHECK (status IN ('published','archived')),created_by TEXT NOT NULL REFERENCES users(id),created_at INTEGER NOT NULL)`,
         `CREATE INDEX IF NOT EXISTS materials_visibility ON materials(status,created_at)`,
         `CREATE TABLE IF NOT EXISTS material_entitlements (id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,material_id TEXT NOT NULL REFERENCES materials(id) ON DELETE CASCADE,granted_by TEXT NOT NULL REFERENCES users(id),created_at INTEGER NOT NULL,revoked_at INTEGER,UNIQUE (user_id,material_id))`
@@ -67,6 +69,14 @@ async function ensureSchema(env) {
     })().catch(error => { schemaPromise = null; throw error; });
   }
   await schemaPromise;
+}
+
+async function canStudySyllabus(user, env) {
+  if (!user) return false;
+  if (isOwner(user)) return true;
+  const email = emailNorm(user.email);
+  if (await env.DB.prepare("SELECT 1 FROM study_access WHERE email=?").bind(email).first()) return true;
+  return !!await env.DB.prepare("SELECT 1 FROM creator_access WHERE email=?").bind(email).first();
 }
 
 async function newSession(userId, env) {
@@ -89,7 +99,9 @@ async function handleAuth(request, url, env) {
     const owner = isOwner(user);
     const granted = owner || !!await env.DB.prepare("SELECT 1 FROM creator_access WHERE email=?").bind(emailNorm(user.email)).first();
     const creators = owner ? (await env.DB.prepare("SELECT email,granted_at FROM creator_access ORDER BY email").all()).results || [] : [];
-    return json({ email: user.email, canCreate: granted, owner, creators });
+    const canStudy = await canStudySyllabus(user, env);
+    const studyEmails = owner ? (await env.DB.prepare("SELECT email,granted_at FROM study_access ORDER BY email").all()).results || [] : [];
+    return json({ email: user.email, canCreate: granted, canStudySyllabus: canStudy, owner, creators, studyEmails });
   }
   if (request.method === "POST" && url.pathname === "/api/developer/access") {
     const user = await currentUser(request, env);
@@ -106,6 +118,23 @@ async function handleAuth(request, url, env) {
     const body = await request.json().catch(() => null), email = emailNorm(body?.email);
     if (!email || email === DEVELOPER_EMAIL) return fail("Informe um e-mail de criador válido.");
     await env.DB.prepare("DELETE FROM creator_access WHERE email=?").bind(email).run();
+    return json({ ok: true, email });
+  }
+  if (request.method === "POST" && url.pathname === "/api/developer/study-access") {
+    const user = await currentUser(request, env);
+    if (!user || !isOwner(user) || !validOrigin(request, env)) return fail("Somente a conta proprietária pode liberar o estudo pelo edital.", 403);
+    const body = await request.json().catch(() => null), email = emailNorm(body?.email);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail("Informe um e-mail válido.");
+    if (email === DEVELOPER_EMAIL) return fail("A conta proprietária já tem acesso ao edital.");
+    await env.DB.prepare("INSERT INTO study_access (email,granted_by,granted_at) VALUES (?,?,?) ON CONFLICT(email) DO UPDATE SET granted_by=excluded.granted_by,granted_at=excluded.granted_at").bind(email, user.id, Date.now()).run();
+    return json({ ok: true, email });
+  }
+  if (request.method === "DELETE" && url.pathname === "/api/developer/study-access") {
+    const user = await currentUser(request, env);
+    if (!user || !isOwner(user) || !validOrigin(request, env)) return fail("Somente a conta proprietária pode retirar o acesso ao edital.", 403);
+    const body = await request.json().catch(() => null), email = emailNorm(body?.email);
+    if (!email || email === DEVELOPER_EMAIL) return fail("Informe um e-mail autorizado válido.");
+    await env.DB.prepare("DELETE FROM study_access WHERE email=?").bind(email).run();
     return json({ ok: true, email });
   }
   if (request.method === "POST" && url.pathname === "/api/auth/register") {
@@ -150,6 +179,53 @@ async function handleAuth(request, url, env) {
     const token = cookieValue(request, SESSION_COOKIE);
     if (token) await env.DB.prepare("DELETE FROM sessions WHERE token_hash=?").bind(await sha256(token)).run();
     return json({ ok: true }, 200, { "set-cookie": clearCookie() });
+  }
+  return fail("Não encontrado.", 404);
+}
+
+async function handleSyllabi(request, url, env) {
+  const user = await currentUser(request, env);
+  if (request.method === "GET" && url.pathname === "/api/syllabi") {
+    if (!await canStudySyllabus(user, env)) return fail("Este e-mail ainda não tem acesso ao edital verticalizado.", 403);
+    const rows = await env.DB.prepare("SELECT id,name,role,board,exam_date,subjects_json,topics_json,updated_at FROM verticalized_syllabi ORDER BY name COLLATE NOCASE").all();
+    const syllabi = (rows.results || []).map(row => ({
+      id: row.id, name: row.name, role: row.role, board: row.board, date: row.exam_date,
+      subjects: JSON.parse(row.subjects_json), topics: JSON.parse(row.topics_json), updatedAt: row.updated_at
+    }));
+    return json({ syllabi });
+  }
+  const match = url.pathname.match(/^\/api\/syllabi\/([A-Za-z0-9_-]+)$/);
+  if (request.method === "PUT" && match) {
+    if (!user || !isOwner(user) || !validOrigin(request, env)) return fail("Somente a conta proprietária pode criar ou alterar editais verticalizados.", 403);
+    const raw = await request.text();
+    if (raw.length > 2_000_000) return fail("O edital excede o limite de tamanho.", 413);
+    let body;
+    try { body = JSON.parse(raw); } catch { return fail("Os dados do edital estão inválidos."); }
+    const name = String(body?.name || "").trim().slice(0, 160);
+    const role = String(body?.role || "").trim().slice(0, 160);
+    const board = String(body?.board || "").trim().slice(0, 120);
+    const examDate = String(body?.date || "").trim().slice(0, 20);
+    const rawSubjects = Array.isArray(body?.subjects) ? body.subjects : [];
+    const rawTopics = Array.isArray(body?.topics) ? body.topics : [];
+    if (!name || rawTopics.length > 5000 || rawSubjects.length > 500) return fail("Preencha o concurso e use até 5.000 tópicos e 500 matérias.");
+    const subjects = [...new Set(rawSubjects.map(value => String(value || "").trim().slice(0, 160)).filter(Boolean))];
+    const topics = rawTopics.map((topic, index) => ({
+      id: String(topic?.id || `topic-${index}`).slice(0, 100),
+      subject: String(topic?.subject || "").trim().slice(0, 160),
+      text: String(topic?.text || "").trim().slice(0, 500)
+    })).filter(topic => topic.subject && topic.text);
+    if (rawTopics.length && !topics.length) return fail("O edital precisa ter tópicos válidos com matéria e conteúdo.");
+    const id = match[1], now = Date.now();
+    await env.DB.prepare(`INSERT INTO verticalized_syllabi (id,name,role,board,exam_date,subjects_json,topics_json,updated_by,updated_at)
+      VALUES (?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,role=excluded.role,board=excluded.board,exam_date=excluded.exam_date,subjects_json=excluded.subjects_json,topics_json=excluded.topics_json,updated_by=excluded.updated_by,updated_at=excluded.updated_at`)
+      .bind(id, name, role, board, examDate, JSON.stringify(subjects), JSON.stringify(topics), user.id, now).run();
+    return json({ ok: true, id, updatedAt: now });
+  }
+  const deleteMatch = url.pathname.match(/^\/api\/syllabi\/([A-Za-z0-9_-]+)$/);
+  if (request.method === "DELETE" && deleteMatch) {
+    if (!user || !isOwner(user) || !validOrigin(request, env)) return fail("Somente a conta proprietária pode remover editais verticalizados.", 403);
+    await env.DB.prepare("DELETE FROM verticalized_syllabi WHERE id=?").bind(deleteMatch[1]).run();
+    return json({ ok: true });
   }
   return fail("Não encontrado.", 404);
 }
@@ -232,7 +308,8 @@ export default {
     const url = new URL(request.url);
     try {
       if (url.pathname.startsWith("/api/")) await ensureSchema(env);
-      if (url.pathname.startsWith("/api/auth/") || url.pathname === "/api/developer/access") return await handleAuth(request, url, env);
+      if (url.pathname.startsWith("/api/auth/") || url.pathname.startsWith("/api/developer/")) return await handleAuth(request, url, env);
+      if (url.pathname.startsWith("/api/syllabi")) return await handleSyllabi(request, url, env);
       if (url.pathname.startsWith("/api/materials") || url.pathname.startsWith("/api/admin/")) return await handleMaterials(request, url, env);
       return await env.ASSETS.fetch(request);
     } catch (error) {
