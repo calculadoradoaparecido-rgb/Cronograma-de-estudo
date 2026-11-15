@@ -43,8 +43,8 @@ async function currentUser(request, env) {
   const tokenHash = await sha256(token);
   return env.DB.prepare(`SELECT u.id,u.email,u.display_name,u.role,u.created_at FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=? AND s.expires_at>?`).bind(tokenHash, Date.now()).first();
 }
-function isDeveloper(user) { return emailNorm(user?.email) === DEVELOPER_EMAIL; }
-function isAdmin(user) { return user?.role === "admin" && isDeveloper(user); }
+function isOwner(user) { return emailNorm(user?.email) === DEVELOPER_EMAIL; }
+function isAdmin(user) { return user?.role === "admin" && isOwner(user); }
 async function requireUser(request, env) { return currentUser(request, env); }
 async function requireAdmin(request, env) { const user = await requireUser(request, env); return isAdmin(user) ? user : null; }
 
@@ -58,6 +58,7 @@ async function ensureSchema(env) {
         `CREATE INDEX IF NOT EXISTS sessions_token_expiry ON sessions(token_hash,expires_at)`,
         `CREATE TABLE IF NOT EXISTS login_attempts (id INTEGER PRIMARY KEY AUTOINCREMENT,email TEXT NOT NULL COLLATE NOCASE,created_at INTEGER NOT NULL,succeeded INTEGER NOT NULL DEFAULT 0)`,
         `CREATE INDEX IF NOT EXISTS login_attempts_rate ON login_attempts(email,created_at,succeeded)`,
+        `CREATE TABLE IF NOT EXISTS creator_access (email TEXT PRIMARY KEY COLLATE NOCASE,granted_by TEXT NOT NULL REFERENCES users(id),granted_at INTEGER NOT NULL)`,
         `CREATE TABLE IF NOT EXISTS materials (id TEXT PRIMARY KEY,title TEXT NOT NULL,subject TEXT NOT NULL,exam TEXT NOT NULL,description TEXT NOT NULL DEFAULT '',filename TEXT NOT NULL,object_key TEXT NOT NULL UNIQUE,mime_type TEXT NOT NULL,size_bytes INTEGER NOT NULL,access_level TEXT NOT NULL CHECK (access_level IN ('free','paid')),status TEXT NOT NULL DEFAULT 'published' CHECK (status IN ('published','archived')),created_by TEXT NOT NULL REFERENCES users(id),created_at INTEGER NOT NULL)`,
         `CREATE INDEX IF NOT EXISTS materials_visibility ON materials(status,created_at)`,
         `CREATE TABLE IF NOT EXISTS material_entitlements (id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,material_id TEXT NOT NULL REFERENCES materials(id) ON DELETE CASCADE,granted_by TEXT NOT NULL REFERENCES users(id),created_at INTEGER NOT NULL,revoked_at INTEGER,UNIQUE (user_id,material_id))`
@@ -84,14 +85,33 @@ async function handleAuth(request, url, env) {
   }
   if (request.method === "GET" && url.pathname === "/api/developer/access") {
     const user = await currentUser(request, env);
-    if (!user) return fail("Entre na sua conta da biblioteca.", 401);
-    if (!isDeveloper(user)) return fail("Esta área é restrita à conta autorizada.", 403);
-    return json({ email: user.email });
+    if (!user) return fail("Entre na sua conta do Trilha Panda.", 401);
+    const owner = isOwner(user);
+    const granted = owner || !!await env.DB.prepare("SELECT 1 FROM creator_access WHERE email=?").bind(emailNorm(user.email)).first();
+    const creators = owner ? (await env.DB.prepare("SELECT email,granted_at FROM creator_access ORDER BY email").all()).results || [] : [];
+    return json({ email: user.email, canCreate: granted, owner, creators });
+  }
+  if (request.method === "POST" && url.pathname === "/api/developer/access") {
+    const user = await currentUser(request, env);
+    if (!user || !isOwner(user) || !validOrigin(request, env)) return fail("Somente a conta proprietária pode liberar criadores.", 403);
+    const body = await request.json().catch(() => null), email = emailNorm(body?.email);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail("Informe um e-mail válido.");
+    if (email === DEVELOPER_EMAIL) return fail("A conta proprietária já tem acesso de criação.");
+    await env.DB.prepare("INSERT INTO creator_access (email,granted_by,granted_at) VALUES (?,?,?) ON CONFLICT(email) DO UPDATE SET granted_by=excluded.granted_by,granted_at=excluded.granted_at").bind(email, user.id, Date.now()).run();
+    return json({ ok: true, email });
+  }
+  if (request.method === "DELETE" && url.pathname === "/api/developer/access") {
+    const user = await currentUser(request, env);
+    if (!user || !isOwner(user) || !validOrigin(request, env)) return fail("Somente a conta proprietária pode retirar acessos.", 403);
+    const body = await request.json().catch(() => null), email = emailNorm(body?.email);
+    if (!email || email === DEVELOPER_EMAIL) return fail("Informe um e-mail de criador válido.");
+    await env.DB.prepare("DELETE FROM creator_access WHERE email=?").bind(email).run();
+    return json({ ok: true, email });
   }
   if (request.method === "POST" && url.pathname === "/api/auth/register") {
     const body = await request.json().catch(() => null);
     const email = emailNorm(body?.email), name = String(body?.name || "").trim().slice(0, 80), password = String(body?.password || "");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !name || password.length < 12 || password.length > 200) return fail("Informe nome, e-mail válido e senha com pelo menos 12 caracteres.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !name || !/^\d{4,6}$/.test(password)) return fail("Informe nome, e-mail válido e o PIN de 4 a 6 números criado no Trilha Panda.");
     const hashed = await passwordHash(password), id = crypto.randomUUID(), now = Date.now();
     try {
       await env.DB.prepare("INSERT INTO users (id,email,display_name,password_salt,password_hash,password_iterations,role,created_at) VALUES (?,?,?,?,?,?,?,?)")
@@ -117,6 +137,15 @@ async function handleAuth(request, url, env) {
     const token = await newSession(user.id, env);
     return json({ user: { id: user.id, email: user.email, name: user.display_name, role: user.role } }, 200, { "set-cookie": cookieHeader(token, SESSION_DAYS * 86400) });
   }
+  if (request.method === "POST" && url.pathname === "/api/auth/credential") {
+    const user = await currentUser(request, env);
+    if (!user || !validOrigin(request, env)) return fail("Entre na mesma conta para sincronizar o PIN.", 401);
+    const body = await request.json().catch(() => null), password = String(body?.password || "");
+    if (!/^\d{4,6}$/.test(password)) return fail("O PIN precisa ter de 4 a 6 números.");
+    const hashed = await passwordHash(password);
+    await env.DB.prepare("UPDATE users SET password_salt=?,password_hash=?,password_iterations=? WHERE id=?").bind(hashed.salt, hashed.hash, PBKDF2_ITERATIONS, user.id).run();
+    return json({ ok: true });
+  }
   if (request.method === "POST" && url.pathname === "/api/auth/logout") {
     const token = cookieValue(request, SESSION_COOKIE);
     if (token) await env.DB.prepare("DELETE FROM sessions WHERE token_hash=?").bind(await sha256(token)).run();
@@ -129,7 +158,7 @@ async function handleMaterials(request, url, env) {
   if (request.method === "POST" && url.pathname === "/api/admin/bootstrap") {
     if (!validOrigin(request, env)) return fail("Origem não permitida.", 403);
     if (!user) return fail("Entre na sua conta para configurar a administração.", 401);
-    if (!isDeveloper(user)) return fail("Somente a conta proprietária pode ativar a administração.", 403);
+    if (!isOwner(user)) return fail("Somente a conta proprietária pode ativar a administração.", 403);
     if (!env.ADMIN_BOOTSTRAP_TOKEN) return fail("A configuração administrativa ainda não foi habilitada no servidor.", 503);
     const body = await request.json().catch(() => null);
     const tokenValue = String(body?.token || "");
@@ -144,18 +173,16 @@ async function handleMaterials(request, url, env) {
     return json({ ok: true, user: { id: user.id, email: user.email, name: user.display_name, role: "admin" } });
   }
   if (request.method === "GET" && url.pathname === "/api/materials") {
+    if (!user) return fail("Entre na sua conta do Trilha Panda para acessar os materiais.", 401);
     const rows = await env.DB.prepare(`SELECT m.id,m.title,m.subject,m.exam,m.description,m.mime_type,m.size_bytes,m.access_level,m.created_at,
-      CASE WHEN ?='admin' OR EXISTS(SELECT 1 FROM material_entitlements e WHERE e.user_id=? AND e.material_id=m.id AND e.revoked_at IS NULL) THEN 1 ELSE 0 END AS can_access
-      FROM materials m WHERE m.status='published' AND (?='admin' OR EXISTS(SELECT 1 FROM material_entitlements e WHERE e.user_id=? AND e.material_id=m.id AND e.revoked_at IS NULL))
-      ORDER BY m.created_at DESC`).bind(user?.role || "", user?.id || "", user?.role || "", user?.id || "").all();
+      1 AS can_access FROM materials m WHERE m.status='published' ORDER BY m.created_at DESC`).all();
     return json({ materials: rows.results || [] });
   }
   const match = url.pathname.match(/^\/api\/materials\/([\w-]+)$/);
   if (request.method === "GET" && match) {
     const material = await env.DB.prepare("SELECT * FROM materials WHERE id=? AND status='published'").bind(match[1]).first();
     if (!material) return fail("Material não encontrado.", 404);
-    const entitled = isAdmin(user) || (user && await env.DB.prepare("SELECT 1 FROM material_entitlements WHERE user_id=? AND material_id=? AND revoked_at IS NULL").bind(user.id, material.id).first());
-    if (!entitled) return fail(user ? "Este material requer acesso liberado." : "Entre na sua conta para acessar este material.", 403);
+    if (!user) return fail("Entre na sua conta do Trilha Panda para acessar este material.", 403);
     const object = await env.MATERIALS.get(material.object_key);
     if (!object) return fail("Arquivo indisponível.", 404);
     const headers = new Headers({ "content-type": material.mime_type, "content-length": String(material.size_bytes), "content-disposition": `inline; filename*=UTF-8''${encodeURIComponent(material.filename)}`, "cache-control": "private, no-store", "x-content-type-options": "nosniff", "content-security-policy": "default-src 'none'; frame-ancestors 'self'" });
@@ -164,7 +191,8 @@ async function handleMaterials(request, url, env) {
     return new Response(object.body, { headers });
   }
   if (request.method === "POST" && url.pathname === "/api/admin/materials") {
-    if (!isAdmin(user) || !validOrigin(request, env)) return fail("Acesso administrativo necessário.", 403);
+    const creatorAllowed = isOwner(user) || !!user && !!await env.DB.prepare("SELECT 1 FROM creator_access WHERE email=?").bind(emailNorm(user.email)).first();
+    if (!creatorAllowed || !validOrigin(request, env)) return fail("Acesso para criar conteúdo não liberado.", 403);
     const form = await request.formData(), file = form.get("file");
     const title = String(form.get("title") || "").trim().slice(0, 180), subject = String(form.get("subject") || "").trim().slice(0, 120), exam = String(form.get("exam") || "").trim().slice(0, 120), description = String(form.get("description") || "").trim().slice(0, 500), access = String(form.get("access") || "paid");
     if (!(file instanceof File) || !title || !subject || !exam || file.size < 1 || file.size > MAX_UPLOAD_BYTES) return fail("Preencha os campos e use um arquivo de até 50 MB.");
@@ -209,7 +237,7 @@ export default {
       return await env.ASSETS.fetch(request);
     } catch (error) {
       console.error("Erro inesperado na biblioteca:", request.method, url.pathname, error);
-      return fail("O servidor não conseguiu concluir a ação. Se era um cadastro, tente entrar com o mesmo e-mail e senha; a conta pode ter sido gravada.", 500);
+      return fail("O servidor não conseguiu concluir a ação. Se era um cadastro, tente entrar com o mesmo e-mail e PIN; a conta pode ter sido gravada.", 500);
     }
   }
 };
