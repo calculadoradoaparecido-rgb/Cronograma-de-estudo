@@ -1,6 +1,6 @@
-# Trilha Panda 5.15
+# Trilha Panda 5.16
 
-Organizador pessoal de estudos em formato PWA, com cadastro de concursos, cronograma semanal, edital verticalizado, biblioteca de resumos por concurso, registro de sessões, desempenho, inventário e backup local.
+Organizador pessoal de estudos em formato PWA, com cadastro de concursos, cronograma semanal, PDFs locais por concurso, resumos com revisão por matéria, questões interativas com importação e exportação em lote, registro de sessões, desempenho, inventário e backup local.
 
 ## Mascote animado
 
@@ -62,11 +62,11 @@ As cores são controladas por variáveis CSS no SVG, então novas pelagens exige
 
 ## Área de desenvolvedor
 
-Ative em **Dados e configurações → Modo desenvolvedor**. Além dos controles do panda, a área permite cadastrar concursos, criar resumos e links para materiais hospedados, importar resumos em `.txt` ou `.md` e importar/exportar um catálogo JSON com concursos, edital e resumos. O catálogo não contém sessões de estudo nem dados do panda. Para PDF e outros arquivos, hospede-os em um serviço HTTPS e cadastre o link no resumo.
+Ative em **Dados e configurações → Modo desenvolvedor**. Além dos controles do panda, a área permite cadastrar concursos, criar resumos e links para materiais hospedados, importar resumos em `.txt` ou `.md` e importar/exportar um catálogo JSON com concursos, edital e resumos. O catálogo não contém sessões de estudo nem dados do panda. PDFs para leitura no cronograma podem ser anexados diretamente à tela Cronograma; os links de materiais HTTPS continuam disponíveis nos resumos.
 
 Ao sair da conta, o app limpa os dados da sessão em memória e volta à tela de entrada com a última conta selecionada. Uma sessão salva inválida é removida ao abrir o app.
 
-O catálogo JSON pode ser compartilhado entre instalações. Importar atualiza os dados do concurso e os tópicos correspondentes, preservando sessões existentes e tópicos já marcados como concluídos. Resumos são combinados por identificador ou por disciplina e título.
+O catálogo JSON pode ser compartilhado entre instalações. Importar atualiza os dados do concurso e os tópicos correspondentes, preservando sessões existentes e tópicos já marcados como concluídos. Resumos são combinados por identificador ou por disciplina e título. Questões podem ser enviadas em lote no formato JSON disponível na tela Questões; PDFs anexados ao cronograma ficam no IndexedDB do navegador e não são enviados ao servidor.
 
 **Venda e biblioteca online:** o cronograma pessoal continua guardado no navegador e usa PIN local. A página `materiais.html` é uma biblioteca separada com contas de servidor (e-mail e senha), sessões protegidas, arquivos privados no R2 e permissões por cliente. A área de desenvolvedor local não concede privilégios administrativos no servidor. Um administrador ativa a primeira conta usando um segredo configurado no Worker, publica os materiais e libera o acesso após confirmar cada pagamento. **A cobrança automática ainda não está integrada**: não anuncie checkout automático até configurar um provedor de pagamentos e validar seus webhooks. O catálogo JSON local continua disponível para concursos e resumos usados dentro do cronograma.
 
@@ -78,7 +78,7 @@ Com Cloudflare Workers, crie o banco D1 `trilha-panda-auth`, aplique `schema.sql
 
 ## Dados e privacidade
 
-Concursos, cronogramas, resumos e registros ficam no armazenamento local do navegador. Os resumos são separados do histórico de estudo e não geram XP. Use **Dados e configurações → Exportar backup** para guardar uma cópia e **Importar backup** para restaurá-la em outro navegador.
+Concursos, cronogramas, resumos, questões e registros ficam no armazenamento local do navegador. Os PDFs anexados ao cronograma ficam no armazenamento de arquivos do navegador e não entram no backup JSON; guarde também os PDFs originais para transferi-los entre aparelhos. Os resumos são separados do histórico de estudo e não geram XP. Use **Dados e configurações → Exportar backup** para guardar uma cópia e **Importar backup** para restaurá-la em outro navegador.
 
 ## Testes
 
@@ -97,7 +97,7 @@ npm run test:navegador    # suíte em Chrome real
 ## Estrutura
 
 - `index.html`: app completo (CSS, SVG do panda e script).
-- `sw.js`: service worker, com cache `trilha-panda-shell-v5-15`.
+- `sw.js`: service worker, com cache `trilha-panda-shell-v5-17`.
 - `manifest.webmanifest` e `panda-icon.svg`: instalação do PWA. O ícone é SVG.
 - `icons/`: PNGs que não são referenciados pelo manifesto nem pelo HTML. Estão mantidos e podem ser removidos.
 - `wrangler.jsonc` e `.assetsignore`: publicação em Cloudflare Workers.
@@ -107,4 +107,4 @@ npm run test:navegador    # suíte em Chrome real
 
 Sirva esta pasta por HTTP para testar o PWA e o service worker. Abrir o `index.html` diretamente permite conferir a interface, mas não ativa o service worker.
 
-Ao publicar uma versão com mudanças nos arquivos da raiz, troque o nome do cache em `sw.js` (hoje `trilha-panda-shell-v5-15`), para que os navegadores baixem a versão nova.
+Ao publicar uma versão com mudanças nos arquivos da raiz, troque o nome do cache em `sw.js` (hoje `trilha-panda-shell-v5-17`), para que os navegadores baixem a versão nova.

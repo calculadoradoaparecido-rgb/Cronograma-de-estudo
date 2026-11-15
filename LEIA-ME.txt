@@ -1,7 +1,10 @@
-TRILHA PANDA — VERSÃO 5.15
+TRILHA PANDA — VERSÃO 5.16
 MASCOTE VETORIAL ANIMADO · PWA INSTALÁVEL
 
-O QUE MUDOU NA 5.15
+O QUE MUDOU NA 5.16
+- Tela de revisão dos resumos, agrupada por matéria, com registro da data de revisão.
+- Banco de questões interativo, com resultado imediato e importação/exportação JSON em lote.
+- Anexos PDF no cronograma, guardados localmente no navegador.
 - Área de desenvolvedor para criar e distribuir catálogo JSON de concursos, tópicos de edital e resumos sem copiar sessões de estudo ou dados do panda.
 - Importação de resumos em .txt e .md, com disciplina informada no painel e revisão antes de salvar.
 - Resumos aceitam links HTTPS para materiais e aulas hospedados.
