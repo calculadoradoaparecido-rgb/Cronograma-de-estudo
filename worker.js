@@ -43,8 +43,8 @@ async function currentUser(request, env) {
   const tokenHash = await sha256(token);
   return env.DB.prepare(`SELECT u.id,u.email,u.display_name,u.role,u.created_at FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=? AND s.expires_at>?`).bind(tokenHash, Date.now()).first();
 }
-function isAdmin(user) { return user?.role === "admin"; }
 function isDeveloper(user) { return emailNorm(user?.email) === DEVELOPER_EMAIL; }
+function isAdmin(user) { return user?.role === "admin" && isDeveloper(user); }
 async function requireUser(request, env) { return currentUser(request, env); }
 async function requireAdmin(request, env) { const user = await requireUser(request, env); return isAdmin(user) ? user : null; }
 
@@ -92,7 +92,6 @@ async function handleAuth(request, url, env) {
     const body = await request.json().catch(() => null);
     const email = emailNorm(body?.email), name = String(body?.name || "").trim().slice(0, 80), password = String(body?.password || "");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !name || password.length < 12 || password.length > 200) return fail("Informe nome, e-mail válido e senha com pelo menos 12 caracteres.");
-    if (email !== DEVELOPER_EMAIL) return fail("A biblioteca e a área de desenvolvedor são restritas à conta autorizada.", 403);
     const hashed = await passwordHash(password), id = crypto.randomUUID(), now = Date.now();
     try {
       await env.DB.prepare("INSERT INTO users (id,email,display_name,password_salt,password_hash,password_iterations,role,created_at) VALUES (?,?,?,?,?,?,?,?)")
@@ -127,11 +126,10 @@ async function handleAuth(request, url, env) {
 }
 async function handleMaterials(request, url, env) {
   const user = await currentUser(request, env);
-  if (!user) return fail("Entre na conta autorizada para acessar a biblioteca.", 401);
-  if (!isDeveloper(user)) return fail("A biblioteca é restrita à conta autorizada.", 403);
   if (request.method === "POST" && url.pathname === "/api/admin/bootstrap") {
     if (!validOrigin(request, env)) return fail("Origem não permitida.", 403);
     if (!user) return fail("Entre na sua conta para configurar a administração.", 401);
+    if (!isDeveloper(user)) return fail("Somente a conta proprietária pode ativar a administração.", 403);
     if (!env.ADMIN_BOOTSTRAP_TOKEN) return fail("A configuração administrativa ainda não foi habilitada no servidor.", 503);
     const body = await request.json().catch(() => null);
     const tokenValue = String(body?.token || "");
@@ -185,7 +183,8 @@ async function handleMaterials(request, url, env) {
     const body = await request.json().catch(() => null), email = emailNorm(body?.email), materialId = String(body?.materialId || "");
     const target = await env.DB.prepare("SELECT id FROM users WHERE email=?").bind(email).first();
     const material = await env.DB.prepare("SELECT id FROM materials WHERE id=?").bind(materialId).first();
-    if (!target || !material) return fail("Conta ou material não encontrado.", 404);
+    if (!target) return fail("Esta conta ainda não existe. Peça à pessoa para criar uma conta na Biblioteca usando este e-mail e tente liberar novamente.", 404);
+    if (!material) return fail("O material selecionado não foi encontrado. Atualize a página e escolha novamente.", 404);
     await env.DB.prepare("INSERT INTO material_entitlements (id,user_id,material_id,granted_by,created_at) VALUES (?,?,?,?,?) ON CONFLICT(user_id,material_id) DO UPDATE SET revoked_at=NULL,granted_by=excluded.granted_by,created_at=excluded.created_at")
       .bind(crypto.randomUUID(), target.id, material.id, user.id, Date.now()).run();
     return json({ ok: true });
