@@ -2,6 +2,7 @@ const SESSION_DAYS = 30;
 const SESSION_COOKIE = "tp_session";
 const PBKDF2_ITERATIONS = 100000;
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
+const DEVELOPER_EMAIL = "ascf21052000@gmail.com";
 const ALLOWED_TYPES = new Set([
   "application/pdf", "text/plain", "text/markdown",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -43,6 +44,7 @@ async function currentUser(request, env) {
   return env.DB.prepare(`SELECT u.id,u.email,u.display_name,u.role,u.created_at FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=? AND s.expires_at>?`).bind(tokenHash, Date.now()).first();
 }
 function isAdmin(user) { return user?.role === "admin"; }
+function isDeveloper(user) { return emailNorm(user?.email) === DEVELOPER_EMAIL; }
 async function requireUser(request, env) { return currentUser(request, env); }
 async function requireAdmin(request, env) { const user = await requireUser(request, env); return isAdmin(user) ? user : null; }
 
@@ -80,10 +82,17 @@ async function handleAuth(request, url, env) {
     const user = await currentUser(request, env);
     return json({ user: user ? { id: user.id, email: user.email, name: user.display_name, role: user.role } : null });
   }
+  if (request.method === "GET" && url.pathname === "/api/developer/access") {
+    const user = await currentUser(request, env);
+    if (!user) return fail("Entre na sua conta da biblioteca.", 401);
+    if (!isDeveloper(user)) return fail("Esta área é restrita à conta autorizada.", 403);
+    return json({ email: user.email });
+  }
   if (request.method === "POST" && url.pathname === "/api/auth/register") {
     const body = await request.json().catch(() => null);
     const email = emailNorm(body?.email), name = String(body?.name || "").trim().slice(0, 80), password = String(body?.password || "");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !name || password.length < 12 || password.length > 200) return fail("Informe nome, e-mail válido e senha com pelo menos 12 caracteres.");
+    if (email !== DEVELOPER_EMAIL) return fail("A biblioteca e a área de desenvolvedor são restritas à conta autorizada.", 403);
     const hashed = await passwordHash(password), id = crypto.randomUUID(), now = Date.now();
     try {
       await env.DB.prepare("INSERT INTO users (id,email,display_name,password_salt,password_hash,password_iterations,role,created_at) VALUES (?,?,?,?,?,?,?,?)")
@@ -118,6 +127,8 @@ async function handleAuth(request, url, env) {
 }
 async function handleMaterials(request, url, env) {
   const user = await currentUser(request, env);
+  if (!user) return fail("Entre na conta autorizada para acessar a biblioteca.", 401);
+  if (!isDeveloper(user)) return fail("A biblioteca é restrita à conta autorizada.", 403);
   if (request.method === "POST" && url.pathname === "/api/admin/bootstrap") {
     if (!validOrigin(request, env)) return fail("Origem não permitida.", 403);
     if (!user) return fail("Entre na sua conta para configurar a administração.", 401);
@@ -194,7 +205,7 @@ export default {
     const url = new URL(request.url);
     try {
       if (url.pathname.startsWith("/api/")) await ensureSchema(env);
-      if (url.pathname.startsWith("/api/auth/")) return await handleAuth(request, url, env);
+      if (url.pathname.startsWith("/api/auth/") || url.pathname === "/api/developer/access") return await handleAuth(request, url, env);
       if (url.pathname.startsWith("/api/materials") || url.pathname.startsWith("/api/admin/")) return await handleMaterials(request, url, env);
       return await env.ASSETS.fetch(request);
     } catch (error) {

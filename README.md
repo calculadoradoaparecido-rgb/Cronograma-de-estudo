@@ -62,13 +62,13 @@ As cores são controladas por variáveis CSS no SVG, então novas pelagens exige
 
 ## Área de desenvolvedor
 
-Ative em **Dados e configurações → Modo desenvolvedor**. Além dos controles do panda, a área permite cadastrar concursos, criar resumos e links para materiais hospedados, importar resumos em `.txt` ou `.md` e importar/exportar um catálogo JSON com concursos, edital e resumos. O catálogo não contém sessões de estudo nem dados do panda. PDFs para leitura no cronograma podem ser anexados diretamente à tela Cronograma; os links de materiais HTTPS continuam disponíveis nos resumos.
+Entre na Biblioteca online com a conta autorizada para abrir a **Área de desenvolvedor**. Nela ficam as ferramentas do panda, o banco de questões, o edital, os resumos, a biblioteca online e a importação/exportação do catálogo JSON. O catálogo não contém sessões de estudo nem dados do panda.
 
 Ao sair da conta, o app limpa os dados da sessão em memória e volta à tela de entrada com a última conta selecionada. Uma sessão salva inválida é removida ao abrir o app.
 
 O catálogo JSON pode ser compartilhado entre instalações. Importar atualiza os dados do concurso e os tópicos correspondentes, preservando sessões existentes e tópicos já marcados como concluídos. Resumos são combinados por identificador ou por disciplina e título. Questões podem ser enviadas em lote no formato JSON disponível na tela Questões; PDFs anexados ao cronograma ficam no IndexedDB do navegador e não são enviados ao servidor.
 
-**Venda e biblioteca online:** o cronograma pessoal continua guardado no navegador e usa PIN local. A página `materiais.html` é uma biblioteca separada com contas de servidor (e-mail e senha), sessões protegidas, arquivos privados no R2 e permissões por cliente. A área de desenvolvedor local não concede privilégios administrativos no servidor. Um administrador ativa a primeira conta usando um segredo configurado no Worker, publica os materiais e libera o acesso após confirmar cada pagamento. **A cobrança automática ainda não está integrada**: não anuncie checkout automático até configurar um provedor de pagamentos e validar seus webhooks. O catálogo JSON local continua disponível para concursos e resumos usados dentro do cronograma.
+**Acesso à biblioteca:** o cronograma mantém os dados pessoais neste navegador e o login local pede e-mail e PIN. A página `materiais.html` usa uma sessão autenticada no servidor. O Worker restringe a biblioteca e a área de desenvolvedor à conta `ascf21052000@gmail.com`; o texto do e-mail informado no login local, sozinho, não concede acesso. Os materiais continuam privados no R2. **A cobrança automática ainda não está integrada**: não anuncie checkout automático até configurar um provedor de pagamentos e validar seus webhooks.
 
 ## Instalar e publicar
 
